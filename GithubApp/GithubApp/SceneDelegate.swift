@@ -13,6 +13,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        
+        /*
+         ‼️ Description: About Hierarchy of UIViewController, UINavigationController and UITabBarController.
+         -> UITabBarController is 'holding' UINavigationControllers.
+         -> UINavigationController is 'holding' UIViewControllers.
+         */
+        
+        // ‼️ c.f : UINavigationController has to have UIViewController which is in the screen showing.
+        // ‼️ c.f : UINavigationController can contain UIViewControllers which contain works like 'Stack'.
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
@@ -22,12 +31,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // c.f : 'windowScene.coordinateSpace.bounds' basically makes it fill up the full screen
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
-        // c.f : ‼️ Every window has windowScene
+        // ‼️ c.f : Every window has windowScene
         // Set up the window's windowScene which is I made it at line 17.
         window?.windowScene = windowScene
         
         // Set up root view controller
-        window?.rootViewController = ViewController()
+        window?.rootViewController = createTabBarController()
         
         // This code is doing that actually showing.
         window?.makeKeyAndVisible()
@@ -60,7 +69,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
+    
+    func createSearchNavigationController() -> UINavigationController {
+        let searchViewController = SearchViewController()
+        searchViewController.title = "search"
+        searchViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: searchViewController)
+    }
+    
+    func createFavoritesNavigationController() -> UINavigationController {
+        let favoritesListViewController = FavoritesListViewController()
+        favoritesListViewController.title = "favorites"
+        favoritesListViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favoritesListViewController)
+    }
+    
+    func createTabBarController() -> UITabBarController {
+        let tabBarController = UITabBarController()
+        UITabBar.appearance().tintColor = .systemGreen
+        tabBarController.viewControllers = [
+            createSearchNavigationController(),
+            createFavoritesNavigationController()
+        ]
+        return tabBarController
+    }
 
 }
 
