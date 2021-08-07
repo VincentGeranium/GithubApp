@@ -83,6 +83,7 @@ class SearchViewController: UIViewController {
     }
     
     private func configureLogoImageView() {
+        
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -93,6 +94,15 @@ class SearchViewController: UIViewController {
         
         // Create codes by all the constraint are promatically.
         // In the array, contain all the constraints codes and it's will activate whole code one time
+        NSLayoutConstraint.activate([
+            // Create top padding for the top padding space imageView
+            logoImageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            // Positioning imageView to center X in it, and Standarded the self view's X position.
+            logoImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            // Set the height and width of ImageView.
+            logoImageView.heightAnchor.constraint(equalToConstant: 200),
+            logoImageView.widthAnchor.constraint(equalToConstant: 200)
+        ])
     }
     
 
