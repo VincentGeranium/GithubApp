@@ -9,13 +9,15 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    // initialize three objects.
+    // MARK:- initialize three objects.
     
+    // MARK:- logoImageView
     let logoImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         return imageView
     }()
     
+    // MARK:- usernameTextField
     /*
      Discussion: About initialization and customization.
      As I create 'GithubFollowerTextField()' like this.
@@ -42,8 +44,8 @@ class SearchViewController: UIViewController {
         return textField
     }()
     
+    // MARK:- Create callToActionButton
     let callToActionButton: GithubFollowerButton = {
-        
         /*
          c.f : About before I created init backGroundColor and title in the custom button class which 'GithubFollowerButton'
          So, I just passing parameter values that will be excute the inside of 'GithubFollowerButton'
@@ -53,6 +55,9 @@ class SearchViewController: UIViewController {
         return button
     }()
 
+    // MARK:- View Lifecycle
+    
+    // MARK:- viewDidLoad
     /*
      c.f : Only get and call this function once when view is did load.
      viewDidLoad function is not call and excute when pop the view.
@@ -68,8 +73,11 @@ class SearchViewController: UIViewController {
          */
         view.backgroundColor = .systemBackground
         configureLogoImageView()
+        configureTextField()
+        configureCallToActionButton()
     }
     
+    // MARK:- viewWillAppear
     /*
      c.f : This function is get and called when before view appear in other word called after view did load
      Whenever after view did load, call and excute this function.
@@ -82,8 +90,8 @@ class SearchViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
+    // MARK:- function 'configureLogoImageView'
     private func configureLogoImageView() {
-        
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -103,6 +111,61 @@ class SearchViewController: UIViewController {
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)
         ])
+    }
+    
+    // MARK:- function 'configureTextField'
+    private func configureTextField() {
+        view.addSubview(usernameTextField)
+        /*
+         Discussion: Why did not create 'translatesAutoresizingMaskIntoConstraints' ??
+         Because I already create 'translatesAutoresizingMaskIntoConstraints' in 'GithubFollowerTextField'.
+         And when I create the 'usernameTextField', the textField is inheritance the 'GithubFollowerTextField'
+         So, the textField doesn't need to create the 'translatesAutoresizingMaskIntoConstraints'
+         */
+        
+        NSLayoutConstraint.activate([
+            /*
+             Discussion: About textField top constraint
+             Top padding with logoImageView that mean's have empty space between logoImageView bottom and usernameTextField top.
+             And layout of usernameTextField top, the logoImageView is the standard position when I positioning the usernameTexrField
+             */
+            usernameTextField.topAnchor.constraint(equalTo: self.logoImageView.bottomAnchor, constant: 48),
+            
+            // Create padding right and left edges which mean's create padding the Leading edge and Trailing edge.
+            usernameTextField.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
+            usernameTextField.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
+            
+            // Create height of textField
+            // c.f : At least size of button, textField, ect... is 44 points.
+            usernameTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    // MARK:- function 'configureCallToActionButton'
+    private func configureCallToActionButton() {
+        view.addSubview(callToActionButton)
+        /*
+         Discussion: Why did not create 'translatesAutoresizingMaskIntoConstraints' ??
+         Because I already create 'translatesAutoresizingMaskIntoConstraints' in 'GithubFollowerButton'.
+         And when I create the 'callToActionButton', the button is inheritance the 'GithubFollowerButton'
+         So, the button doesn't need to create the 'translatesAutoresizingMaskIntoConstraints'
+         */
+        
+        /*
+         Dicsussion: Abuot the button constraints
+         the other objects are pined from the top but the button is pined from view's bottom
+         
+         c.f: explain about position.
+         This button is have Y cordinate, pin from bottom.
+         Also this button have width and X coordinate because have padding positioning the leading and trailing
+         */
+        NSLayoutConstraint.activate([
+            callToActionButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            callToActionButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 50),
+            callToActionButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
+            callToActionButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
     }
     
 
