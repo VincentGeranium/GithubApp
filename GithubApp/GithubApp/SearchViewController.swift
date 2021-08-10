@@ -57,7 +57,7 @@ class SearchViewController: UIViewController {
 
     // MARK:- View Lifecycle
     
-    // MARK:- viewDidLoad
+    // MARK:- View Lifecycle which is viewDidLoad
     /*
      c.f : Only get and call this function once when view is did load.
      viewDidLoad function is not call and excute when pop the view.
@@ -78,7 +78,7 @@ class SearchViewController: UIViewController {
         createDismissKeyboardTapGesture()
     }
     
-    // MARK:- viewWillAppear
+    // MARK:- View Lifecycle which is viewWillAppear
     /*
      c.f : This function is get and called when before view appear in other word called after view did load
      Whenever after view did load, call and excute this function.
@@ -117,7 +117,39 @@ class SearchViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    
+    // MARK:- function that 'pushFollowerListViewController'
+    /// for push data that username, this 'pushFollowerListViewController' is two ways to call first, when tapped button  which 'GitFollowerButton' or tapped keyboard button that 'go' keyboard button.
+    @objc private func pushFollowerListViewController() {
+        
+        /*
+         Discussion: Passing data workflow for example to below code
+         1. Create object
+         2. Configure data that I want to pass, In this case I pass username textfield text
+         3, Configure data that I want to pass which for the title, In this case I pass username textfield text
+         4. Push ViewController on to the stack
+         */
+        // the code is excute that when tapped button
+        // this code for passing data.
+        
+        // Create followerListVC object which is instance of FolllowerListViewController
+        let followerListVC = FollowerListViewController()
+        /*
+         c.f: About access username variable which in the FollowerListViewController
+         I created username variable in the FollowerListViewController.
+         So, I can access to the username and can pass the data that user entered username who want to find
+         */
+        followerListVC.username = usernameTextField.text
+        followerListVC.title = usernameTextField.text
+        /*
+         Discussion: Push or pop into the stack.
+         I already created UINavigationController.
+         So, I can push the FollowerListViewController on top of the stack
+         */
+        
+        // configure to push FollowerListViewController on the top of the stack
+        navigationController?.pushViewController(followerListVC, animated: true)
+        
+    }
     
     // MARK:- function 'configureLogoImageView'
     /// configure for logo image view
@@ -179,6 +211,10 @@ class SearchViewController: UIViewController {
     /// configure button
     private func configureCallToActionButton() {
         view.addSubview(callToActionButton)
+        
+        /// whenever tapped GithubFollowerButton pushFollowerListViewController function is what's going to called
+        callToActionButton.addTarget(self, action: #selector(pushFollowerListViewController), for: .touchUpInside)
+        
         /*
          Discussion: Why did not create 'translatesAutoresizingMaskIntoConstraints' ??
          Because I already create 'translatesAutoresizingMaskIntoConstraints' in 'GithubFollowerButton'.
@@ -204,7 +240,14 @@ class SearchViewController: UIViewController {
     }
 }
 
-// MAKR:- extension 'UITextFieldDelegate'
+// MARK:- Discussion about digging 'username' data which is the different ways to dig the data
+/*
+ It has two differents kind of dig 'username' data.
+ first way to dig data is when user input the 'username' data and then 'tapped button.'
+ second is 'tapped go keyboard'
+ */
+
+// MARK:- extension 'UITextFieldDelegate'
 extension SearchViewController: UITextFieldDelegate {
     // UITextFieldDelegate -> All hooked up the function, delegated for UITextField
     /*
@@ -232,7 +275,12 @@ extension SearchViewController: UITextFieldDelegate {
      This method is calling to when user press the return key.
      */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("did tapped return key")
+        /*
+         Discussion: Before pass data
+         Before pass the data have to destinataion that for the data's passing
+         */
+        
+        pushFollowerListViewController()
         return true
     }
 }
