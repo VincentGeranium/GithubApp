@@ -102,6 +102,13 @@ class GithubFollowerTextField: UITextField {
          */
         autocorrectionType = .no
         
+        // Customization the return key type
+        /*
+         c.f :
+         The 'return' key can be customize like 'done','go' and ect..
+         And also can change the keyboard type.
+         */
+        returnKeyType = .go
         
         // Create placeholder and give text.
         placeholder = "Enter a username"

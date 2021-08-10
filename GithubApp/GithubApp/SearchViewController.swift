@@ -75,6 +75,7 @@ class SearchViewController: UIViewController {
         configureLogoImageView()
         configureTextField()
         configureCallToActionButton()
+        createDismissKeyboardTapGesture()
     }
     
     // MARK:- viewWillAppear
@@ -90,7 +91,36 @@ class SearchViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
+    // MARK:- function 'createDismissKeyboardTapGesture'
+    /// For dismiss, When user tapped any screen that keyboard dismiss.
+    ///; c.f: This is one of way to dismiss keyboard, It's has alot of way that dismiss keyboard.
+    private func createDismissKeyboardTapGesture() {
+        // c.f : gesture have lots of different gesture example that swipe, tap ect,,,
+        
+        /*
+         Discussion: what is 'endEditing'? and why didn't passing parameter?
+         
+         endEditing(_:) is call when causes the view (or one of its embedded text fields) to resign the first responder status.
+         This method looks at the current view and its subview hierarchy for the text field that is currently the first responder.
+         If it finds one, it asks that text field to resign as first responder.
+         If the force parameter is set to true, the text field is never even asked; it is forced to resign.
+         
+         And parameter name is 'forece' that is Bool value.
+         So, throw back two different kind of result when true and false
+         If the force parameter is set to true, the text field is never even asked; it is forced to resign.
+         Otherwise if false, this leads to the opposite result.
+         Also specify true to force the first responder to resign, regardless of whether it wants to do so.
+         */
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        
+        // Added gesture recognizer in the view and the gesture recognizer is the tap gesture that I create.
+        view.addGestureRecognizer(tap)
+    }
+    
+    
+    
     // MARK:- function 'configureLogoImageView'
+    /// configure for logo image view
     private func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,6 +144,7 @@ class SearchViewController: UIViewController {
     }
     
     // MARK:- function 'configureTextField'
+    /// configure input user name texf field
     private func configureTextField() {
         view.addSubview(usernameTextField)
         /*
@@ -122,6 +153,9 @@ class SearchViewController: UIViewController {
          And when I create the 'usernameTextField', the textField is inheritance the 'GithubFollowerTextField'
          So, the textField doesn't need to create the 'translatesAutoresizingMaskIntoConstraints'
          */
+        
+        // c.f : 'self' being the 'SearchViewController'
+        usernameTextField.delegate = self
         
         NSLayoutConstraint.activate([
             /*
@@ -142,6 +176,7 @@ class SearchViewController: UIViewController {
     }
     
     // MARK:- function 'configureCallToActionButton'
+    /// configure button
     private func configureCallToActionButton() {
         view.addSubview(callToActionButton)
         /*
@@ -167,6 +202,37 @@ class SearchViewController: UIViewController {
         ])
         
     }
-    
+}
 
+// MAKR:- extension 'UITextFieldDelegate'
+extension SearchViewController: UITextFieldDelegate {
+    // UITextFieldDelegate -> All hooked up the function, delegated for UITextField
+    /*
+     Discussion: Delegate
+     Delegate is for the listen something for another things.
+     Delegate is defining a protocol that encapsulate the delegated resposibillity, such that a confirming type.
+     Delegate is guaranteed to provide the functionality the has been delegated.
+     
+     c.f: Delegate
+     If I want to know about delegate, I have to study the pattern which 'delegation' design pattern.
+     Delegate is one of part that the delegation design pattern.
+     
+     c.f: About delegation hook up
+     This is make sure delegation all hook up working and then If I pass the data, I will gonna pass data function.
+     So, I have to select right function and create code in the extension or whatever I liked.
+     */
+    
+    
+    /*
+     c.f: About method that UITextFieldDelegate.
+     I can see the methods name which UITextFiedlDelegate, I can know that how can take actions when stuffs going on.
+     
+     Discussion: About 'textFieldShouldReturn'
+     As known as by the name of this method, I know how to using.
+     This method is calling to when user press the return key.
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("did tapped return key")
+        return true
+    }
 }
