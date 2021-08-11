@@ -38,6 +38,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Set up root view controller
         window?.rootViewController = createTabBarController()
         
+        configureNavigationBar()
+        
         // This code is doing that actually showing.
         window?.makeKeyAndVisible()
     }
@@ -94,6 +96,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             createFavoritesNavigationController()
         ]
         return tabBarController
+    }
+    
+    /*
+     Discussion: Why did I create 'configureNavigationBar' function?
+     Because I will use any where to want use this code which is UINavigationBar tintColor to be change by 'systemGreen'.
+     Otherwise this function is generic function to make UINavigaiotnBar tintColor change to 'systemGreen'.
+     */
+    func configureNavigationBar() {
+        /*
+         Discussion: About appearance() method.
+         The 'appearance' method have means to 'overall'.
+         For example this code 'appearance()' means all of UINavigationBar are going to have this code.
+         */
+        
+        UINavigationBar.appearance().tintColor = .systemGreen
+        
     }
 
 }

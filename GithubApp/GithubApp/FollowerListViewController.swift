@@ -22,8 +22,14 @@ class FollowerListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .systemBackground
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+        // Setup to large title in navigationBar.
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     

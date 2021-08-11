@@ -87,6 +87,11 @@ class SearchViewController: UIViewController {
      */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        /*
+         c.f: About navigationBar hidden
+         It can be hidden or non-hidden to specific viewcontroller.
+         Another means is can be select to ViewControlller and pick it to hidden or non-hidden.
+         */
         // hide navigation bar, everytimes this pops up
         self.navigationController?.navigationBar.isHidden = true
     }
