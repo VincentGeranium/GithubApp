@@ -54,6 +54,22 @@ class SearchViewController: UIViewController {
                                                                 title: "Get Followers")
         return button
     }()
+    
+    /*
+     Discussion: About this computed property
+     This computed property for validation of the username is empty or non-empty.
+     It will return Bool value.
+     If return 'true' textField has empty data which is 'username data'.
+     Otherwise return 'false' textfield has 'username data.'
+     */
+    
+    var isUsernameEmpty: Bool {
+        // This is check the textField text is empty or not empty
+        guard let reuslt = usernameTextField.text?.isEmpty else {
+            return false
+        }
+        return reuslt
+    }
 
     // MARK:- View Lifecycle
     
@@ -125,7 +141,16 @@ class SearchViewController: UIViewController {
     // MARK:- function that 'pushFollowerListViewController'
     /// for push data that username, this 'pushFollowerListViewController' is two ways to call first, when tapped button  which 'GitFollowerButton' or tapped keyboard button that 'go' keyboard button.
     @objc private func pushFollowerListViewController() {
-        
+        /*
+         Discussion: 'isUsernameEmpty' validation
+         This validation is basic text validation
+         So, If I want more safty validation, I have to use another validation.
+         */
+        guard isUsernameEmpty == false else {
+            print("into else statement : failed to get username")
+            return
+        }
+        print("guard statement is pass : success to get username")
         /*
          Discussion: Passing data workflow for example to below code
          1. Create object
