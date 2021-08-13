@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A112AFE26C61A9000F153E9 /* GithubFollowerTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A112AFD26C61A9000F153E9 /* GithubFollowerTitleLabel.swift */; };
 		6A32633126A80E5400454FBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32633026A80E5400454FBB /* AppDelegate.swift */; };
 		6A32633326A80E5400454FBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32633226A80E5400454FBB /* SceneDelegate.swift */; };
 		6A32633A26A80E5500454FBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A32633926A80E5500454FBB /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A112AFD26C61A9000F153E9 /* GithubFollowerTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerTitleLabel.swift; sourceTree = "<group>"; };
 		6A32632D26A80E5400454FBB /* GithubApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A32633026A80E5400454FBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A32633226A80E5400454FBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				6A32633B26A80E5500454FBB /* LaunchScreen.storyboard */,
 				6A32633E26A80E5500454FBB /* Info.plist */,
 				6AFBB45526C26482008174F7 /* FollowerListViewController.swift */,
+				6A112AFD26C61A9000F153E9 /* GithubFollowerTitleLabel.swift */,
 			);
 			path = GithubApp;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A112AFE26C61A9000F153E9 /* GithubFollowerTitleLabel.swift in Sources */,
 				6A736D4726AA8A6800549B90 /* SearchViewController.swift in Sources */,
 				6AA80AE526B1377A0002FCD4 /* GithubFollowerButton.swift in Sources */,
 				6A32633126A80E5400454FBB /* AppDelegate.swift in Sources */,
