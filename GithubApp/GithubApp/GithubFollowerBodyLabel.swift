@@ -28,6 +28,7 @@ class GithubFollowerBodyLabel: UILabel {
          c.f: Purpose of passing 'textAlignment'
          Passing textAlignment for the configure text label.
          */
+
         
         self.textAlignment = textAlignment
         configure()

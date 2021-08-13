@@ -11,6 +11,7 @@ class GithubFollowerAlertViewController: UIViewController {
     
     // Create white view for create container view.
     let containerView = UIView()
+    
     let titleLabel = GithubFollowerTitleLabel(textAlignment: .center, fontSize: 20)
     let bodyMessageLabel = GithubFollowerBodyLabel(textAlignment: .center)
     let actionButton = GithubFollowerButton(backgroundColor: .systemPink, title: "Ok")
@@ -65,6 +66,39 @@ class GithubFollowerAlertViewController: UIViewController {
          */
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)
 
+    }
+    
+    //MARK:- configure element of screen individually
+    
+    /*
+     c.f : About container view
+     The containerView is white squre and hold everything.
+     That is gonna be view controller but 'titleLabel','bodyMessageLabel' and 'actionButton' that actually into the container view.
+     
+     */
+    
+    // MARK:- Configure of containerView function.
+    func configureContainerView() {
+        // MARK:- ContainerView's UI setup.
+        // add subview
+        view.addSubview(containerView)
+        
+        containerView.backgroundColor = .systemBackground
+        // Breaking down cornerRadius and border
+        containerView.layer.cornerRadius = 16
+        /*
+         Discussion: Why did I give border width and color that white to container view
+         The reason is the iOS is two kind of display which is 'dark-mode' and 'light-mode'
+         When user set divice to light mode the border can't see because border color is 'white'
+         Otherwise user set the divice to the dark mode, user can see alert's border line.
+         Because it have two point of width and color is white.
+         */
+        containerView.layer.borderWidth = 2
+        containerView.layer.borderColor = UIColor.white.cgColor
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+
+        
     }
     
 
