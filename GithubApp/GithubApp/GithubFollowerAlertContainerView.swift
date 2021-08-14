@@ -6,7 +6,9 @@
 //
 
 import UIKit
-
+/*
+ 추후에 GithubFollowerAlertViewController 내에 정의된 containerView를 따로 만들기.
+ */
 class GithubFollowerAlertContainerView: UIView {
 
     /*
