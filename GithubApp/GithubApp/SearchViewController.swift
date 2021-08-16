@@ -147,7 +147,7 @@ class SearchViewController: UIViewController {
          So, If I want more safty validation, I have to use another validation.
          */
         guard isUsernameEmpty == false else {
-            print("into else statement : failed to get username")
+            presentGithubFollowerAlertOnMainThread(alertTitle: "Empty Username", bodyMessage: "Please enter a username. We need to know who to look for 🤔", buttonTitle: "Ok")
             return
         }
         print("guard statement is pass : success to get username")

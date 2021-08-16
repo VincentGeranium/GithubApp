@@ -18,6 +18,7 @@
 		6A736D4926AA8A7B00549B90 /* FavoritesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */; };
 		6A9AEF4926B921530000C9BF /* GithubFollowerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */; };
 		6AA80AE526B1377A0002FCD4 /* GithubFollowerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA80AE426B1377A0002FCD4 /* GithubFollowerButton.swift */; };
+		6AD6E9E526CA11B500CF3583 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */; };
 		6AEF15CA26C660F700B49916 /* GithubFollowerAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */; };
 		6AFBB45626C26482008174F7 /* FollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFBB45526C26482008174F7 /* FollowerListViewController.swift */; };
 		6AFBF79E26C7C6CE00BE50F0 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */; };
@@ -37,6 +38,7 @@
 		6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListViewController.swift; sourceTree = "<group>"; };
 		6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerTextField.swift; sourceTree = "<group>"; };
 		6AA80AE426B1377A0002FCD4 /* GithubFollowerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerButton.swift; sourceTree = "<group>"; };
+		6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerAlertContainerView.swift; sourceTree = "<group>"; };
 		6AFBB45526C26482008174F7 /* FollowerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListViewController.swift; sourceTree = "<group>"; };
 		6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
 				6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */,
 				6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */,
+				6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */,
 			);
 			path = GithubApp;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A112AFE26C61A9000F153E9 /* GithubFollowerTitleLabel.swift in Sources */,
+				6AD6E9E526CA11B500CF3583 /* UIViewController+Extension.swift in Sources */,
 				6A736D4726AA8A6800549B90 /* SearchViewController.swift in Sources */,
 				6AA80AE526B1377A0002FCD4 /* GithubFollowerButton.swift in Sources */,
 				6AFBF79E26C7C6CE00BE50F0 /* Extension.swift in Sources */,
