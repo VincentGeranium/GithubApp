@@ -74,24 +74,56 @@
 		6A32632F26A80E5400454FBB /* GithubApp */ = {
 			isa = PBXGroup;
 			children = (
-				6A32633026A80E5400454FBB /* AppDelegate.swift */,
-				6A32633226A80E5400454FBB /* SceneDelegate.swift */,
-				6AA80AE426B1377A0002FCD4 /* GithubFollowerButton.swift */,
-				6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */,
-				6A736D4626AA8A6800549B90 /* SearchViewController.swift */,
-				6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */,
-				6A32633926A80E5500454FBB /* Assets.xcassets */,
-				6A32633B26A80E5500454FBB /* LaunchScreen.storyboard */,
 				6A32633E26A80E5500454FBB /* Info.plist */,
-				6AFBB45526C26482008174F7 /* FollowerListViewController.swift */,
-				6A112AFD26C61A9000F153E9 /* GithubFollowerTitleLabel.swift */,
-				6A112AFF26C62F6400F153E9 /* GithubFollowerBodyLabel.swift */,
-				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
-				6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */,
-				6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */,
-				6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */,
+				6AFA5EA026CB5AC100B2E5B3 /* Resource */,
+				6AFA5EA126CB5B1600B2E5B3 /* View */,
+				6AFA5EA226CB5B4700B2E5B3 /* ViewController */,
+				6AFA5EA326CB5B9D00B2E5B3 /* Model */,
 			);
 			path = GithubApp;
+			sourceTree = "<group>";
+		};
+		6AFA5EA026CB5AC100B2E5B3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				6A32633026A80E5400454FBB /* AppDelegate.swift */,
+				6A32633226A80E5400454FBB /* SceneDelegate.swift */,
+				6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */,
+				6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		6AFA5EA126CB5B1600B2E5B3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6A32633926A80E5500454FBB /* Assets.xcassets */,
+				6A32633B26A80E5500454FBB /* LaunchScreen.storyboard */,
+				6A112AFD26C61A9000F153E9 /* GithubFollowerTitleLabel.swift */,
+				6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */,
+				6AA80AE426B1377A0002FCD4 /* GithubFollowerButton.swift */,
+				6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */,
+				6A112AFF26C62F6400F153E9 /* GithubFollowerBodyLabel.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6AFA5EA226CB5B4700B2E5B3 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6AFBB45526C26482008174F7 /* FollowerListViewController.swift */,
+				6A736D4626AA8A6800549B90 /* SearchViewController.swift */,
+				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
+				6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		6AFA5EA326CB5B9D00B2E5B3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
