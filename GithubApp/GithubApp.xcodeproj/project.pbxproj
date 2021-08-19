@@ -14,6 +14,7 @@
 		6A32633326A80E5400454FBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32633226A80E5400454FBB /* SceneDelegate.swift */; };
 		6A32633A26A80E5500454FBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A32633926A80E5500454FBB /* Assets.xcassets */; };
 		6A32633D26A80E5500454FBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A32633B26A80E5500454FBB /* LaunchScreen.storyboard */; };
+		6A65837326CE1A76004C79D6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A65837226CE1A76004C79D6 /* NetworkManager.swift */; };
 		6A736D4726AA8A6800549B90 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A736D4626AA8A6800549B90 /* SearchViewController.swift */; };
 		6A736D4926AA8A7B00549B90 /* FavoritesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */; };
 		6A9AEF4926B921530000C9BF /* GithubFollowerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */; };
@@ -36,6 +37,7 @@
 		6A32633926A80E5500454FBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A32633C26A80E5500454FBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A32633E26A80E5500454FBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A65837226CE1A76004C79D6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		6A736D4626AA8A6800549B90 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListViewController.swift; sourceTree = "<group>"; };
 		6A9AEF4826B921530000C9BF /* GithubFollowerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerTextField.swift; sourceTree = "<group>"; };
@@ -80,11 +82,20 @@
 			children = (
 				6A32633E26A80E5500454FBB /* Info.plist */,
 				6AFA5EA026CB5AC100B2E5B3 /* Resource */,
+				6A65837126CE1A56004C79D6 /* Manager */,
 				6AFA5EA126CB5B1600B2E5B3 /* View */,
 				6AFA5EA226CB5B4700B2E5B3 /* ViewController */,
 				6AFA5EA326CB5B9D00B2E5B3 /* Model */,
 			);
 			path = GithubApp;
+			sourceTree = "<group>";
+		};
+		6A65837126CE1A56004C79D6 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				6A65837226CE1A76004C79D6 /* NetworkManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		6AFA5EA026CB5AC100B2E5B3 /* Resource */ = {
@@ -205,6 +216,7 @@
 				6AD6E9E526CA11B500CF3583 /* UIViewController+Extension.swift in Sources */,
 				6A736D4726AA8A6800549B90 /* SearchViewController.swift in Sources */,
 				6AA80AE526B1377A0002FCD4 /* GithubFollowerButton.swift in Sources */,
+				6A65837326CE1A76004C79D6 /* NetworkManager.swift in Sources */,
 				6AFBF79E26C7C6CE00BE50F0 /* Extension.swift in Sources */,
 				6A32633126A80E5400454FBB /* AppDelegate.swift in Sources */,
 				6A112B0026C62F6400F153E9 /* GithubFollowerBodyLabel.swift in Sources */,

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+// c.f: parse the JSON data using by 'Codable'
 
 struct User: Codable {
     /*

@@ -27,7 +27,21 @@ class FollowerListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = false
+        /*
+         Discussion: About navigationBar hidden methods between
+         'self.navigationController?.navigationBar.isHidden = false' and
+         'navigationController?.setNavigationBarHidden(false, animated: true)'
+         
+         These are doing same action that showing or not to navigationBar by value
+         When assign or give value which true, It will be hidden and otherwise shown.
+         In other word give false value to these method, doing navigaionBar hidden.
+         
+         But, these two method has same action but a little bit difference about animation that showing action.
+         For example if using 'self.navigationController?.navigationBar.isHidden = false' and user swiped the screen the navigaitonBar is hidden during swipped
+         But using this 'navigationController?.setNavigationBarHidden(false, animated: true)' method, It's not disappeared when during swipped screen.
+         In other word is not hidden navigationBar when during user swipped the screen.
+         */
+        navigationController?.setNavigationBarHidden(false, animated: true)
         // Setup to large title in navigationBar.
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }

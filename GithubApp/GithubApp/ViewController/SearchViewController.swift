@@ -109,7 +109,8 @@ class SearchViewController: UIViewController {
          Another means is can be select to ViewControlller and pick it to hidden or non-hidden.
          */
         // hide navigation bar, everytimes this pops up
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
+//        self.navigationController?.navigationBar.isHidden = true
     }
     
     // MARK:- function 'createDismissKeyboardTapGesture'
