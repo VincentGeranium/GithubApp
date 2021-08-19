@@ -49,9 +49,62 @@ class NetworkManager {
      */
     
     func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping([Follower]?, String?) -> Void) {
-        // url that end point of API
+        // c.f: url that end point of API
         let endPoint = baseURL + "/users/\(username)/followers?per_page=\(perpage)&page=\(page)"
         
-        //
+        /*
+         c.f: Convert end point for into URL Object.
+         In other words validate endPoint string to URL
+         If endPoint dosen't return URL have return Error message.
+         So, I used alert and String which String is from completion
+         */
+        guard let url = URL(string: endPoint) else {
+            completion(nil, "Error: This username created an invalid request.")
+            return
+        }
+        //c.f: dataTask of URLSession is actually get data from url
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            // The Fundamental Basic native way of network call code
+            
+            /*
+             c.f: Actuall what to do in this closure block?
+             - Parse the data.
+             - Handle the response.
+             - Handle the error.
+             */
+            
+            // Handle the error
+            // c.f: Error is usually using for internet connect error
+            if let _ = error {
+                completion(nil, "Error: This is network error, unable to request.")
+                return
+            }
+            
+            /*
+             c.f : Same code with 'if let _ = error { }'
+             guard error == nil else {
+                completion(nil, "Error: This is network error, unable to request.")
+                return
+             }
+             */
+            
+            // Handle the response
+            // c.f: Response is showing the number that status code which is 404, 200, ect.
+            /*
+             Discussion: Explain of the code
+             First check is If response is not nil, go ahead put in as response.
+             Secondary check on that if response is not nil let's check that status code on the response
+             */
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(nil, "Error: Invalid response from the server.")
+                return
+            }
+            
+            
+            
+        }
+        
+        // Actuall start network call
+        task.resume()
     }
 }
