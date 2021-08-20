@@ -23,6 +23,22 @@ class FollowerListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { followers, errorMessage in
+            /*
+             Discussion: Explain about this code block
+             
+             First, check to the make sure have followers, If have followers, error message is nil
+             In other wise if followers is nil, error message is exist
+             */
+            guard let followers = followers else {
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage!, buttonTitle: "Ok")
+                return
+            }
+            
+            print("Followers.count = \(followers.count)")
+            print("Followers elements = \(followers)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

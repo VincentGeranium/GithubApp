@@ -27,7 +27,7 @@ class NetworkManager {
      
      All API access is over HTTPS, and accessed from https://api.github.com. All data is sent and received as JSON.
      */
-    let baseURL = "https://api.github.com/"
+    let baseURL = "https://api.github.com/users/"
     /*
      c.f: Singleton have private init
      Because Singleton is only one that can call from anywhere.
@@ -50,7 +50,7 @@ class NetworkManager {
     
     func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping([Follower]?, String?) -> Void) {
         // c.f: url that end point of API
-        let endPoint = baseURL + "/users/\(username)/followers?per_page=\(perpage)&page=\(page)"
+        let endPoint = baseURL + "\(username)/followers?per_page=\(perpage)&page=\(page)"
         
         /*
          c.f: Convert end point for into URL Object.
@@ -62,7 +62,8 @@ class NetworkManager {
             completion(nil, "Error: This username created an invalid request.")
             return
         }
-        //c.f: dataTask of URLSession is actually get data from url
+        // c.f: dataTask of URLSession is actually get data from url
+        // c.f: 'data, response, error' is optional because these can be nil value.
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             // The Fundamental Basic native way of network call code
             
@@ -75,6 +76,7 @@ class NetworkManager {
             
             // Handle the error
             // c.f: Error is usually using for internet connect error
+            // c.f: If error exist if block will excute
             if let _ = error {
                 completion(nil, "Error: This is network error, unable to request.")
                 return
@@ -100,7 +102,69 @@ class NetworkManager {
                 return
             }
             
+            /*
+             c.f: Explain this code.
+             If data is not exist occur Error
+             */
+            guard let data = data else {
+                completion(nil, "Error: The data received from the server was invalid.")
+                return
+            }
             
+            
+            
+            /*
+             c.f: About Encoder and Decoder can throw the error.
+             When throw error using 'do, try, catch' that handle the Error.
+             
+             c.f: About do - catch block
+             Start Parsing the JSON and handle the Error code.
+             */
+            
+            // If data is exist start Parsing the JSON and handle the Error code
+            do {
+                // try will be here
+                
+                /*
+                 Discussion: About decoder and encoder
+                 Decoder is taking the data from the server and decoding it into the object.
+                 Encoder is taking the object and converted it to the data.
+                 */
+
+                /*
+                 c.f:
+                 - Convert from snake case to camel case.
+                 - key is mean that dictionary, key and value pair.
+                 */
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = JSONDecoder.KeyDecodingStrategy.convertFromSnakeCase
+                // recreate follower objcet.
+                /*
+                 c.f:
+                 - 'try' is 'throw the decoder' in this code.
+                 - 'Throws' is meaning that 'throws the error
+                 - Decode function's parameter which 'type' is somthing that confirms the Decodable Protocol
+                    - That's why I did structure which 'Follower' confirm the 'Codable'
+                        - If confirm the 'Codable', Actually confirm the 'Decodable' and 'Encodable'.
+                          In other words 'Codable' is combination of 'Decodable' and 'Encodable'.
+                 */
+                
+                /*
+                 Dicussion: About this code explain which declare by constant array is the 'followers'
+                 Try decode that type is array of 'Follower' and create that array of 'Follower' from 'data' which is validate from this 'getFollowers' block.
+                 */
+                
+                /*
+                 c.f: Remember the when 'try' failed
+                 If 'try' fail's it's going to throw 'error'
+                 And throws the error in the 'catch' block.
+                 */
+                let followers = try decoder.decode([Follower].self, from: data)
+                completion(followers, nil)
+            } catch {
+                // If 'try' fails throw the 'error' and the 'catch block' is the error handle it.
+                completion(nil, "Decode Error: The data recived from the server was invalid.")
+            }
             
         }
         

@@ -28,6 +28,12 @@ import Foundation
  I have to create structure match with API's like 'var identifier: String'
  Also It's very important about data's type.
  */
+
+/*
+ Discussion: About Codable.
+ If confirm the 'Codable', Actually confirm the 'Decodable' and 'Encodable'.
+ In other words 'Codable' is combination of 'Decodable' and 'Encodable'.
+ */
 struct Follower: Codable {
     /*
      Discussion: About variable name's case
