@@ -32,7 +32,7 @@ class FollowerListViewController: UIViewController {
              In other wise if followers is nil, error message is exist
              */
             guard let followers = followers else {
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage!, buttonTitle: "Ok")
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage!.rawValue, buttonTitle: "Ok")
                 return
             }
             

@@ -48,7 +48,7 @@ class NetworkManager {
      
      */
     
-    func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping([Follower]?, String?) -> Void) {
+    func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping([Follower]?, ErrorMessage?) -> Void) {
         // c.f: url that end point of API
         let endPoint = baseURL + "\(username)/followers?per_page=\(perpage)&page=\(page)"
         
@@ -59,7 +59,7 @@ class NetworkManager {
          So, I used alert and String which String is from completion
          */
         guard let url = URL(string: endPoint) else {
-            completion(nil, "Error: This username created an invalid request.")
+            completion(nil, .invalidUsername)
             return
         }
         // c.f: dataTask of URLSession is actually get data from url
@@ -78,7 +78,7 @@ class NetworkManager {
             // c.f: Error is usually using for internet connect error
             // c.f: If error exist if block will excute
             if let _ = error {
-                completion(nil, "Error: This is network error, unable to request.")
+                completion(nil, .unableToComplete)
                 return
             }
             
@@ -98,7 +98,7 @@ class NetworkManager {
              Secondary check on that if response is not nil let's check that status code on the response
              */
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completion(nil, "Error: Invalid response from the server.")
+                completion(nil, .invalidResponse)
                 return
             }
             
@@ -107,7 +107,7 @@ class NetworkManager {
              If data is not exist occur Error
              */
             guard let data = data else {
-                completion(nil, "Error: The data received from the server was invalid.")
+                completion(nil, .invalidData)
                 return
             }
             
@@ -163,7 +163,7 @@ class NetworkManager {
                 completion(followers, nil)
             } catch {
                 // If 'try' fails throw the 'error' and the 'catch block' is the error handle it.
-                completion(nil, "Decode Error: The data recived from the server was invalid.")
+                completion(nil, .invalidData)
                 
                 /*
                  Discussion: Error localizedDescription
