@@ -33,7 +33,7 @@ class GithubFollowerButton: UIButton {
          */
         super.init(frame: frame)
         
-        configure()
+        configure(titleColor: .white)
     }
     
     // MARK:- required init?(coder:)
@@ -55,7 +55,7 @@ class GithubFollowerButton: UIButton {
      -> The button color and title will be chaging and create when every time that initialized this class
      */
     
-    init(backgroundColor: UIColor, title: String) {
+    init(backgroundColor: UIColor, title: String, titleColor: UIColor) {
         /*
          Discussion:
          -> Why did I gave 'zero' to 'init frame parameter?'
@@ -74,7 +74,7 @@ class GithubFollowerButton: UIButton {
         
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
-        configure()
+        configure(titleColor: titleColor)
     }
     
     // MARK:- private function which is 'configure' that for using 'generic'
@@ -88,9 +88,12 @@ class GithubFollowerButton: UIButton {
      */
     
     // for common stuff.
-    private func configure() {
+    private func configure(titleColor: UIColor) {
         layer.cornerRadius = 10
-        titleLabel?.textColor = .white
+        
+        // set button title color
+        // c.f: default button title color is white.
+        setTitleColor(titleColor, for: .normal)
         
         // dynamic typr of font
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)

@@ -164,6 +164,17 @@ class NetworkManager {
             } catch {
                 // If 'try' fails throw the 'error' and the 'catch block' is the error handle it.
                 completion(nil, "Decode Error: The data recived from the server was invalid.")
+                
+                /*
+                 Discussion: Error localizedDescription
+                 
+                 Typically error localized description is for the developer not a user.
+                 (some times error localized description show error message that hard to readable for user.)
+                 
+                 Example Code:
+                 completion(nil, error.localizedDescription)
+                 */
+
             }
             
         }

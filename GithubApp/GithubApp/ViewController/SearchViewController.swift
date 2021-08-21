@@ -51,7 +51,8 @@ class SearchViewController: UIViewController {
          So, I just passing parameter values that will be excute the inside of 'GithubFollowerButton'
          */
         let button: GithubFollowerButton = GithubFollowerButton(backgroundColor: .systemGreen,
-                                                                title: "Get Followers")
+                                                                title: "Get Followers",
+                                                                titleColor: .white)
         return button
     }()
     
