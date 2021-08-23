@@ -24,20 +24,15 @@ class FollowerListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { followers, errorMessage in
-            /*
-             Discussion: Explain about this code block
-             
-             First, check to the make sure have followers, If have followers, error message is nil
-             In other wise if followers is nil, error message is exist
-             */
-            guard let followers = followers else {
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage!.rawValue, buttonTitle: "Ok")
-                return
-            }
+        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { result in
             
-            print("Followers.count = \(followers.count)")
-            print("Followers elements = \(followers)")
+            switch result {
+            case .success(let followers):
+                print("Followers.count = \(followers.count)")
+                print("Followers elements = \(followers)")
+            case .failure(let errorMessage):
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+            }
         }
     }
     

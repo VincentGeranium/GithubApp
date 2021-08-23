@@ -26,7 +26,7 @@ extension UIViewController {
      So, any view controller can call this function as a result can show this alert.
      */
     // MARK:- Create function for 'present githubFollowerAlert On the mainThread'
-    func presentGithubFollowerAlertOnMainThread(alertTitle: String, bodyMessage: String, buttonTitle: String) {
+    func presentGithubFollowerAlertOnMainThread(alertTitle: String, bodyMessage: ErrorMessage.RawValue, buttonTitle: String) {
         /*
          c.f: UI element and main therad.
          It's illegal to present UI element from the back ground thread.

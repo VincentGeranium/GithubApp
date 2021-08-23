@@ -15,10 +15,28 @@ import Foundation
  Raw value: All the cases are confirm the one type.
  Associate value: Each cases have differents type.
  */
-
-enum ErrorMessage: String {
+/*
+ c.f: ErrorMessage's rawValue and Error Protocol
+ Enum dosen't have multiple raw value types
+ Enum can have one raw value type and confirm protocol
+ In here confirm Error protocol.
+ In other words ErrorMessage have rawValue which is String type and confirm protocol that Error.
+ */
+enum ErrorMessage: String, Error {
     case invalidUsername = "This username created an invalid request. Please try again"
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. please try again."
     case invalidData = "The data received from the server was invalid. pleas try again."
 }
+
+/*
+ Discussion: About Result Type
+ 
+ Basically Result is Enum and return two cases.
+ 1. Success case
+ 2. Failure case
+ The Success case can have generic which is any type
+ The Any type is can be what I want to put in
+ For example in 'getFollowers' function Result success case gonna be '[Follower]'
+ And Error message is return Failure case, the Failure case have to confirm the 'Error' protocol.
+ */
