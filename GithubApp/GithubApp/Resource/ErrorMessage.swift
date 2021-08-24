@@ -26,7 +26,9 @@ enum ErrorMessage: String, Error {
     case invalidUsername = "This username created an invalid request. Please try again"
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. please try again."
-    case invalidData = "The data received from the server was invalid. pleas try again."
+    case invalidData = "The data received from the server was invalid. please try again."
+    case invalidAssetImage = "The image from the Assets.xcassets was invalid."
+    case unableToOccurMethod = "Unable to occur this method. Please check the code."
 }
 
 /*
