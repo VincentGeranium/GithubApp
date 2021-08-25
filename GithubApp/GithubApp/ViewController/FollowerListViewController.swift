@@ -21,6 +21,36 @@ class FollowerListViewController: UIViewController {
     var username: String?
     var collectionView: UICollectionView!
     
+    // MARK:- Discussion about UICollectionViewDiffableDataSource
+    /*
+     Discussion: UICollectionViewDiffableDataSource()
+     New from iOS 13
+     - New way to handle data source of UICollectionView
+     - It's very shine(good), when data has change alot.
+        For example in this app, when user search and typed each alphabet latter of user id
+        the collectionView data is change alot.
+     - This is dynamic
+     
+     - UICollectionViewDiffableDataSource is taken two parameters that are generic.
+        But the two parameter have to confirm hashable protocol, when compair the snapShots, it can be compair, when these are hashable.
+     
+     Discussion: About hashable
+     - A type that can be hashed into a Hasher to produce an integer hash value.
+     
+     Discussion: What is the means Hashing a value
+     - The Hashing a value means feeding its essential components into a hash function, represented by the Hasher type.
+        Essential components are those that contribute to the type’s implementation of Equatable.
+        Two instances that are equal must feed the same values to Hasher in hash(into:), in the same order.
+     
+     Discussion: About two parameters of the UICollectionViewDiffableDataSource
+     - Passing Section is the section which is my collectionView
+        Passing Follower is the item
+        It hashing the section and hasing the item which is Follower
+     */
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Follower>
+    var dataSource: DataSource!
+    
+    
     // MARK:- viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +124,7 @@ class FollowerListViewController: UIViewController {
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.cellIdentifier)
     }
     
-    // MARK:-
+    // MARK:- createThreeColumnFlowLayout
     private func createThreeColumnFlowLayout() -> UICollectionViewFlowLayout {
         /*
          c.f:
@@ -150,4 +180,21 @@ class FollowerListViewController: UIViewController {
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemHeight)
         return flowLayout
     }
+    
+    private func configureDataSource() {
+        dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
+            /*
+             c.f: Workflow of this block
+             1. Create cell that reusable.
+             2. Configure cell.
+             3. Return the cell.
+             */
+            
+            // create cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as! FollowerCell
+            
+            return cell
+        })
+    }
 }
+

@@ -34,7 +34,7 @@ import Foundation
  If confirm the 'Codable', Actually confirm the 'Decodable' and 'Encodable'.
  In other words 'Codable' is combination of 'Decodable' and 'Encodable'.
  */
-struct Follower: Codable {
+struct Follower: Codable, Hashable {
     /*
      Discussion: About variable name's case
      
@@ -48,3 +48,10 @@ struct Follower: Codable {
     var login: String
     var avatarUrl: String
 }
+
+/*
+ c.f:
+ login that the unique id have to hasable
+ If I want real unique id, use the UUID(), UUID() is create unique id.
+ 
+ */
