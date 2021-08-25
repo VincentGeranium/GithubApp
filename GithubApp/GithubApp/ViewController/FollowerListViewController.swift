@@ -19,13 +19,25 @@ class FollowerListViewController: UIViewController {
      */
     
     var username: String?
+    var collectionView: UICollectionView!
     
+    // MARK:- viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        
+        configureViewController()
+        configureCollectionView()
+        getFollowers()
+    }
+    
+    // MARK:- viewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigaitonController()
+    }
+    
+    // MARK:- getFollowers
+    private func getFollowers() {
         NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { result in
-            
             switch result {
             case .success(let followers):
                 print("Followers.count = \(followers.count)")
@@ -36,8 +48,13 @@ class FollowerListViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    // MARK:- configureViewController
+    private func configureViewController() {
+        view.backgroundColor = .systemBackground
+    }
+    
+    // MARK:- configureNavigaitonController
+    private func configureNavigaitonController() {
         /*
          Discussion: About navigationBar hidden methods between
          'self.navigationController?.navigationBar.isHidden = false' and
@@ -56,6 +73,24 @@ class FollowerListViewController: UIViewController {
         // Setup to large title in navigationBar.
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
-
     
+    // MARK:- configureCollectionView
+    private func configureCollectionView() {
+        // initialize collectionView
+        // c.f: setup the frame by 'view.bound' means 'fill up the whole screen'
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
+        
+        /*
+         Discussion: Why did I initialize collectionView first that before collectionView added subview.
+         Because If I do not init the collection view first, in other words added by subview first.
+         The collectionView is 'nil', because collection view object not create yet.
+         So, I'm initialize the collectionView object and use that
+         That's why I did initialize collectionView first that before added by subview.
+         */
+        view.addSubview(collectionView)
+        
+        // cofigure collectionView
+        collectionView.backgroundColor = .systemPink
+        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.cellIdentifier)
+    }
 }

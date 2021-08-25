@@ -24,7 +24,7 @@ class FollowerCell: UICollectionViewCell {
     
     /*
      Discussion: What does this function when call it.
-     Passing the Follower that from the indexPath and that's gonna be usernameLabel's text
+     Passing the Follower that from the indexPath and that's gonna be usernameLabel's text 
      */
     
     func set(follower: Follower) {
