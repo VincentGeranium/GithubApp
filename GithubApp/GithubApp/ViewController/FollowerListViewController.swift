@@ -19,7 +19,9 @@ class FollowerListViewController: UIViewController {
      */
     
     var username: String?
-    var collectionView: UICollectionView!
+    var followers: [Follower] = []
+    var collectionView: UICollectionView?
+
     
     // MARK:- Discussion about UICollectionViewDiffableDataSource
     /*
@@ -50,6 +52,19 @@ class FollowerListViewController: UIViewController {
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Follower>
     var dataSource: DataSource!
     
+    /*
+     c.f: the two parameter which Section and Follower
+     - Section and Follower is generic
+     - Section means section of collection view
+     - Follower is individual item
+     - Section and Follower is confirm Hashable
+     - Those are have unique value cause Hashable.
+     */
+    
+    typealias SnapShot = NSDiffableDataSourceSnapshot<Section, Follower>
+    var snapShot: SnapShot!
+     
+    
     
     // MARK:- viewDidLoad
     override func viewDidLoad() {
@@ -57,6 +72,7 @@ class FollowerListViewController: UIViewController {
         configureViewController()
         configureCollectionView()
         getFollowers()
+        configureDataSource()
     }
     
     // MARK:- viewWillAppear
@@ -70,8 +86,10 @@ class FollowerListViewController: UIViewController {
         NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { result in
             switch result {
             case .success(let followers):
-                print("Followers.count = \(followers.count)")
+//                print("Followers.count = \(followers.count)")
                 print("Followers elements = \(followers)")
+                self.followers = followers
+                self.updateData()
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
@@ -108,8 +126,12 @@ class FollowerListViewController: UIViewController {
     private func configureCollectionView() {
         // initialize collectionView
         // c.f: setup the frame by 'view.bound' means 'fill up the whole screen'
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowLayout())
         
+        guard let collectionView = collectionView else {
+            return
+        }
         /*
          Discussion: Why did I initialize collectionView first that before collectionView added subview.
          Because If I do not init the collection view first, in other words added by subview first.
@@ -120,8 +142,9 @@ class FollowerListViewController: UIViewController {
         view.addSubview(collectionView)
         
         // cofigure collectionView
-        collectionView.backgroundColor = .systemPink
+        collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.cellIdentifier)
+        
     }
     
     // MARK:- createThreeColumnFlowLayout
@@ -181,7 +204,25 @@ class FollowerListViewController: UIViewController {
         return flowLayout
     }
     
+    // MARK:- configureDataSource
     private func configureDataSource() {
+        /*
+         have to test this code for unwrap dataSouce
+         
+        guard self.dataSource == DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as? FollowerCell else {
+                return UICollectionViewCell()
+            }
+            cell.set(follower: follower)
+            return cell
+        }) else {
+            return
+        }
+        */
+        guard let collectionView = collectionView else {
+            return
+        }
+        
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
             /*
              c.f: Workflow of this block
@@ -191,10 +232,49 @@ class FollowerListViewController: UIViewController {
              */
             
             // create cell
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as! FollowerCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as? FollowerCell else {
+                return UICollectionViewCell()
+            }
             
+            // configure cell
+            /*
+             c.f: It good habbit to make one line code
+             For example in this code.
+             'cell.set(follower: follwer)', This code means pass the follower data through 'set(follower:)' method,
+             And give to cell label text.
+             If it has not create function, It will be 'cell.usernameLabel.text = follower.login'
+             It very simple and reduce whole line of code.
+             If I want reduce code, make habbit to create functions and handle that.
+             */
+            cell.set(follower: follower)
+            
+            // return the cell
             return cell
         })
+    }
+    
+    // MARK:- updateData
+    // About snapShot stuff. It's related to update data
+    func updateData() {
+        
+//        var snapShot = NSDiffableDataSourceSnapshot<Section, Follower>()
+    
+        // initialize snap shot
+        snapShot = SnapShot()
+        
+        // configure
+        // c.f: add section to the snapShot
+        snapShot.appendSections([.main])
+        
+        // added array of follower
+        snapShot.appendItems(followers)
+        
+        // dataSouce update
+        DispatchQueue.main.async {
+            self.dataSource.apply(self.snapShot, animatingDifferences: true) {
+                print("DataSource is Update complete")
+            }
+        }
     }
 }
 
