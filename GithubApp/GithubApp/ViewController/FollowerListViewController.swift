@@ -50,7 +50,7 @@ class FollowerListViewController: UIViewController {
         It hashing the section and hasing the item which is Follower
      */
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Follower>
-    var dataSource: DataSource!
+    var dataSource: DataSource?
     
     /*
      c.f: the two parameter which Section and Follower
@@ -62,7 +62,7 @@ class FollowerListViewController: UIViewController {
      */
     
     typealias SnapShot = NSDiffableDataSourceSnapshot<Section, Follower>
-    var snapShot: SnapShot!
+    var snapShot: SnapShot?
      
     
     
@@ -83,15 +83,30 @@ class FollowerListViewController: UIViewController {
     
     // MARK:- getFollowers
     private func getFollowers() {
-        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) { result in
+        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) {[weak self] result in
+            
+            /*
+             Discussion: explain ARC and weak self of the network call
+             First my network call has two strong reference which self.followers and self.updateData().
+             What is the 'self' is in this case my 'FollowerListViewController'
+             In other words my networkManager have strong reference between my 'FollowerListViewController', This get cause memory leak.
+             So, solution is self.followers and self.updateData()'s 'self' change the weak variable
+             How to create weak variable to self?
+             Crate [weak self] in front of result, this is essentially make self weak
+             When make self weak, it will has to be optional becuase self can be nil
+             */
+            
+            // unwrapping self optinal
+            guard let strongSelf = self else { return }
+            
             switch result {
             case .success(let followers):
 //                print("Followers.count = \(followers.count)")
                 print("Followers elements = \(followers)")
-                self.followers = followers
-                self.updateData()
+                strongSelf.followers = followers
+                strongSelf.updateData()
             case .failure(let errorMessage):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+                strongSelf.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
         }
     }
@@ -258,9 +273,14 @@ class FollowerListViewController: UIViewController {
     func updateData() {
         
 //        var snapShot = NSDiffableDataSourceSnapshot<Section, Follower>()
-    
+        
+      
         // initialize snap shot
         snapShot = SnapShot()
+        
+        guard var snapShot = self.snapShot else {
+            return
+        }
         
         // configure
         // c.f: add section to the snapShot
@@ -269,9 +289,13 @@ class FollowerListViewController: UIViewController {
         // added array of follower
         snapShot.appendItems(followers)
         
+        guard let dataSource = self.dataSource else {
+            return
+        }
+        
         // dataSouce update
         DispatchQueue.main.async {
-            self.dataSource.apply(self.snapShot, animatingDifferences: true) {
+            dataSource.apply(snapShot, animatingDifferences: true) {
                 print("DataSource is Update complete")
             }
         }
