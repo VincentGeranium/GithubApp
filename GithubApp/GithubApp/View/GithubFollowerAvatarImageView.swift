@@ -53,5 +53,71 @@ class GithubFollowerAvatarImageView: UIImageView {
         
         translatesAutoresizingMaskIntoConstraints = false
     }
-
+    //Download Image, cache Image use by network manager
+    func dowloadImage(from urlString: String, completion: @escaping (Result<String, ErrorMessage>) -> Void) {
+        /*
+         Discussion: Why dose not handle error in this function?
+         
+         1. Because I used placeholder image that for empty avatar image.
+         If the user's avatar image is empty or occur the error of the network, the placeholder image is showing.
+         Which is mean that showing placeholder is occur error.
+         So, not have to error handling in here.
+         
+         2. This functino is call when evertime to 'GithubFollowerAvatarImageView' shows up.
+         Which every time new cells comes on screen, that collection view scroll down and every time new cell comes in.
+         It's means if error occur, have to pops up alert when every new cell comes in the screen.
+         In other word error is pops alot that's not to good at exprience to user and it have alot of cost to divice.
+         
+         - I used placeholder image to convey error indirectly.
+         - Showing placeholder image is good rather then bothering uesr because pops up error alert.
+            - using that convey to message.
+         */
+        
+        // get url
+        guard let url = URL(string: urlString) else {
+            completion(.failure(ErrorMessage.unableToGetURL))
+            return }
+        
+        // Calling network
+        // c.f: this is exactly same with network manager code.
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            
+            guard let strongSelf = self else {
+                completion(.failure(ErrorMessage.referenceError))
+                return }
+            
+            if error != nil {
+                completion(.failure(ErrorMessage.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                completion(.failure(ErrorMessage.invalidResponse))
+                return
+            }
+            
+            if response.statusCode != 200 {
+                completion(.failure(ErrorMessage.unableToGetResponseCode))
+            }
+            
+            guard let data = data else {
+                completion(.failure(ErrorMessage.invalidData))
+                return
+            }
+            
+            // get image from data
+            guard let image = UIImage(data: data) else {
+                completion(.failure(ErrorMessage.invalidData))
+                return
+            }
+            
+            // c.f: When update the UI, have to in the main thread
+            DispatchQueue.main.async {
+                strongSelf.image = image
+            }
+        }
+        // kicks off network call
+        task.resume()
+    }
 }

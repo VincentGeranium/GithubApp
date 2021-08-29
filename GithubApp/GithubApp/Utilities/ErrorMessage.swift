@@ -22,6 +22,7 @@ import Foundation
  In here confirm Error protocol.
  In other words ErrorMessage have rawValue which is String type and confirm protocol that Error.
  */
+
 enum ErrorMessage: String, Error {
     case invalidUsername = "This username created an invalid request. Please try again"
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
@@ -29,8 +30,10 @@ enum ErrorMessage: String, Error {
     case invalidData = "The data received from the server was invalid. please try again."
     case invalidAssetImage = "The image from the Assets.xcassets was invalid."
     case unableToOccurMethod = "Unable to occur this method. Please check the code."
+    case unableToGetURL = "Unable to complete your request which get URL. Please check the code."
+    case unableToGetResponseCode = "Unable to complete your request which get response code 200. Please check the code."
+    case referenceError = "reference error."
 }
-
 /*
  Discussion: About Result Type
  
