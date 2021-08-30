@@ -77,19 +77,22 @@ class GithubFollowerAvatarImageView: UIImageView {
         guard let url = URL(string: urlString) else {
             completion(.failure(ErrorMessage.unableToGetURL))
             return }
+        completion(.success("Success to get url"))
         
         // Calling network
         // c.f: this is exactly same with network manager code.
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             
             guard let strongSelf = self else {
-                completion(.failure(ErrorMessage.referenceError))
+                completion(.failure(ErrorMessage.unwrapError))
                 return }
+            completion(.success("Success to unwrap self"))
             
             if error != nil {
                 completion(.failure(ErrorMessage.unableToComplete))
                 return
             }
+            completion(.success("Error is not occur"))
             
             guard let response = response as? HTTPURLResponse,
                   response.statusCode == 200 else {
@@ -101,16 +104,22 @@ class GithubFollowerAvatarImageView: UIImageView {
                 completion(.failure(ErrorMessage.unableToGetResponseCode))
             }
             
+            completion(.success("Success to get response which code is 200."))
+            
             guard let data = data else {
-                completion(.failure(ErrorMessage.invalidData))
+                completion(.failure(ErrorMessage.unwrapError))
                 return
             }
             
+            completion(.success("Success to unwrap data"))
+            
             // get image from data
             guard let image = UIImage(data: data) else {
-                completion(.failure(ErrorMessage.invalidData))
+                completion(.failure(ErrorMessage.unableToConvert))
                 return
             }
+            
+            completion(.success("Success to convert from data to image."))
             
             // c.f: When update the UI, have to in the main thread
             DispatchQueue.main.async {

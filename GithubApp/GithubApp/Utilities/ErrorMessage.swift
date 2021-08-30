@@ -32,7 +32,8 @@ enum ErrorMessage: String, Error {
     case unableToOccurMethod = "Unable to occur this method. Please check the code."
     case unableToGetURL = "Unable to complete your request which get URL. Please check the code."
     case unableToGetResponseCode = "Unable to complete your request which get response code 200. Please check the code."
-    case referenceError = "reference error."
+    case unwrapError = "Unable to complete to unwrap"
+    case unableToConvert = "Unable to complete your request which convert data."
 }
 /*
  Discussion: About Result Type

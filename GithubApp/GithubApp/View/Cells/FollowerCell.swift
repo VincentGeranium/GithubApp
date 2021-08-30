@@ -24,12 +24,32 @@ class FollowerCell: UICollectionViewCell {
     }
     
     /*
-     Discussion: What does this function when call it.
-     Passing the Follower that from the indexPath and that's gonna be usernameLabel's text 
+     Discussion: What does 'set' function when call it.
+     Passing the Follower that from the indexPath and that's gonna be usernameLabel's text
+     */
+    
+    /*
+     c.f: Run throught actually happen 'set' function in the FollowerListViewController
+     In configuring data source, I was getting the cell, everytime configure the cell
+     With the cell.set(follower) -> that's how do I configure cell and come on the screen
+     
+     c.f: 'set' function's follower paramert is passing the model of Follower.
+     Follower model is create by struct and it have 'login' and 'avatarUrl' properties.
      */
     
     func set(follower: Follower) {
         usernameLabel.text = follower.login
+        
+        // c.f: avatarImageView.dowloadImage is gonna be kicking the imageView and run all the 'task' computed property from GithubFollowerAvatarImageView's 
+        avatarImageView.dowloadImage(from: follower.avatarUrl) { result in
+            switch result {
+            case .success(let success):
+                print(success)
+            case .failure(let errorMessage):
+                print(errorMessage)
+            }
+        }
+        
     }
     
     private func configure() {
