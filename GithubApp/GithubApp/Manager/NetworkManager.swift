@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 class NetworkManager {
+    //MARK:- Create Singleton instance
     /*
      c.f: Singleton has just one instance for restrict of singleton class.
      
@@ -17,6 +19,7 @@ class NetworkManager {
      */
     static let shared = NetworkManager()
     
+    //MARK:- private baseURL
     /*
      c.f: About Base URL
      In the network manager typically have base url
@@ -27,7 +30,32 @@ class NetworkManager {
      
      All API access is over HTTPS, and accessed from https://api.github.com. All data is sent and received as JSON.
      */
-    let baseURL = "https://api.github.com/users/"
+    private let baseURL = "https://api.github.com/users/"
+    
+    //MARK:- Create cache
+    /*
+     Discussion: Why did I create cache in NetworkManager?
+     Because I want singular cache.
+     If I create cache in'FollowerListViewController', Evertime when cell recreate cache will be calling, in other words cache is create many times.
+     So, I create singular cache in NetworkManager.
+     
+     c.f: How to access singular cache?
+     Access by shared instance.
+     For example 'networkManager.shared.cache'
+     */
+    
+    /*
+     Discussion: NSCache
+     - NSCache takes in key, value pair
+        - It's very similaly with Dictionary
+     
+     c.f: Why NSCache is takes KeyType by NSString not the String?
+     Because NSCache has not String type, NSCache is create when NEXT company
+     NSObjects are gonna convert to swift style.
+     */
+    let cache = NSCache<NSString, UIImage>()
+    
+    //MARK:- private init
     /*
      c.f: Singleton have private init
      Because Singleton is only one that can call from anywhere.

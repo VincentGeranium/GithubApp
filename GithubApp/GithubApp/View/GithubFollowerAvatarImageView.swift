@@ -9,6 +9,9 @@ import UIKit
 
 class GithubFollowerAvatarImageView: UIImageView {
     
+    //MARK:- Create cache instance
+    let cache = NetworkManager.shared.cache
+    
     // Placeholder Image
     let placehoderImage = UIImage(named: "avatar-placeholder")
     
@@ -55,6 +58,22 @@ class GithubFollowerAvatarImageView: UIImageView {
     }
     //Download Image, cache Image use by network manager
     func dowloadImage(from urlString: String, completion: @escaping (Result<String, ErrorMessage>) -> Void) {
+        //MARK:- Convert String type to NSString type
+        /*
+         c.f: explain below code that 'cacheKey'
+         
+         Which means initialize NSString from the Swift String. It's kind of convert it. and String is passing urlString
+         */
+        let cacheKey = NSString(string: urlString)
+        
+        
+        //MARK:- Check the cache
+        // c.f: Every URL that is tasked image that I download is gonna unique key there
+        // c.f: passing 'urlString' is how identify each object in the cache.
+        if let image = cache.object(forKey: urlString)
+        
+        
+        
         /*
          Discussion: Why dose not handle error in this function?
          
