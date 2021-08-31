@@ -68,9 +68,21 @@ class GithubFollowerAvatarImageView: UIImageView {
         
         
         //MARK:- Check the cache
+        // Purpose of check the cache is image in the cache? or not
         // c.f: Every URL that is tasked image that I download is gonna unique key there
         // c.f: passing 'urlString' is how identify each object in the cache.
-        if let image = cache.object(forKey: urlString)
+        if let image = cache.object(forKey: cacheKey) {
+            self.image  = image
+            
+            /*
+             Discussion: Why did I implment 'return'?
+             Because the down below code is for avatar image is nil
+             In other word that code have to excute when can't get image from cache object.
+             That't the means is the image what I want to showing that not captured.
+             So, If cached image I will asign the image or not I will get image from url.
+             */
+            return
+        }
         
         
         
@@ -98,11 +110,13 @@ class GithubFollowerAvatarImageView: UIImageView {
             return }
         completion(.success("Success to get url"))
         
-        // Calling network
+        // MARK:- Network call
         // c.f: this is exactly same with network manager code.
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             
-            guard let strongSelf = self else {
+            // MARK:- Basic Error Checking
+            // Handling all the Error
+            guard let self = self else {
                 completion(.failure(ErrorMessage.unwrapError))
                 return }
             completion(.success("Success to unwrap self"))
@@ -132,6 +146,7 @@ class GithubFollowerAvatarImageView: UIImageView {
             
             completion(.success("Success to unwrap data"))
             
+            // MARK:- get the image
             // get image from data
             guard let image = UIImage(data: data) else {
                 completion(.failure(ErrorMessage.unableToConvert))
@@ -140,9 +155,22 @@ class GithubFollowerAvatarImageView: UIImageView {
             
             completion(.success("Success to convert from data to image."))
             
+            //MARK:- set the image into the cache
+            // In other word capture the image.
+            /*
+             Discussion: Why did I create cache?
+             The Idea is a download image just once, So I creat cache and set the image into the cache.
+             If the image in the cache, It's not to download image, Just get cache object.
+             But If the image is not in cache, It must download image.
+             The donwload image is have cost to OS.
+             The performance is lower, If evertime download image.
+             */
+            self.cache.setObject(image, forKey: cacheKey)
+            
+            // MARK:- Setting the image.
             // c.f: When update the UI, have to in the main thread
             DispatchQueue.main.async {
-                strongSelf.image = image
+                self.image = image
             }
         }
         // kicks off network call

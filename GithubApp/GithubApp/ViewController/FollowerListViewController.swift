@@ -93,16 +93,16 @@ class FollowerListViewController: UIViewController {
              */
             
             // unwrapping self optinal
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
             
             switch result {
             case .success(let followers):
 //                print("Followers.count = \(followers.count)")
                 print("Followers elements = \(followers)")
-                strongSelf.followers = followers
-                strongSelf.updateData()
+                self.followers = followers
+                self.updateData()
             case .failure(let errorMessage):
-                strongSelf.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
         }
     }
