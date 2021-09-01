@@ -56,6 +56,21 @@ class GithubFollowerAvatarImageView: UIImageView {
         
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    //MARK:- dowloadImage가 이곳에 위치한 이유
+    /*
+     Discussion: 'dowloadImage' 이 NetworkManager가 아닌 GithubFollowerAvatarImageView에 위치한 이유
+     NetworkManager에 위치했을 경우 보다 조금 더 직관적이라고 생각하기 때문에, 원래의 코드라면 downloadImage function은
+     completion이 없다.
+     즉, error handling을 안한다는 뜻이다.
+     아래에 설명했다시피 error handling을 안하는 이유는 error이 발생했을 경우 placeHolder image를 avatar imagview에 보여지게
+     하기 때문이다 placeHolder image가 보인다면 따로 error을 pop up 시키는 것 보다 직관적으로 알 수 있기 때문이다.
+     다시말해, 이미 placeHolder image로서 암묵적인 error handling을 하게 되므로 completion 은 없다.
+     그렇기 때문에 굳이 error handling 을 안하는데 NetworkManager에 위치하는 것 보다 직접 이 vc 내부에 위치하는 것이
+     알맞다고 생각햇기 때문이다.
+     만약 아래와 같이 completion이 있다면 (error을 handling 하려 한다면) NetworkManager에 위치하는 것이 더 알맞다.
+     */
+    
     //Download Image, cache Image use by network manager
     func dowloadImage(from urlString: String, completion: @escaping (Result<String, ErrorMessage>) -> Void) {
         //MARK:- Convert String type to NSString type
