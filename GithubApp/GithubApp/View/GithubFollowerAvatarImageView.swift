@@ -21,7 +21,7 @@ class GithubFollowerAvatarImageView: UIImageView {
         
         do {
             try configure()
-            print("Success to occur configure method")
+            print("Success to excute 'configure method'")
         } catch {
             print("\(ErrorMessage.unableToOccurMethod.rawValue)")
         }

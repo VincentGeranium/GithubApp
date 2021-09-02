@@ -20,8 +20,15 @@ class FollowerListViewController: UIViewController {
     
     var username: String?
     var followers: [Follower] = []
+    // first page init
+    var page: Int = 1
     var collectionView: UICollectionView?
+    // check user's limit follower
+    // c.f: the flag about user has follower
+    var hasMoreFollower: Bool = true
+    
 
+    
     
     // MARK:- Discussion about UICollectionViewDiffableDataSource
     /*
@@ -67,7 +74,7 @@ class FollowerListViewController: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        getFollowers()
+        getFollowersWithUsernameAndPage()
         configureDataSource()
     }
     
@@ -78,8 +85,16 @@ class FollowerListViewController: UIViewController {
     }
     
     // MARK:- getFollowers
-    private func getFollowers() {
-        NetworkManager.shared.getFollowers(for: username!, perpage: 100, page: 1) {[weak self] result in
+    func getFollowersWithUsernameAndPage() {
+        guard let username = username else {
+            return
+        }
+        getFollowers(username: username, page: page)
+    }
+    
+    private func getFollowers(username: String, page: Int) {
+        
+        NetworkManager.shared.getFollowers(for: username, perpage: 100, page: page) {[weak self] result in
             
             /*
              Discussion: explain ARC and weak self of the network call
@@ -97,9 +112,21 @@ class FollowerListViewController: UIViewController {
             
             switch result {
             case .success(let followers):
+                // flip the flag which mean turn to false that 'hasMoreFollower' value
+                /*
+                 Discussion:
+                 1 페이지 당 100개의 유저 정보를 담아오는데 만약 250명의 팔로우가 있다면
+                 200까지는 2페이지를 넘겨 유저 정보를 가져올수있지만 나머지 50은 3페이지가 되므로 error이 발생한다.
+                 그러므로 page 를 증가시키는 로직을 멈춰야하므로 그에 대한 표시인 flag로 'hasMoreFollower'를 만들었고
+                 flag가 true인지 false인지에 따라 로직이 동작하고 안하고가 바뀌게 된다.
+                 */
+                if followers.count < 100 {
+                    print("The hasMoreFollower will filp to false")
+                    self.hasMoreFollower = false
+                }
 //                print("Followers.count = \(followers.count)")
                 print("Followers elements = \(followers)")
-                self.followers = followers
+                self.followers.append(contentsOf: followers)
                 self.updateData()
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
@@ -151,6 +178,10 @@ class FollowerListViewController: UIViewController {
          That's why I did initialize collectionView first that before added by subview.
          */
         view.addSubview(collectionView)
+        
+        // MARK:- Confirm UICollectionViewDelegate to self.
+        // c.f: collectionView delegate what listen to? -> listen to self.
+        collectionView.delegate = self
         
         // cofigure collectionView
         collectionView.backgroundColor = .systemBackground
@@ -241,3 +272,64 @@ class FollowerListViewController: UIViewController {
     }
 }
 
+// MARK:- Extension
+extension FollowerListViewController: UICollectionViewDelegate {
+    /*
+     c.f: UICollectionViewDelegate is have ScrolleView stuff
+     So, If I confirm the UICollectionViewDelegate, automatically implement scroll view protocols.
+     */
+    
+    /*
+     Discussion: About Delegate.
+     Delegate is sitting back and waitting for an action, like 'didSelectCell'
+     Waitting for user tap the cell and then access.
+     
+     Here the 'scrollViewDidEndDragging' waitting for user end dragging then access.
+     
+     That's the delegate to-do.
+     */
+    
+    /*
+     Discussion: About Scroll View
+     Scroll view stretch pretty far down.
+     Even the my phone screen me only see that section of it.
+     But reality Scroll view is really big that's the 'content height'
+     */
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // c.f: Set the Y cordinate because I want scroll up and down not a side to side
+        // c.f: If I want to create horizontal view access X
+        let offSet = scrollView.contentOffset.y
+        
+        // c.f: 'contentSize.height' code means 'entire scroll view'.
+        let contentHeight = scrollView.contentSize.height
+        
+        // c.f: This is scroll view's height. It's kind of height the screen, The end point of iPhone.
+        let height = scrollView.frame.height
+        
+        /*
+         Discussion: This math logic
+         
+         offSet -> 유저가 스크롤 한 치수
+         contentHeight -> 스크롤 뷰의 총 높이
+         height -> 스크롤 뷰가 스크린에 보여지는 부분의 높이
+         
+         즉, 유저가 더 많은 follower를 보기 위해 현재 보여지는 부분에서 더 scroll down 했을 때
+         getFollowers 를 실행.
+         */
+        
+        if offSet > contentHeight - height {
+            // check user has more follower?
+            if hasMoreFollower == false {
+                print("🙌 No the user has not more follower")
+                return
+            } else if hasMoreFollower == true {
+                // If user scroll the view, page have to increase
+                guard let username = username else {
+                    return
+                }
+                page += 1
+                getFollowers(username: username, page: page)
+            }
+        }
+    }
+}
