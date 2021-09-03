@@ -9,6 +9,15 @@ import Foundation
 import UIKit
 
 /*
+ Discussion: Create global property use by fileprivate.
+ Can't create variable in extension.
+ In other word extension must not contain stored properties.
+ So, If developer want to create or need property create by globaly
+ */
+
+fileprivate var containerView: UIView?
+
+/*
  Discussion: Difference between Subclassing and Extension
  
  Subclassing is more specific sub setup something what I want to behavior.
@@ -19,6 +28,7 @@ import UIKit
  */
 
 extension UIViewController {
+
     /*
      Discussion: In the 'extension UIViewController'
      
@@ -57,5 +67,50 @@ extension UIViewController {
                 print("🎯success to excute : presentGithubFollowerAlertOnMainThread's githubFollowerAlertVC.")
             }
         }
+    }
+    
+    // first I need the container view, this is the background view whole all activity indicator
+    func showLoadingView() {
+        // initilize uiview
+        // c.f: 'view.bounds' means fill up the whole screen.
+        containerView = UIView(frame: view.bounds)
+        
+        guard let containerView = containerView else {
+            return
+        }
+        
+        // add containerView in the viewController's view
+        view.addSubview(containerView)
+        
+        containerView.backgroundColor = .systemBackground
+        
+        /*
+         Discussion: Why did I start alpha from zero?
+         The reason of doing this cause animate that to 0.8 percent.
+         I don't want loading view pops up, I want settle animation fade in.
+         In order to do that start to alpha 0 and animate 0.8 right pops on the screen
+         */
+        /*
+         c.f: 'alpha' = 'transparency'
+         If view's alpha is zero -> View is be there but can't see
+         */
+        // MARK:- Create containerView's alpha and animation
+        containerView.alpha = 0
+        UIView.animate(withDuration: 0.25) { containerView.alpha = 0.8 }
+        
+        // MARK:- Configure the indicator
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        // add the indicator view to the container view
+        containerView.addSubview(activityIndicatorView)
+        
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        activityIndicatorView.startAnimating()
+        
     }
 }

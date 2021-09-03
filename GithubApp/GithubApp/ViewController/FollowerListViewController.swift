@@ -93,9 +93,17 @@ class FollowerListViewController: UIViewController {
     }
     
     private func getFollowers(username: String, page: Int) {
+        // when loading data this function will be occur
+        /*
+         c.f: How can work the method 'showLoadingView'? -> process
+         First getFollowers is calling
+         And showLoadingView function start
+         And then Network Manager will doing and once network call done the completion block will happen
+         */
+        showLoadingView()
         
         NetworkManager.shared.getFollowers(for: username, perpage: 100, page: page) {[weak self] result in
-            
+            #warning("Dissmiss loading View")
             /*
              Discussion: explain ARC and weak self of the network call
              First my network call has two strong reference which self.followers and self.updateData().
@@ -120,12 +128,14 @@ class FollowerListViewController: UIViewController {
                  그러므로 page 를 증가시키는 로직을 멈춰야하므로 그에 대한 표시인 flag로 'hasMoreFollower'를 만들었고
                  flag가 true인지 false인지에 따라 로직이 동작하고 안하고가 바뀌게 된다.
                  */
+                print("🙌 followers count : \(followers.count)")
+                
                 if followers.count < 100 {
                     print("The hasMoreFollower will filp to false")
                     self.hasMoreFollower = false
                 }
 //                print("Followers.count = \(followers.count)")
-                print("Followers elements = \(followers)")
+                print("🙌 Followers elements = \(followers)")
                 self.followers.append(contentsOf: followers)
                 self.updateData()
             case .failure(let errorMessage):
@@ -241,10 +251,6 @@ class FollowerListViewController: UIViewController {
     // MARK:- updateData
     // About snapShot stuff. It's related to update data
     func updateData() {
-        
-//        var snapShot = NSDiffableDataSourceSnapshot<Section, Follower>()
-        
-      
         // initialize snap shot
         snapShot = SnapShot()
         
