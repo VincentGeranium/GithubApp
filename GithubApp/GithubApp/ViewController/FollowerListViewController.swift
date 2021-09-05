@@ -103,7 +103,6 @@ class FollowerListViewController: UIViewController {
         showLoadingView()
         
         NetworkManager.shared.getFollowers(for: username, perpage: 100, page: page) {[weak self] result in
-            #warning("Dissmiss loading View")
             /*
              Discussion: explain ARC and weak self of the network call
              First my network call has two strong reference which self.followers and self.updateData().
@@ -117,6 +116,9 @@ class FollowerListViewController: UIViewController {
             
             // unwrapping self optinal
             guard let self = self else { return }
+            
+            self.dismissLoadingView()
+            #warning("Dissmiss loading View")
             
             switch result {
             case .success(let followers):

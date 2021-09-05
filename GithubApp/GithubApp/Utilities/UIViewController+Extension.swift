@@ -69,6 +69,7 @@ extension UIViewController {
         }
     }
     
+    // MARK:- showLoadingView
     // first I need the container view, this is the background view whole all activity indicator
     func showLoadingView() {
         // initilize uiview
@@ -111,6 +112,13 @@ extension UIViewController {
         ])
         
         activityIndicatorView.startAnimating()
-        
+    }
+    
+    // MARK:- dismissLoadingView
+    func dismissLoadingView() {
+        DispatchQueue.main.async {
+            containerView?.removeFromSuperview()
+            containerView = nil
+        }
     }
 }
