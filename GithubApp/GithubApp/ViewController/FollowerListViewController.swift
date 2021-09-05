@@ -120,6 +120,13 @@ class FollowerListViewController: UIViewController {
             self.dismissLoadingView()
             #warning("Dissmiss loading View")
             
+            /*
+             Discussion: If user have not follower what happen?
+             If user have any follwer but still success.
+             Because only haven't follower, user is exist.
+             So, still get back array of followers from network call, however it will be zero.
+             */
+            
             switch result {
             case .success(let followers):
                 // flip the flag which mean turn to false that 'hasMoreFollower' value
@@ -130,15 +137,23 @@ class FollowerListViewController: UIViewController {
                  그러므로 page 를 증가시키는 로직을 멈춰야하므로 그에 대한 표시인 flag로 'hasMoreFollower'를 만들었고
                  flag가 true인지 false인지에 따라 로직이 동작하고 안하고가 바뀌게 된다.
                  */
-                print("🙌 followers count : \(followers.count)")
-                
+                // MARK:- check followers count is under 100
                 if followers.count < 100 {
                     print("The hasMoreFollower will filp to false")
                     self.hasMoreFollower = false
                 }
-//                print("Followers.count = \(followers.count)")
-                print("🙌 Followers elements = \(followers)")
+                // append followers
                 self.followers.append(contentsOf: followers)
+                
+                // MARK:- check followers array is empty
+                // Check followers array isEmpty that after network call and append followers in the array
+                if self.followers.isEmpty {
+                    let message = "This user doesn't have any followers. Go followe them 😝."
+                    DispatchQueue.main.async {
+                        self.showEmptyStateView(with: message, in: self.view)
+                    }
+                    return
+                }
                 self.updateData()
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")

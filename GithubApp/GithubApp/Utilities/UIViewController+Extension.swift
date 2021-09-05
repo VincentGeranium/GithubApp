@@ -121,4 +121,11 @@ extension UIViewController {
             containerView = nil
         }
     }
+    
+    //MARK:- showEmptyStateView
+    func showEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = GithubFollowerEmptyStateView(message: message)
+        emptyStateView.frame = view.bounds
+        view.addSubview(emptyStateView)
+    }
 }
