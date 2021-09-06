@@ -19,7 +19,12 @@ class FollowerListViewController: UIViewController {
      */
     
     var username: String?
+    // Followers Array
     var followers: [Follower] = []
+    
+    //c.f: Filtered followers array for filter collection view.
+    var filteredFollowers: [Follower] = []
+    
     // first page init
     var page: Int = 1
     var collectionView: UICollectionView?
@@ -156,7 +161,12 @@ class FollowerListViewController: UIViewController {
                     }
                     return
                 }
-                self.updateData()
+                /*
+                 Discussion: Why 'updateData' method is not get pass the flexible parameter in this block?
+                 
+                 Because in this block main purpose is get the whole follower of the user which is entered this app.
+                 */
+                self.updateData(on: self.followers)
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
@@ -303,8 +313,14 @@ class FollowerListViewController: UIViewController {
     }
     
     // MARK:- update Data
+    /*
+     Discussion: Why 'updateData' function taking flexible parameter?
+     Because when user using search bar which typed username that want to find user, to do update data, using the filterd follower array
+     If not, in other words user not using search bar, just scrolling screen, have to use normal follower array
+     So, that's the reason of 'updateData' function taking flexible parameter
+     */
     // About snapShot stuff. It's related to update data
-    func updateData() {
+    func updateData(on followers: [Follower]) {
         // initialize snap shot
         snapShot = SnapShot()
         
@@ -396,7 +412,7 @@ extension FollowerListViewController: UICollectionViewDelegate {
 
 // MARK:- Extension for UISearchResultsUpdating
 
-extension FollowerListViewController: UISearchResultsUpdating, UISearchBarDelegate {
+extension FollowerListViewController: UISearchResultsUpdating {
     /*
      1. Discussion: When 'updateSearchResults' function call?
      Everytime when user typed letter in the search bar
@@ -410,24 +426,44 @@ extension FollowerListViewController: UISearchResultsUpdating, UISearchBarDelega
          Actually in this function I will gonna filter the array in update the collection view
          */
         
-        // check the search bar actually have text and the filter is empty or not
+        // check the search bar actually have text
         guard let filter = searchController.searchBar.text else {
             print("please type username")
             return
         }
         
+        // check the filter is not empty
         guard !filter.isEmpty else {
             print("filter is empty check this statement")
             return
         }
         
+        filteredFollowers = followers.filter({ followers in
+            followers.login.lowercased().contains(filter.lowercased())
+        })
         /*
          Discussion: essentially this is doing?
          When every time change the search result from search bar
          It's notice that somthing chage.
          */
         print("this method is success to occur")
+        // c.f: updateData get pass the flexible parameter data which is filtered folllower or normal follower.
+        updateData(on: filteredFollowers)
     }
-    
-    
+}
+
+// MARK:- UISearchBarDelegate
+extension FollowerListViewController: UISearchBarDelegate {
+    // when user did tapped cancel button this function is calling
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        /*
+         Discussion: Why updateData method get the 'followers' not the 'filterdFollowers'?
+         
+         Because when user did tap cancel button collection view have to back to first time view
+         In other words have to showing whole followers which is user's own original followers
+         that the 'followers' array.
+         */
+        
+        updateData(on: followers)
+    }
 }
