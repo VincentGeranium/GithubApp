@@ -73,6 +73,7 @@ class FollowerListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureSearchController()
         configureCollectionView()
         getFollowersWithUsernameAndPage()
         configureDataSource()
@@ -82,9 +83,10 @@ class FollowerListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavigaitonController()
+        
     }
     
-    // MARK:- getFollowers
+    // MARK:- get Followers
     func getFollowersWithUsernameAndPage() {
         guard let username = username else {
             return
@@ -161,12 +163,13 @@ class FollowerListViewController: UIViewController {
         }
     }
     
-    // MARK:- configureViewController
+    // MARK:- configure ViewController
     private func configureViewController() {
         view.backgroundColor = .systemBackground
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    // MARK:- configureNavigaitonController
+    // MARK:- configure NavigaitonController
     private func configureNavigaitonController() {
         /*
          Discussion: About navigationBar hidden methods between
@@ -187,7 +190,7 @@ class FollowerListViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    // MARK:- configureCollectionView
+    // MARK:- configure CollectionView
     private func configureCollectionView() {
         // initialize collectionView
         // c.f: setup the frame by 'view.bound' means 'fill up the whole screen'
@@ -216,7 +219,41 @@ class FollowerListViewController: UIViewController {
         
     }
     
-    // MARK:- configureDataSource
+    // MARK:- Configure Search Controller.
+    private func configureSearchController() {
+        // Initialized search controller
+        let searchController = UISearchController()
+        
+        // Set the result update delegate
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        
+        // Set the search bar place holder value
+        // c.f: Search Controller has Seach Bar
+        searchController.searchBar.placeholder = "Search for a username."
+        
+        // Hidden the obscure background
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        // Show up Search Bar
+        // c.f: NavigationItem have Search controller
+        /*
+         Discussion: Why SearchController is optional?
+         Because navigation item may not have search controller.
+         */
+        navigationItem.searchController = searchController
+        /*
+         Discussion: Why did I implement 'hidesSearchBarWhenScrolling'?
+         When I implemented the searchBar I couldn't see search bar
+         But When I scroll down I can saw that.
+         So, I want to showing this search bar always.
+         That's the reason of the implement 'hidesSearchBarWhenScrolling' and assign 'false'
+         */
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    
+    // MARK:- configure Data Source
     private func configureDataSource() {
         /*
          have to test this code for unwrap dataSouce
@@ -265,7 +302,7 @@ class FollowerListViewController: UIViewController {
         })
     }
     
-    // MARK:- updateData
+    // MARK:- update Data
     // About snapShot stuff. It's related to update data
     func updateData() {
         // initialize snap shot
@@ -295,7 +332,7 @@ class FollowerListViewController: UIViewController {
     }
 }
 
-// MARK:- Extension
+// MARK:- Extension for UICollectionViewDelegate
 extension FollowerListViewController: UICollectionViewDelegate {
     /*
      c.f: UICollectionViewDelegate is have ScrolleView stuff
@@ -355,4 +392,42 @@ extension FollowerListViewController: UICollectionViewDelegate {
             }
         }
     }
+}
+
+// MARK:- Extension for UISearchResultsUpdating
+
+extension FollowerListViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    /*
+     1. Discussion: When 'updateSearchResults' function call?
+     Everytime when user typed letter in the search bar
+     
+     2. Discussion: About parameter the 'searchController'
+     The parameter which is 'searchController', Basically get pass back the 'searchController.text'
+     */
+    func updateSearchResults(for searchController: UISearchController) {
+        /*
+         Discussion: What's gonna do in this function?
+         Actually in this function I will gonna filter the array in update the collection view
+         */
+        
+        // check the search bar actually have text and the filter is empty or not
+        guard let filter = searchController.searchBar.text else {
+            print("please type username")
+            return
+        }
+        
+        guard !filter.isEmpty else {
+            print("filter is empty check this statement")
+            return
+        }
+        
+        /*
+         Discussion: essentially this is doing?
+         When every time change the search result from search bar
+         It's notice that somthing chage.
+         */
+        print("this method is success to occur")
+    }
+    
+    
 }

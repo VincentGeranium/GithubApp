@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AssetImage: String {
+enum ImageResource: String {
     case assetEmptyImage = "empty-state-logo"
-    case errorSystemImage = "xmark.octagon"
+    case errorSystemImage = "xmark.octagon.fill"
 }

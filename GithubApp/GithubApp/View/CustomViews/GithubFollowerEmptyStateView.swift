@@ -7,12 +7,20 @@
 
 import UIKit
 
+/*
+ Discussion: Have to know when reuse this GithubFollowerEmptyStateView
+ When I create this view, I configure the objects are pinded at safeArea which label and imageView.
+ So, I have to think about that when reuse this class, In other words when configure the frame of this view
+ where from other view.
+ Because I already pinded safeArea and design in this class.
+ */
+
 class GithubFollowerEmptyStateView: UIView {
     
     //MARK:- setup properties
     let messageLabel: GithubFollowerTitleLabel = GithubFollowerTitleLabel(textAlignment: .center, fontSize: 28)
     
-    let logoImageView: UIImageView = UIImageView()
+    var logoImageView: UIImageView = UIImageView()
     
     // setup typical init
     override init(frame: CGRect) {
@@ -86,20 +94,33 @@ class GithubFollowerEmptyStateView: UIView {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(logoImageView)
         
-        #warning("Test Guard state")
-        logoImageView.image = UIImage(named: AssetImage.assetEmptyImage.rawValue)
+        #warning("Have to refactoring use by Error throw")
+        let backGroundImage = UIImage(named: ImageResource.assetEmptyImage.rawValue)
         
-        guard logoImageView.image != nil else {
-            logoImageView.image = UIImage(named: AssetImage.errorSystemImage.rawValue)
+//        let backGroundImage = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
+//        print("\(backGroundImage == nil)")
+        logoImageView.image = backGroundImage
+       /*
+        logoImageView.image = backGroundImage
+        print("\(logoImageView.image == nil)")
+        
+        if logoImageView.image == nil {
+            logoImageView.image = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
             return
         }
+        
+        guard logoImageView.image != nil else {
+            logoImageView.image = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
+            return
+        }
+        */
         
         NSLayoutConstraint.activate([
             // c.f: this code means 30% larager then the actual width of the screen
             logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
-            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 170),
-            logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40),
+            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 240),
+            logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 50),
         ])
         
     }
