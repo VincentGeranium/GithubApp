@@ -447,7 +447,7 @@ extension FollowerListViewController: UICollectionViewDelegate {
          */
         let follower = activeArray[indexPath.item]
         
-        let userInfoVC = UserInfoViewController()
+        let userInfoVC = UserInfoViewController(username: follower.login)
         
         /*
          Discussion: Why did I implement navigationController and present navigationController in this block ?
