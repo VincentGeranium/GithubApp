@@ -32,6 +32,13 @@ class FollowerListViewController: UIViewController {
     // c.f: the flag about user has follower
     var hasMoreFollower: Bool = true
     
+    
+    /*
+     Discussion: What's the purpose of this property?
+     For the sorted select item, between before and after searching follower
+     If user searching value will filp, In other words if followers are filterd it will be the true.
+     */
+    var isSearching = false
 
     
     
@@ -408,6 +415,53 @@ extension FollowerListViewController: UICollectionViewDelegate {
             }
         }
     }
+    
+    // MARK:- Did Select Item method of UICollectionView.
+    /*
+     Discussion: when user did selecte itme what happen?
+     When user tapped on item whatever follower is,
+     It will pass the follower's login on to the next screen
+     And It's gonna transition next screen.
+     */
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // MARK:- Determined Array
+        /*
+         c.f: What am I first to do?
+         first to do determined array that filteredFollowers or not
+         And then get the follower at the indexPath.
+         I have to know which follower actually selected.
+         */
+        /*
+         Base on the searching flag determine what array to use
+         */
+        let activeArray = isSearching ? filteredFollowers : followers
+        
+        // MARK:- follower pulling from activeArray
+        /*
+         Discussion: How IndexPath working?
+         IndexPath is basically plug in whatever number user tapped
+         Then the indexPath will be int that user tapped.
+         
+         +c.f: That's how I getting the sepecific follower from the array
+         */
+        let follower = activeArray[indexPath.item]
+        
+        let userInfoVC = UserInfoViewController()
+        
+        /*
+         Discussion: Why did I implement navigationController and present navigationController in this block ?
+         Because if view present by modal style, the view have to dismisses button like cancel, confirm, ect...
+         It's specifi in the apple h.i.g documentation.
+         */
+        let navigationController = UINavigationController(rootViewController: userInfoVC)
+        
+        present(navigationController, animated: true) {
+            print("Success to present userInfo VC")
+        }
+        
+        
+    }
 }
 
 // MARK:- Extension for UISearchResultsUpdating
@@ -447,6 +501,9 @@ extension FollowerListViewController: UISearchResultsUpdating {
          It's notice that somthing chage.
          */
         print("this method is success to occur")
+        
+        isSearching = true
+        
         // c.f: updateData get pass the flexible parameter data which is filtered folllower or normal follower.
         updateData(on: filteredFollowers)
     }
@@ -456,6 +513,9 @@ extension FollowerListViewController: UISearchResultsUpdating {
 extension FollowerListViewController: UISearchBarDelegate {
     // when user did tapped cancel button this function is calling
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        isSearching = false
+        
         /*
          Discussion: Why updateData method get the 'followers' not the 'filterdFollowers'?
          
