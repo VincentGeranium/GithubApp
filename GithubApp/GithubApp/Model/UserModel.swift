@@ -18,8 +18,8 @@ struct User: Codable {
      */
     
     //MARK:- Header view's userInfo data.
-    var login: String
-    var avatarUrl: String
+    let login: String
+    let avatarUrl: String
     /*
      Discussion: Why did I create name variable by optional ?
      Because name can be return nil value.
@@ -30,14 +30,14 @@ struct User: Codable {
     var bio: String?
     
     //MARK:- github repository card design's essential data.
-    var publicRepos: Int
-    var publicGists: Int
-    var htmlUrl: String
+    let publicRepos: Int
+    let publicGists: Int
+    let htmlUrl: String
     
     //MARK:- github following and followers card design's essential data.
-    var following: Int
-    var followers: Int
+    let following: Int
+    let followers: Int
     
     // MARK:- Footer view's date data.
-    var createdAt: String
+    let createdAt: String
 }

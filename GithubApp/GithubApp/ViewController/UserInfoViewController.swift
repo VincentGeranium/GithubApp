@@ -16,6 +16,11 @@ class UserInfoViewController: UIViewController {
     
     var username: String?
     
+    lazy var doneButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                     target: self,
+                                     action: #selector(dismissViewController))
+    
+    
     init(username: String) {
         super.init(nibName: nil, bundle: nil)
         self.username = username
@@ -28,9 +33,22 @@ class UserInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
-//        navigationItem.rightBarButtonItem = setupDoneButton()
         setupNavigationRightBarButtonItem()
         print(self.username!)
+        
+        guard let username = username else { return }
+        
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let user):
+                print(user)
+                
+            case .failure(let error):
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong", bodyMessage: error.rawValue, buttonTitle: "Ok")
+            }
+        }
         
     }
     
@@ -38,17 +56,9 @@ class UserInfoViewController: UIViewController {
         super.viewWillAppear(animated)
         
     }
-    
-    private func setupDoneButton() -> UIBarButtonItem {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                         target: self,
-                                         action: #selector(dismissViewController))
-        
-        return doneButton
-    }
-    
+
     private func setupNavigationRightBarButtonItem() {
-        navigationItem.rightBarButtonItem = setupDoneButton()
+        navigationItem.rightBarButtonItem = doneButton
     }
     
     @objc func dismissViewController() {

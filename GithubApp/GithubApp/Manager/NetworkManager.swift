@@ -76,6 +76,7 @@ class NetworkManager {
      
      */
     
+    // MARK:- Get Followers
     func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
         // c.f: url that end point of API
         let endPoint = baseURL + "\(username)/followers?per_page=\(perpage)&page=\(page)"
@@ -208,6 +209,52 @@ class NetworkManager {
         }
         
         // Actuall start network call
+        task.resume()
+    }
+    
+    // MARK:- Get User Info
+    func getUserInfo(for username: String, completion: @escaping (Result<User, ErrorMessage>) -> Void) {
+        let endPoint = baseURL + "\(username)"
+        
+        // Convert endPoint which the type of String to URL and unwrapping
+        guard let url = URL(string: endPoint) else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        // MARK:- Data Task
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let _ = error  {
+                completion(.failure(.unableToComplete))
+                print("Error is occur : \(error)")
+                return
+            }
+            print("Success to pass the error.")
+            
+            
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+            print("Success to pass the Invalid Response error.")
+            
+            guard let data = data else {
+                completion(.failure(.invalidData))
+                return
+            }
+            print("Success to pass the InvalidData error.")
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let user = try decoder.decode(User.self, from: data)
+                print("😍 \(user)")
+                completion(.success(user))
+            } catch {
+                completion(.failure(.invalidData))
+            }
+        }
         task.resume()
     }
 }
