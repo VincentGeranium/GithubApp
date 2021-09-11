@@ -33,6 +33,32 @@ class GithubUserInfoHeaderViewController: UIViewController {
         super.viewDidLoad()
         addSubViews()
         layoutUI()
+        configureUIElements()
+    }
+    
+    // MARK:- cofigure objects
+    func configureUIElements() {
+        guard let user = user else {
+            return
+        }
+        
+        avatarImageView.dowloadImage(from: user.avatarUrl) { result in
+            switch result {
+            case .success(_):
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        usernameLabel.text = user.login
+        nameLabel.text = user.name ?? "N/A"
+        locationLabel.text = user.location ?? "No Location"
+        bioLable.text = user.bio ?? "No bio available"
+        bioLable.numberOfLines = 3
+        
+        locationImageView.image = UIImage(systemName: SFSymbols.locationPinImage)
+        locationImageView.tintColor = .secondaryLabel
     }
     
     // MARK:- to do addSubview all the objects
@@ -52,9 +78,16 @@ class GithubUserInfoHeaderViewController: UIViewController {
         // c.f: what textPadding is? -> It's the length between image and text label
         let textImagePadding: CGFloat = 12
         
+        //MARK:- all the translatesAutoresizingMaskIntoConstraints stuffs
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        locationImageView.translatesAutoresizingMaskIntoConstraints = false
+        locationImageView.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        bioLable.translatesAutoresizingMaskIntoConstraints = false
         
-        // MARK:- objects layout constraint configure
+        // MARK:- setup objects layout constraint
         NSLayoutConstraint.activate([
             // MARK:- avatarImageView layout constraints
             /*
