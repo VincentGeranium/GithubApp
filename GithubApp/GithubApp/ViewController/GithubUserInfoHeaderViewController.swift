@@ -99,7 +99,7 @@ class GithubUserInfoHeaderViewController: UIViewController {
             // 20 point from the top of the view controller
             avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
             // 20 point from the leading of the view controller
-            avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             // Discussion: I want avatarImageView be the square so to do hard code width and height.
             avatarImageView.widthAnchor.constraint(equalToConstant: 90),
             avatarImageView.heightAnchor.constraint(equalToConstant: 90),
@@ -107,14 +107,14 @@ class GithubUserInfoHeaderViewController: UIViewController {
             // MARK:- usernameLabel layout constraints
             usernameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: textImagePadding),
-            usernameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            usernameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             //c.f: Why did I assign value that 38 point to height? -> username label font size + 4 point padding
             usernameLabel.heightAnchor.constraint(equalToConstant: 38),
             
             // MARK:- nameLabel layout constraints
             nameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: textImagePadding),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             //c.f: Why did I assign value that 20 point to height? -> name label font size + 2 point padding
             nameLabel.heightAnchor.constraint(equalToConstant: 20),
             
@@ -129,13 +129,13 @@ class GithubUserInfoHeaderViewController: UIViewController {
             // Discussion: pined locationLabel, to the right side of the locationImageView
             locationLabel.centerYAnchor.constraint(equalTo: locationImageView.centerYAnchor),
             locationLabel.leadingAnchor.constraint(equalTo: locationImageView.trailingAnchor, constant: 5),
-            locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             locationLabel.heightAnchor.constraint(equalToConstant: 20),
             
             // MARK:- bioLabel layout constrainsts
             bioLable.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
             bioLable.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-            bioLable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            bioLable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bioLable.heightAnchor.constraint(equalToConstant: 60),
         ])
         
