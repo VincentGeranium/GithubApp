@@ -119,14 +119,14 @@ class GithubUserInfoHeaderViewController: UIViewController {
             nameLabel.heightAnchor.constraint(equalToConstant: 20),
             
             // MARK:- locationImageView layout constrainsts
-            // explain: pined locationImageView, to the right side of the avatarImageview
+            // Discussion: pined locationImageView, to the right side of the avatarImageview
             locationImageView.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor),
             locationImageView.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: textImagePadding),
             locationImageView.widthAnchor.constraint(equalToConstant: 20),
             locationImageView.heightAnchor.constraint(equalToConstant: 20),
             
             // MARK:- locationLabel layout constrainsts
-            // explain: pined locationLabel, to the right side of the locationImageView
+            // Discussion: pined locationLabel, to the right side of the locationImageView
             locationLabel.centerYAnchor.constraint(equalTo: locationImageView.centerYAnchor),
             locationLabel.leadingAnchor.constraint(equalTo: locationImageView.trailingAnchor, constant: 5),
             locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
