@@ -31,7 +31,7 @@ class FollowerListViewController: UIViewController {
     // check user's limit follower
     // c.f: the flag about user has follower
     var hasMoreFollower: Bool = true
-    
+    var searchBarHidden: Bool = true
     
     /*
      Discussion: What's the purpose of this property?
@@ -80,10 +80,17 @@ class FollowerListViewController: UIViewController {
      */
     var snapShot: SnapShot?
     
+    // MARK:- viewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        configureNavigaitonController()
+    }
     
     // MARK:- viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.hidesSearchBarWhenScrolling = false
         configureViewController()
         configureSearchController()
         configureCollectionView()
@@ -91,11 +98,18 @@ class FollowerListViewController: UIViewController {
         configureDataSource()
     }
     
-    // MARK:- viewWillAppear
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNavigaitonController()
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchBarToggle(searchBarHidden: self.searchBarHidden)
+    }
+    
+    
+    func searchBarToggle(searchBarHidden: Bool) {
+        if searchBarHidden == true {
+            navigationItem.hidesSearchBarWhenScrolling = true
+        } else if searchBarHidden == false {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }
     }
     
     // MARK:- get Followers
@@ -266,7 +280,7 @@ class FollowerListViewController: UIViewController {
          So, I want to showing this search bar always.
          That's the reason of the implement 'hidesSearchBarWhenScrolling' and assign 'false'
          */
-        navigationItem.hidesSearchBarWhenScrolling = false
+//        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     
@@ -357,6 +371,16 @@ class FollowerListViewController: UIViewController {
 
 // MARK:- Extension for UICollectionViewDelegate
 extension FollowerListViewController: UICollectionViewDelegate {
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        searchBarHidden = false
+//        print("scrollViewDidScrollToTop is occur")
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchBarHidden = true
+//        print("scrollViewDidScroll is occur")
+    }
+    
     /*
      c.f: UICollectionViewDelegate is have ScrolleView stuff
      So, If I confirm the UICollectionViewDelegate, automatically implement scroll view protocols.
