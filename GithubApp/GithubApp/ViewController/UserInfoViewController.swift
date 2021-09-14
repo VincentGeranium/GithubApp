@@ -98,7 +98,7 @@ class UserInfoViewController: UIViewController {
             ])
         }
         
-        
+        headerView.backgroundColor = .systemRed
         itemViewOne.backgroundColor = .systemPink
         itemViewTwo.backgroundColor = .systemBlue
         
