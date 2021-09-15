@@ -70,7 +70,13 @@ class UserInfoViewController: UIViewController {
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
+                    /*
+                     Discussion: What to do in this block?
+                     Pluged In view controller in the container view
+                     */
                     self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
+                    self.add(childVC: GithubFollowerRepoItemViewController(user: user), to: self.itemViewOne)
+                    self.add(childVC: GithubFollowerRepoItemViewController(user: user), to: self.itemViewTwo)
                 }
                 
                 print(user)
