@@ -105,4 +105,15 @@ class GithubFollowerButton: UIButton {
          */
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    /*
+     Discussion: Why did I implement this method?
+     This method is give to flexiblity
+     Because this class already have init method.
+     If want to change backgroundColor, title of button, I can do use this function
+     That's mean is have many choice and is flexible.
+     */
+    func set(background: UIColor, title: String) {
+        
+    }
 }

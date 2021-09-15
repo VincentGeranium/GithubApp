@@ -12,7 +12,7 @@ import UIKit
  GithubFollowerItemInfoViewController is super class
  GithubFollowerItemInfoViewController is very generic because whole share code amongs all the difference types of viewControllers
  */
-
+// MARK:- Super Class which Item info View Controller
 class GithubFollowerItemInfoViewController: UIViewController {
     // MARK:- Definde Properties
     let stackView = UIStackView()
@@ -28,6 +28,18 @@ class GithubFollowerItemInfoViewController: UIViewController {
      The button object defined generic button, I will gonna do that in the sub class's more specific each type
      */
     let actionButton = GithubFollowerButton()
+    
+    var user: User?
+    
+    
+    init(user: User) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK:- View Life cycle
     override func viewDidLoad() {
