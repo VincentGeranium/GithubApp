@@ -9,19 +9,21 @@ import Foundation
 import UIKit
 
 class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
     }
     
+    
     private func configureItems() {
         guard let user = user else {
-            print(ErrorMessage.invalidUsername)
             return
         }
+    
         itemInfoViewOne.set(itemInfoType: .followers, withCount: user.followers)
         itemInfoViewTwo.set(itemInfoType: .following, withCount: user.following)
-        actionButton.set(background: .systemGreen, title: "Get Followers")
+        actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
     }
 }

@@ -18,6 +18,7 @@ class UserInfoViewController: UIViewController {
     let headerView = UIView()
     let itemViewOne = UIView()
     let itemViewTwo = UIView()
+    let dateLabel = GithubFollowerBodyLabel(textAlignment: .center)
     
     var itemViews: [UIView] = []
     
@@ -75,8 +76,9 @@ class UserInfoViewController: UIViewController {
                      Pluged In view controller in the container view
                      */
                     self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
-                    self.add(childVC: GithubFollowerRepoItemViewController(user: user), to: self.itemViewOne)
+                    self.add(childVC: GithubFollowerItemViewController(user: user), to: self.itemViewOne)
                     self.add(childVC: GithubFollowerRepoItemViewController(user: user), to: self.itemViewTwo)
+                    self.dateLabel.text = "Github since \(user.createdAt.convertDisplayFormat())"
                 }
                 
                 print(user)
@@ -91,7 +93,7 @@ class UserInfoViewController: UIViewController {
         let padding: CGFloat = 20
         let itemHeight: CGFloat = 140
         
-        itemViews = [headerView, itemViewOne, itemViewTwo]
+        itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
         
         for itemView in itemViews {
             view.addSubview(itemView)
@@ -104,9 +106,7 @@ class UserInfoViewController: UIViewController {
             ])
         }
         
-        headerView.backgroundColor = .systemRed
-        itemViewOne.backgroundColor = .systemPink
-        itemViewTwo.backgroundColor = .systemBlue
+    
         
         //MARK:- Create constraint the headerView to layout
 
@@ -116,7 +116,7 @@ class UserInfoViewController: UIViewController {
          When layout the UI warried about the noach or the device top
          have to notice the safe area.
          */
-        
+        // c.f: give to vertically UI layout contraints
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
@@ -125,7 +125,10 @@ class UserInfoViewController: UIViewController {
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
             
             itemViewTwo.topAnchor.constraint(equalTo: itemViewOne.bottomAnchor, constant: padding),
-            itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight)
+            itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18),
         ])
     }
     /*

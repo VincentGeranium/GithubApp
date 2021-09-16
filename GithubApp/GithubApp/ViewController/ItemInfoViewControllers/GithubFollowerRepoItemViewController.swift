@@ -30,6 +30,6 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         //c.f: Setting up the UI very simply because done heavy lifting before 
         itemInfoViewOne.set(itemInfoType: .repos, withCount: user.publicRepos)
         itemInfoViewTwo.set(itemInfoType: .gists, withCount: user.publicGists)
-        actionButton.set(background: .systemPurple, title: "Github Profile")
+        actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
 }

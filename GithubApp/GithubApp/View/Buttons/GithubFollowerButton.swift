@@ -113,7 +113,9 @@ class GithubFollowerButton: UIButton {
      If want to change backgroundColor, title of button, I can do use this function
      That's mean is have many choice and is flexible.
      */
-    func set(background: UIColor, title: String) {
+    func set(backgroundColor: UIColor, title: String) {
+        self.backgroundColor = backgroundColor
+        self.setTitle(title, for: .normal)
         
     }
 }

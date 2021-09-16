@@ -19,6 +19,8 @@
 		6A32633326A80E5400454FBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32633226A80E5400454FBB /* SceneDelegate.swift */; };
 		6A32633A26A80E5500454FBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A32633926A80E5500454FBB /* Assets.xcassets */; };
 		6A32633D26A80E5500454FBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A32633B26A80E5500454FBB /* LaunchScreen.storyboard */; };
+		6A4D996E26F2F29C001ECF80 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D996D26F2F29C001ECF80 /* Date+Extension.swift */; };
+		6A4D997026F2F2B6001ECF80 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D996F26F2F2B6001ECF80 /* String+Extension.swift */; };
 		6A59A6AD26D49E720038C8D6 /* FollowerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A59A6AC26D49E720038C8D6 /* FollowerCell.swift */; };
 		6A59A6AF26D49F7D0038C8D6 /* GithubFollowerAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A59A6AE26D49F7D0038C8D6 /* GithubFollowerAvatarImageView.swift */; };
 		6A5B25B126F0C54F006924F9 /* GithubFollowerRepoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5B25B026F0C54F006924F9 /* GithubFollowerRepoItemViewController.swift */; };
@@ -59,6 +61,8 @@
 		6A32633926A80E5500454FBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A32633C26A80E5500454FBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A32633E26A80E5500454FBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A4D996D26F2F29C001ECF80 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		6A4D996F26F2F2B6001ECF80 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		6A59A6AC26D49E720038C8D6 /* FollowerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerCell.swift; sourceTree = "<group>"; };
 		6A59A6AE26D49F7D0038C8D6 /* GithubFollowerAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerAvatarImageView.swift; sourceTree = "<group>"; };
 		6A5B25B026F0C54F006924F9 /* GithubFollowerRepoItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerRepoItemViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 			children = (
 				6AFBF79D26C7C6CE00BE50F0 /* Extension.swift */,
 				6AD6E9E426CA11B500CF3583 /* UIViewController+Extension.swift */,
+				6A4D996D26F2F29C001ECF80 /* Date+Extension.swift */,
+				6A4D996F26F2F2B6001ECF80 /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -343,6 +349,7 @@
 				6AE83F7A26D62B9500A91755 /* Section.swift in Sources */,
 				6A59A6AF26D49F7D0038C8D6 /* GithubFollowerAvatarImageView.swift in Sources */,
 				6A9F680A26E703CE00FD8A05 /* UserInfoViewController.swift in Sources */,
+				6A4D997026F2F2B6001ECF80 /* String+Extension.swift in Sources */,
 				6AC135F226EC50F300C53308 /* SFSymbols.swift in Sources */,
 				6A65837326CE1A76004C79D6 /* NetworkManager.swift in Sources */,
 				6A1BA62726F0618E006913E2 /* GithubFollowerItemInfoViewController.swift in Sources */,
@@ -359,6 +366,7 @@
 				6A59A6AD26D49E720038C8D6 /* FollowerCell.swift in Sources */,
 				6AFA5EA526CB68E300B2E5B3 /* FollowerModel.swift in Sources */,
 				6A5B25B126F0C54F006924F9 /* GithubFollowerRepoItemViewController.swift in Sources */,
+				6A4D996E26F2F29C001ECF80 /* Date+Extension.swift in Sources */,
 				6AEF15CA26C660F700B49916 /* GithubFollowerAlertContainerView.swift in Sources */,
 				6A9AEF4926B921530000C9BF /* GithubFollowerTextField.swift in Sources */,
 				6AF3016126E9DD2900AF4A97 /* GithubFollowerSecondaryTitleLabel.swift in Sources */,
