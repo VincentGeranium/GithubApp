@@ -9,25 +9,58 @@ import Foundation
 import UIKit
 
 class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
-
+    var users: User?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureItems()
+    
+    
+    override init(user: User) {
+        super.init(user: user)
+        self.users = user
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
-    private func configureItems() {
-        guard let user = user else {
-            return
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        try? configureItems()
+        actionButtonTapped()
+    }
     
-        itemInfoViewOne.set(itemInfoType: .followers, withCount: user.followers)
-        itemInfoViewTwo.set(itemInfoType: .following, withCount: user.following)
+    
+    
+    func getUserData() throws -> User {
+        guard let user = users else {
+            throw ErrorMessage.invalidUsername
+        }
+        return user
+  
+    }
+    
+    
+    private func configureItems() throws {
+        do {
+            
+            let userData = try? getUserData()
+            guard let userData = userData else { return }
+            itemInfoViewOne.set(itemInfoType: .followers, withCount: userData.followers)
+            itemInfoViewTwo.set(itemInfoType: .following, withCount: userData.following)
+        } catch ErrorMessage.unwrapError {
+            print(ErrorMessage.unwrapError)
+        }
+        
         actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
     }
     
     override func actionButtonTapped() {
-        delegate?.didTapGitHubFollowers()
+        do {
+            let userData = try? getUserData()
+            guard let userData = userData else { return }
+            delegate?.didTapGitHubFollowers(for: userData)
+        } catch ErrorMessage.unwrapError {
+            print(ErrorMessage.unwrapError)
+        }
     }
 }

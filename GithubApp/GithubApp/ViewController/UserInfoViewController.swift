@@ -11,11 +11,12 @@
  */
 
 protocol UserInfoViewControllerDelegate: AnyObject {
-    func didTapGithubProfile()
-    func didTapGitHubFollowers()
+    func didTapGithubProfile(for user: User)
+    func didTapGitHubFollowers(for user: User)
 }
 
 import UIKit
+import SafariServices
 
 /*
  c.f: This ViewController will be modal present transition, not the whole screen.
@@ -178,14 +179,16 @@ class UserInfoViewController: UIViewController {
 
 // c.f: Conform to the delegate here
 extension UserInfoViewController: UserInfoViewControllerDelegate {
-    func didTapGithubProfile() {
+    func didTapGithubProfile(for user: User) {
+        print("did Tap github profile button")
         // discussion: when did tap github profile button show safari view controller
-        print("did tap Github Profile Button !!")
+        
     }
     
-    func didTapGitHubFollowers() {
+    func didTapGitHubFollowers(for user: User) {
+        print("did Tap github followers button")
         // discussion: when did tap github follower button dismiss view controller and create other delegate tell follower list screen the new user
-        print("did tap Github Followers Button!!")
+        
     }
     
     

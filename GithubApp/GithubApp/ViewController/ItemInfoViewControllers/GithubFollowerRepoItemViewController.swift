@@ -33,6 +33,10 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
     override func actionButtonTapped() {
-        delegate?.didTapGithubProfile()
+        guard let user = user else {
+            print(ErrorMessage.invalidUsername)
+            return
+        }
+        delegate?.didTapGithubProfile(for: user)
     }
 }
