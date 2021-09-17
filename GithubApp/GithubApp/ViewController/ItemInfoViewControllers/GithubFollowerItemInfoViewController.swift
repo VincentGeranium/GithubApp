@@ -30,6 +30,11 @@ class GithubFollowerItemInfoViewController: UIViewController {
     let actionButton = GithubFollowerButton()
     
     var user: User?
+    /*
+     Discussion: How to two classes communication pattern is hook up? and why the delegate is defined in here not GithubFollowerItemViewController and GithubFollowerRepoItemViewController?
+     Because this is super class of GithubFollowerItemViewController and GithubFollowerRepoItemViewController
+     */
+    var delegate: UserInfoViewControllerDelegate?
     
     
     init(user: User) {
@@ -45,9 +50,9 @@ class GithubFollowerItemInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackgroundView()
+        configureActionButton()
         layoutUI()
         configureStackView()
-
     }
     
     // MARK:- Configure Background View
@@ -85,8 +90,19 @@ class GithubFollowerItemInfoViewController: UIViewController {
          */
         stackView.addArrangedSubview(itemInfoViewOne)
         stackView.addArrangedSubview(itemInfoViewTwo)
-        
     }
+    
+    private func configureActionButton() {
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    }
+    
+    /*
+     Discussion: Why did not implement anything in this actionButtonTapped function?
+     Becaues this is generic super class, In our sub classes, can override parents class
+     So, just make function stuff and If want use the function,
+     At the sub class override the method and implements that method.
+     */
+    @objc func actionButtonTapped() {}
     
     
     // MARK:- Setup Layout UI

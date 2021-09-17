@@ -5,6 +5,16 @@
 //  Created by 김광준 on 2021/09/07.
 //
 
+/*
+ c.f: Difined Protocol which is UserInfoViewControllerDelegate
+ protocol is one of kind communication pattern.
+ */
+
+protocol UserInfoViewControllerDelegate: AnyObject {
+    func didTapGithubProfile()
+    func didTapGitHubFollowers()
+}
+
 import UIKit
 
 /*
@@ -70,23 +80,31 @@ class UserInfoViewController: UIViewController {
             
             switch result {
             case .success(let user):
-                DispatchQueue.main.async {
-                    /*
-                     Discussion: What to do in this block?
-                     Pluged In view controller in the container view
-                     */
-                    self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
-                    self.add(childVC: GithubFollowerItemViewController(user: user), to: self.itemViewOne)
-                    self.add(childVC: GithubFollowerRepoItemViewController(user: user), to: self.itemViewTwo)
-                    self.dateLabel.text = "Github since \(user.createdAt.convertDisplayFormat())"
-                }
-                
+                DispatchQueue.main.async { self.configureUIElements(with: user) }
                 print(user)
-                
             case .failure(let error):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong", bodyMessage: error.rawValue, buttonTitle: "Ok")
             }
         }
+    }
+    
+    func configureUIElements(with user: User) {
+        let followerItemVC = GithubFollowerItemViewController(user: user)
+        // c.f: communication pattern is hook up
+        followerItemVC.delegate = self
+        
+        let repoItemVC = GithubFollowerRepoItemViewController(user: user)
+        // c.f: communication pattern is hook up
+        repoItemVC.delegate = self
+
+        /*
+         Discussion: What to do in this block?
+         Pluged In view controller in the container view
+         */
+        self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
+        self.add(childVC: followerItemVC, to: self.itemViewOne)
+        self.add(childVC: repoItemVC, to: self.itemViewTwo)
+        self.dateLabel.text = "Github since \(user.createdAt.convertDisplayFormat())"
     }
     
     func layoutUI() {
@@ -149,4 +167,26 @@ class UserInfoViewController: UIViewController {
             print("Success to dismiss ViewController")
         }
     }
+}
+
+/*
+ Discussion: About Delegate
+ The delegate is wait to act want it to something happen.
+ In this case did tap github profile button or did tap github followers button.
+ So, need to set up communication path way, and that way is defined delegate.
+ */
+
+// c.f: Conform to the delegate here
+extension UserInfoViewController: UserInfoViewControllerDelegate {
+    func didTapGithubProfile() {
+        // discussion: when did tap github profile button show safari view controller
+        print("did tap Github Profile Button !!")
+    }
+    
+    func didTapGitHubFollowers() {
+        // discussion: when did tap github follower button dismiss view controller and create other delegate tell follower list screen the new user
+        print("did tap Github Followers Button!!")
+    }
+    
+    
 }
