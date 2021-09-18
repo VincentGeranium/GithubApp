@@ -25,42 +25,39 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        try? configureItems()
+        configureItems(with: users)
         actionButtonTapped()
     }
     
-    
-    
-    func getUserData() throws -> User {
-        guard let user = users else {
-            throw ErrorMessage.invalidUsername
+    func getUserData(user: User?) throws -> User {
+        guard user != nil else {
+            print(ErrorMessage.invalidData)
+            throw ErrorMessage.invalidData
         }
-        return user
-  
-    }
-    
-    
-    private func configureItems() throws {
-        do {
-            
-            let userData = try? getUserData()
-            guard let userData = userData else { return }
-            itemInfoViewOne.set(itemInfoType: .followers, withCount: userData.followers)
-            itemInfoViewTwo.set(itemInfoType: .following, withCount: userData.following)
-        } catch ErrorMessage.unwrapError {
+
+        guard let userData = user else {
             print(ErrorMessage.unwrapError)
+            throw ErrorMessage.unwrapError
         }
-        
+
+        return userData
+    }
+
+    private func configureItems(with user: User?) {
+        if let userFollowing = try? getUserData(user: user).following {
+            itemInfoViewTwo.set(itemInfoType: .following, withCount: userFollowing)
+        }
+        if let userFollower = try? getUserData(user: user).followers {
+            itemInfoViewOne.set(itemInfoType: .followers, withCount: userFollower)
+        }
         actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
     }
     
     override func actionButtonTapped() {
-        do {
-            let userData = try? getUserData()
-            guard let userData = userData else { return }
-            delegate?.didTapGitHubFollowers(for: userData)
-        } catch ErrorMessage.unwrapError {
-            print(ErrorMessage.unwrapError)
-        }
+        let userData = try? getUserData(user: users)
+        guard let userData = userData else { return }
+        delegate?.didTapGitHubFollowers(for: userData)
     }
 }
+
+
