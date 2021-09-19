@@ -14,11 +14,49 @@ import UIKit
  */
 class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController {
     
+    var users: User?
+    
+    override init(user: User) {
+        super.init(user: user)
+        self.users = user
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // c.f: override viewDidLoad method
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()
     }
+    
+    private func getUserData(user: User?) throws -> User {
+        guard user != nil else {
+            throw ErrorMessage.invalidData
+        }
+        
+        guard let userData = user else {
+            throw ErrorMessage.unwrapError
+        }
+        return userData
+    }
+    
+    private func tryingGetUserData(user: User?, vc: GithubFollowerRepoItemViewController) -> User {
+        var userData: User?
+        do {
+            userData = try vc.getUserData(user: user)
+            // 오류가 발생하지 않으면 실행할 코드.
+        } catch ErrorMessage.invalidData {
+            print(ErrorMessage.invalidData)
+        } catch ErrorMessage.unwrapError {
+            print(ErrorMessage.unwrapError)
+        } catch {
+            print("\(error)")
+        }
+        return userData
+    }
+
     
     // c.f: implement custom method that configure items
     private func configureItems() {
@@ -40,3 +78,5 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         delegate?.didTapGithubProfile(for: user)
     }
 }
+
+

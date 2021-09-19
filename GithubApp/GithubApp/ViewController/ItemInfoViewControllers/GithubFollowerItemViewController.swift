@@ -39,7 +39,6 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
             print(ErrorMessage.unwrapError)
             throw ErrorMessage.unwrapError
         }
-
         return userData
     }
 
