@@ -28,7 +28,7 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
     // c.f: override viewDidLoad method
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureItems()
+        configureItems(with: user, vc: self)
     }
     
     private func getUserData(user: User?) throws -> User {
@@ -42,11 +42,12 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         return userData
     }
     
-    private func tryingGetUserData(user: User?, vc: GithubFollowerRepoItemViewController) -> User {
+    private func tryingGetUserData(user: User?, vc: GithubFollowerRepoItemViewController) throws -> User {
         var userData: User?
+        
         do {
-            userData = try vc.getUserData(user: user)
-            // 오류가 발생하지 않으면 실행할 코드.
+            try userData = vc.getUserData(user: user)
+            // implment here -> 오류가 발생하지 않으면 실행할 코드.
         } catch ErrorMessage.invalidData {
             print(ErrorMessage.invalidData)
         } catch ErrorMessage.unwrapError {
@@ -54,20 +55,22 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         } catch {
             print("\(error)")
         }
+        
+        guard let userData = userData else { throw ErrorMessage.unwrapError }
+        
         return userData
     }
-
     
     // c.f: implement custom method that configure items
-    private func configureItems() {
-        // configure GithubFollowerItemInfoViewController
-        guard let user = user else {
-            print(ErrorMessage.invalidUsername)
-            return
+    private func configureItems(with user: User?, vc: GithubFollowerRepoItemViewController) {
+        if let userPublicRepos = try? tryingGetUserData(user: user, vc: vc).publicRepos {
+            itemInfoViewOne.set(itemInfoType: .repos, withCount: userPublicRepos)
         }
-        //c.f: Setting up the UI very simply because done heavy lifting before 
-        itemInfoViewOne.set(itemInfoType: .repos, withCount: user.publicRepos)
-        itemInfoViewTwo.set(itemInfoType: .gists, withCount: user.publicGists)
+        if let userPublicGists = try? tryingGetUserData(user: user, vc: vc).publicGists {
+            itemInfoViewTwo.set(itemInfoType: .gists, withCount: userPublicGists)
+        }
+        
+        //c.f: Setting up the UI very simply because done heavy lifting before
         actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
     }
     override func actionButtonTapped() {
@@ -78,5 +81,3 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         delegate?.didTapGithubProfile(for: user)
     }
 }
-
-
