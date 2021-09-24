@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SafariServices
 
 /*
  Discussion: Create global property use by fileprivate.
@@ -127,5 +128,13 @@ extension UIViewController {
         let emptyStateView = GithubFollowerEmptyStateView(message: message)
         emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
+    }
+    
+    // MARK:- Present Safari viewController
+    // c.f: safari default preferredControlTintColor is blue
+    func presentSafariViewController(url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.preferredControlTintColor = .systemGreen
+        present(safariVC, animated: true, completion: nil)
     }
 }

@@ -24,6 +24,7 @@ import Foundation
  */
 
 enum ErrorMessage: String, Error {
+    case invalidURL = "The url attached to this user is invaild."
     case invalidUsername = "This username created an invalid request. Please try again"
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. please try again."
@@ -34,6 +35,7 @@ enum ErrorMessage: String, Error {
     case unableToGetResponseCode = "Unable to complete your request which get response code 200. Please check the code."
     case unwrapError = "Unable to complete to unwrap"
     case unableToConvert = "Unable to complete your request which convert data."
+    case noFollower = "This user has no followers."
 }
 /*
  Discussion: About Result Type

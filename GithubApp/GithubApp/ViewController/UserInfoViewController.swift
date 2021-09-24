@@ -12,11 +12,10 @@
 
 protocol UserInfoViewControllerDelegate: AnyObject {
     func didTapGithubProfile(for user: User)
-    func didTapGitHubFollowers(for user: User)
+    func didTapGetFollowers(for user: User)
 }
 
 import UIKit
-import SafariServices
 
 /*
  c.f: This ViewController will be modal present transition, not the whole screen.
@@ -34,6 +33,10 @@ class UserInfoViewController: UIViewController {
     var itemViews: [UIView] = []
     
     var username: String?
+    
+    // MARK:- set the delegate which is FollowerListViewContollerDelegate
+    // initilialized user info view controller which set the delegate
+    weak var delegate: FollowerListViewControllerDelegate?
     
     lazy var doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                      target: self,
@@ -92,10 +95,12 @@ class UserInfoViewController: UIViewController {
     func configureUIElements(with user: User) {
         let followerItemVC = GithubFollowerItemViewController(user: user)
         // c.f: communication pattern is hook up
+        // MARK:- GithubFollowerItemViewController Delegate setup
         followerItemVC.delegate = self
         
         let repoItemVC = GithubFollowerRepoItemViewController(user: user)
         // c.f: communication pattern is hook up
+        // MARK:- GithubFollowerRepoItemViewController Delegate setup
         repoItemVC.delegate = self
 
         /*
@@ -103,8 +108,8 @@ class UserInfoViewController: UIViewController {
          Pluged In view controller in the container view
          */
         self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
-        self.add(childVC: followerItemVC, to: self.itemViewOne)
-        self.add(childVC: repoItemVC, to: self.itemViewTwo)
+        self.add(childVC: repoItemVC, to: self.itemViewOne)
+        self.add(childVC: followerItemVC, to: self.itemViewTwo)
         self.dateLabel.text = "Github since \(user.createdAt.convertDisplayFormat())"
     }
     
@@ -179,17 +184,26 @@ class UserInfoViewController: UIViewController {
 
 // c.f: Conform to the delegate here
 extension UserInfoViewController: UserInfoViewControllerDelegate {
+    // MARK:- Did tap Github Profile Button
+    // discussion: when did tap github profile button show safari view controller
     func didTapGithubProfile(for user: User) {
-        print("did Tap github profile button")
-        // discussion: when did tap github profile button show safari view controller
-        
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGithubFollowerAlertOnMainThread(alertTitle: "Invaild URL", bodyMessage: ErrorMessage.invalidURL.rawValue, buttonTitle: "OK")
+            return
+        }
+        presentSafariViewController(url: url)
     }
     
-    func didTapGitHubFollowers(for user: User) {
+    // discussion: when did tap github follower button dismiss view controller and create other delegate tell follower list screen the new user
+    func didTapGetFollowers(for user: User) {
         print("did Tap github followers button")
-        // discussion: when did tap github follower button dismiss view controller and create other delegate tell follower list screen the new user
-        
+        guard user.followers != 0 else {
+            presentGithubFollowerAlertOnMainThread(alertTitle: "No Followers", bodyMessage: ErrorMessage.noFollower.rawValue, buttonTitle: "Try again.")
+            return
+        }
+        delegate?.didRequestFollowers(for: user.login)
+        dismissViewController()
     }
-    
-    
 }
+
+

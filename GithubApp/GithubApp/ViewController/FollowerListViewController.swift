@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FollowerListViewControllerDelegate: AnyObject {
+    func didRequestFollowers(for username: String)
+}
+
 class FollowerListViewController: UIViewController {
     
     /*
@@ -440,14 +444,14 @@ extension FollowerListViewController: UICollectionViewDelegate {
         }
     }
     
-    // MARK:- Did Select Item method of UICollectionView.
+    // MARK:- didSelectItemAt method of UICollectionView.
     /*
      Discussion: when user did selecte itme what happen?
      When user tapped on item whatever follower is,
      It will pass the follower's login on to the next screen
      And It's gonna transition next screen.
      */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView,  didSelectItemAt indexPath: IndexPath) {
         
         // MARK:- Determined Array
         /*
@@ -471,7 +475,13 @@ extension FollowerListViewController: UICollectionViewDelegate {
          */
         let follower = activeArray[indexPath.item]
         
+//        let userInfoVC = UserInfoViewController(username: follower.login)
         let userInfoVC = UserInfoViewController(username: follower.login)
+//        userInfoVC.username = follower.login
+        userInfoVC.delegate = self
+        // c.f : This code means 'FollowerListViewController' is listening to the 'UserInfoViewController'
+        //MARK: FollowerListViewControllerDelegate set - (to the communication pathway is set)
+//        userInfoVC.delegate = self
         
         /*
          Discussion: Why did I implement navigationController and present navigationController in this block ?
@@ -549,5 +559,24 @@ extension FollowerListViewController: UISearchBarDelegate {
          */
         
         updateData(on: followers)
+    }
+}
+
+/*
+ c.f: FollowerListViewController is Listener
+ FollowerListViweController dosen't know whos gonna tell and what to do
+ */
+extension FollowerListViewController: FollowerListViewControllerDelegate {
+
+    // c.f: This method happen when did select item.
+    func didRequestFollowers(for username: String) {
+        // get followers for that user
+        self.username = username
+        title = username
+        page = 1
+        followers.removeAll()
+        filteredFollowers.removeAll()
+        collectionView?.setContentOffset(.zero, animated: true)
+        getFollowers(username: username, page: page)
     }
 }

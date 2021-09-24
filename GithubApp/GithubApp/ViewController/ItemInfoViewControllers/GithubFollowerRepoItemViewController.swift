@@ -78,6 +78,7 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
             print(ErrorMessage.invalidUsername)
             return
         }
+        // MARK:- delegate setup
         delegate?.didTapGithubProfile(for: user)
     }
 }

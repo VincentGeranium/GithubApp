@@ -31,15 +31,19 @@ class GithubFollowerItemInfoViewController: UIViewController {
     
     var user: User?
     /*
-     Discussion: How to two classes communication pattern is hook up? and why the delegate is defined in here not GithubFollowerItemViewController and GithubFollowerRepoItemViewController?
+     1. Discussion: How to two classes communication pattern is hook up? and why the delegate is defined in here not GithubFollowerItemViewController and GithubFollowerRepoItemViewController?
      Because this is super class of GithubFollowerItemViewController and GithubFollowerRepoItemViewController
+     
+     2. Discussion: Why did I implement weak?
+     For prevent retain cycle
      */
-    var delegate: UserInfoViewControllerDelegate?
+    weak var delegate: UserInfoViewControllerDelegate?
     
     
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
+        
     }
     
     required init?(coder: NSCoder) {

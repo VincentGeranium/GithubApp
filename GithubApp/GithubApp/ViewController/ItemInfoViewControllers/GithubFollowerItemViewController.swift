@@ -26,7 +26,7 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems(with: users)
-        actionButtonTapped()
+//        actionButtonTapped() -> Bug 발견. 이것으로 인해 자동으로 버튼이 계속 실행되었다.
     }
     
     func getUserData(user: User?) throws -> User {
@@ -35,7 +35,7 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
             throw ErrorMessage.invalidData
         }
 
-        guard let userData = user else {
+        guard let userData = user else { 
             print(ErrorMessage.unwrapError)
             throw ErrorMessage.unwrapError
         }
@@ -52,10 +52,20 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
         actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
     }
     
+    /*
+     이 메소드는 커스텀 버튼의 액션 메소드 즉, 버튼을 눌렀을 때 실행되는 메소드를 오버라이드 한 것이다.
+     이 메소드 안에는 버튼이 눌렸을 경우에 실행되는 로직 및 코드를 넣어야 한다.
+     나는 이 안에 그런 로직과 코드를 넣고 viewDidLoad에 이 메소드를 다시 implement해서 계속해서 버튼이 자동으로 실행(눌리는)것 과 같은 버그를 발현시켰고 그것을 발견하여 bug를 debugging을 통해 고쳤다.
+     
+     */
     override func actionButtonTapped() {
-        let userData = try? getUserData(user: users)
-        guard let userData = userData else { return }
-        delegate?.didTapGitHubFollowers(for: userData)
+        if let userData = users {
+            delegate?.didTapGetFollowers(for: userData)
+        }
+        print("👺Action Button Tapped👺")
+//        delegate?.didTapGetFollowers(for: userData)
+        // MARK:- delegate setup
+//        delegate?.didTapGetFollowers(for: users)
     }
 }
 
