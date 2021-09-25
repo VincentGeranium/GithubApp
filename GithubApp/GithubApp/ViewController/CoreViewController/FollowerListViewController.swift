@@ -201,7 +201,9 @@ class FollowerListViewController: UIViewController {
     // MARK:- configure ViewController
     private func configureViewController() {
         view.backgroundColor = .systemBackground
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = true
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddButton))
+        navigationItem.rightBarButtonItem = addButton
     }
     
     // MARK:- configure NavigaitonController
@@ -371,6 +373,11 @@ class FollowerListViewController: UIViewController {
             }
         }
     }
+    
+    // MARK:- Implement Add Button action method.
+    @objc func didTapAddButton() {
+        
+    }
 }
 
 // MARK:- Extension for UICollectionViewDelegate
@@ -475,14 +482,12 @@ extension FollowerListViewController: UICollectionViewDelegate {
          */
         let follower = activeArray[indexPath.item]
         
-//        let userInfoVC = UserInfoViewController(username: follower.login)
+
         let userInfoVC = UserInfoViewController(username: follower.login)
-//        userInfoVC.username = follower.login
-        userInfoVC.delegate = self
-        // c.f : This code means 'FollowerListViewController' is listening to the 'UserInfoViewController'
         //MARK: FollowerListViewControllerDelegate set - (to the communication pathway is set)
-//        userInfoVC.delegate = self
-        
+        // c.f : This code means 'FollowerListViewController' is listening to the 'UserInfoViewController'
+        userInfoVC.delegate = self
+
         /*
          Discussion: Why did I implement navigationController and present navigationController in this block ?
          Because if view present by modal style, the view have to dismisses button like cancel, confirm, ect...
@@ -570,6 +575,7 @@ extension FollowerListViewController: FollowerListViewControllerDelegate {
 
     // c.f: This method happen when did select item.
     func didRequestFollowers(for username: String) {
+        print("👺When did Select Item this did Request Followers delegate method is occur👺")
         // get followers for that user
         self.username = username
         title = username

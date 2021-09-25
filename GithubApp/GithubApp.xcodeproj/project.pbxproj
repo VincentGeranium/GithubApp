@@ -179,6 +179,26 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		6AE5837C26FED999000E6102 /* CoreViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6AFBB45526C26482008174F7 /* FollowerListViewController.swift */,
+				6A736D4626AA8A6800549B90 /* SearchViewController.swift */,
+				6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */,
+				6A9F680926E703CE00FD8A05 /* UserInfoViewController.swift */,
+			);
+			path = CoreViewController;
+			sourceTree = "<group>";
+		};
+		6AE5837D26FED9A4000E6102 /* SubViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
+				6AF3016226E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift */,
+			);
+			path = SubViewController;
+			sourceTree = "<group>";
+		};
 		6AEEBE2226E4A1EF00065837 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,13 +270,9 @@
 		6AFA5EA226CB5B4700B2E5B3 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6AE5837D26FED9A4000E6102 /* SubViewController */,
+				6AE5837C26FED999000E6102 /* CoreViewController */,
 				6A7AA54126F1A45900A5A2BF /* ItemInfoViewControllers */,
-				6AFBB45526C26482008174F7 /* FollowerListViewController.swift */,
-				6A736D4626AA8A6800549B90 /* SearchViewController.swift */,
-				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
-				6A736D4826AA8A7B00549B90 /* FavoritesListViewController.swift */,
-				6A9F680926E703CE00FD8A05 /* UserInfoViewController.swift */,
-				6AF3016226E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
