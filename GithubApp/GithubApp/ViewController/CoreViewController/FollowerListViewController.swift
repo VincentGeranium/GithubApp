@@ -45,7 +45,6 @@ class FollowerListViewController: UIViewController {
     var isSearching = false
 
     
-    
     // MARK:- Discussion about UICollectionViewDiffableDataSource
     /*
      Discussion: UICollectionViewDiffableDataSource()

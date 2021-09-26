@@ -49,8 +49,21 @@ enum PersistenceManager {
         // c.f: 'object(forKey:)' is 'Any?' type. this mean's os doesn't know type. So, have to notice type that use by typecast.
         guard let favoriteData = defaults.object(forKey: Keys.favorites) as? Data else {
             // I will not gonna return Error here
-            
+            // Basically if this is nil, that mean noting save anything, kind like first time use.
+            // So, don't return error because no favorite ever in there, so I will gonna return empty array.
+            // c.f: very first time access this -> empty array of followers.
+            completion(.success([]))
+            return
         }
-        
+        // MARK:- do-catch, try for the decode -> Decode Follower array
+        do {
+            // create to JSONDecoder
+            let decoder = JSONDecoder()
+            // try decode it into array of follower accept from favoriteData
+            let favorites = try decoder.decode([Follower].self, from: favoriteData)
+            completion(.success(favorites))
+        } catch {
+            completion(.failure(.unableToFavorite))
+        }
     }
 }

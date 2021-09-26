@@ -36,6 +36,7 @@ enum ErrorMessage: String, Error {
     case unwrapError = "Unable to complete to unwrap"
     case unableToConvert = "Unable to complete your request which convert data."
     case noFollower = "This user has no followers."
+    case unableToFavorite = "There was an error favoriting this user. Please try again."
 }
 /*
  Discussion: About Result Type
