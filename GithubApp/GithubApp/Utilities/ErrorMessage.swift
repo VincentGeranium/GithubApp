@@ -26,10 +26,10 @@ import Foundation
 enum ErrorMessage: String, Error {
     case invalidURL = "The url attached to this user is invaild."
     case invalidUsername = "This username created an invalid request. Please try again"
-    case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. please try again."
     case invalidData = "The data received from the server was invalid. please try again."
     case invalidAssetImage = "The image from the Assets.xcassets was invalid."
+    case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case unableToOccurMethod = "Unable to occur this method. Please check the code."
     case unableToGetURL = "Unable to complete your request which get URL. Please check the code."
     case unableToGetResponseCode = "Unable to complete your request which get response code 200. Please check the code."

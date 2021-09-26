@@ -7,6 +7,12 @@
 
 import Foundation
 
+// this enum for the managing user default?
+enum PersistenceActionType {
+    case add
+    case remove
+}
+
 /*
  Discussion: Why did I implement Enumeration not a Structure?
  
@@ -26,6 +32,18 @@ enum PersistenceManager {
         static let favorites = "favorites"
     }
     
+    // not passing the array of follower just one individual follower
+    static func update(with favorite: Follower, actionType: PersistenceActionType, completed: @escaping (ErrorMessage?) -> Void) {
+        retrieveFavorites { result in
+            switch result {
+            case .success(let favorites):
+                break
+            case .failure(let error):
+                completed(error)
+            }
+        }
+    }
+    
     /*
      Discussion: About this function.
      This function doing for retrieve the array.
@@ -39,6 +57,7 @@ enum PersistenceManager {
      no problem.
      But saving custom object just like 'Follower' object. I have to do through this.
      */
+    // MARK:- retrieveFavorites function which for trieving the array.
     static func retrieveFavorites(completion: @escaping (Result<[Follower], ErrorMessage>) -> Void) {
         /*
          c.f: What is 'forKey'?
@@ -64,6 +83,28 @@ enum PersistenceManager {
             completion(.success(favorites))
         } catch {
             completion(.failure(.unableToFavorite))
+        }
+    }
+    
+    // MARK:- save(favorites:) function which is for the Save the Array.
+    /*
+     1. Discussion: Why dose this save function return 'ErrorMessage'?
+     Because when saving it that's mean encoding it.
+     Retrieving the data that's mean decoding it the data.
+     When saving follower array to the userDefault, need to encode the data.
+     That's why does this function is return 'ErrorMessage'
+     */
+    static func save(favorites: [Follower]) -> ErrorMessage? {
+        // doing encoding the data
+        do {
+            let encoder = JSONEncoder()
+            let favoritesEncoded = try encoder.encode(favorites)
+            // Saving the data in the used default
+            defaults.setValue(favoritesEncoded, forKey: Keys.favorites)
+            return nil
+            // handle the error
+        } catch {
+            return .unableToFavorite
         }
     }
 }
