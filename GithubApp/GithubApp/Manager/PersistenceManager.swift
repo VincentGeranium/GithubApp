@@ -37,7 +37,45 @@ enum PersistenceManager {
         retrieveFavorites { result in
             switch result {
             case .success(let favorites):
-                break
+                /*
+                 Discussion: Why did I implement this variable name of 'retrievedFavorites' code?
+                 'let favorites' is immutable array but I need to add and delete favorite user function.
+                 So, I create variable.
+                
+                 c.f : Abuot 'var retrievedFavorites'
+                 var retrievedFavorites is new array.
+                 */
+                var retrievedFavorites = favorites
+                
+                //MARK:- switch based on action type
+                switch actionType {
+                case .add:
+                    /// handle the retrievedFavorites
+                        /// 1. check the array -> the user is alread in the array or not
+                    guard !retrievedFavorites.contains(favorite) else {
+                        completed(.alreadInFavorites)
+                        return
+                    }
+                        /// 2. add user in the favorite.
+                    retrievedFavorites.append(favorite)
+                case .remove:
+                    /// handle the retrievedFavorites
+                        /// 1. Bascially need to go through the array in remove all instances where the these followers match
+                    /*
+                     c.f : About $0
+                     $0 is each items as iterating through.
+                     In here $0 is Follower objcet
+                     */
+                    /*
+                     Discussion: About 'removeAll(where:)'
+                     Removes all the elements that satisfy the given predicate.
+                     */
+                    retrievedFavorites.removeAll { $0.login == favorite.login }
+                }
+                
+                // update either add or remove and then save again
+                
+                completed(save(favorites: [favorite]))
             case .failure(let error):
                 completed(error)
             }

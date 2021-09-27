@@ -35,8 +35,9 @@ enum ErrorMessage: String, Error {
     case unableToGetResponseCode = "Unable to complete your request which get response code 200. Please check the code."
     case unwrapError = "Unable to complete to unwrap"
     case unableToConvert = "Unable to complete your request which convert data."
-    case noFollower = "This user has no followers."
     case unableToFavorite = "There was an error favoriting this user. Please try again."
+    case noFollower = "This user has no followers."
+    case alreadInFavorites = "You've already add this user in the favorite."
 }
 /*
  Discussion: About Result Type
