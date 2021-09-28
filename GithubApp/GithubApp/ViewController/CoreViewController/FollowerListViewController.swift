@@ -375,7 +375,41 @@ class FollowerListViewController: UIViewController {
     
     // MARK:- Implement Add Button action method.
     @objc func didTapAddButton() {
+        showLoadingView()
         
+        guard let username = username else {
+            print(ErrorMessage.unwrapError)
+            return
+        }
+        
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else {
+                print(ErrorMessage.unwrapError)
+                return
+            }
+            
+            self.dismissLoadingView()
+            
+            switch result {
+            case .success(let user):
+                let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                
+                PersistenceManager.update(with: favorite, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    
+                    guard let error = error else {
+                        self.presentGithubFollowerAlertOnMainThread(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
+                        return
+                    }
+                    
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Error: Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                    return
+                }
+                
+            case .failure(let error):
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Error: Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+            }
+        }
     }
 }
 

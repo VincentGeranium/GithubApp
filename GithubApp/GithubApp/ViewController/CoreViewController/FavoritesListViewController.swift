@@ -18,6 +18,15 @@ class FavoritesListViewController: UIViewController {
          So, Apple develop systemColor which is the color that use at dark mode.
          */
         view.backgroundColor = .systemBlue
+        
+        PersistenceManager.retrieveFavorites { result in
+            switch result {
+            case .success(let favorites):
+                print(favorites)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
 }

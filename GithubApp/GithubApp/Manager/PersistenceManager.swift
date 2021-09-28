@@ -75,7 +75,7 @@ enum PersistenceManager {
                 
                 // update either add or remove and then save again
                 
-                completed(save(favorites: [favorite]))
+                completed(save(favorites: retrievedFavorites))
             case .failure(let error):
                 completed(error)
             }
