@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         
         // Set up root view controller
-        window?.rootViewController = createTabBarController()
+        window?.rootViewController = GFTabBarController()
         
         configureNavigationBar()
         
@@ -72,32 +72,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
     
-    func createSearchNavigationController() -> UINavigationController {
-        let searchViewController = SearchViewController()
-        searchViewController.title = "search"
-        searchViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        
-        return UINavigationController(rootViewController: searchViewController)
-    }
-    
-    func createFavoritesNavigationController() -> UINavigationController {
-        let favoritesListViewController = FavoritesListViewController()
-        favoritesListViewController.title = "favorites"
-        favoritesListViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
-        
-        return UINavigationController(rootViewController: favoritesListViewController)
-    }
-    
-    func createTabBarController() -> UITabBarController {
-        let tabBarController = UITabBarController()
-        UITabBar.appearance().tintColor = .systemGreen
-        tabBarController.viewControllers = [
-            createSearchNavigationController(),
-            createFavoritesNavigationController()
-        ]
-        return tabBarController
-    }
-    
+
+    // MARK:- configureNavigationBar for the navigationBar tint color change
     /*
      Discussion: Why did I create 'configureNavigationBar' function?
      Because I will use any where to want use this code which is UINavigationBar tintColor to be change by 'systemGreen'.
