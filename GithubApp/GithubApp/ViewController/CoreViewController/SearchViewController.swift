@@ -17,6 +17,9 @@ class SearchViewController: UIViewController {
         return imageView
     }()
     
+    // MARK:- logoImageViewTopConstraint for downversion UI react.
+    var logoImageViewTopConstraint: NSLayoutConstraint?
+    
     // MARK:- usernameTextField
     /*
      Discussion: About initialization and customization.
@@ -192,13 +195,24 @@ class SearchViewController: UIViewController {
         // It will be refactoring
         // Stringly type -> (named: "some image name")
         // Stringly type is very dangerous
-        logoImageView.image = UIImage(named: "gh-logo")!
+        logoImageView.image = UIImage(named: "gh-logo")
+        
+        // MARK:- topConstraintsConstant for the down version UI react
+        // Create top padding for the top padding space imageView
+        let topConstraintsConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant)
+        
+        guard let logoImageViewTopConstraint = logoImageViewTopConstraint else {
+            print(ErrorMessage.unwrapError)
+            return
+        }
+        
+        logoImageViewTopConstraint.isActive = true
         
         // Create codes by all the constraint are promatically.
         // In the array, contain all the constraints codes and it's will activate whole code one time
         NSLayoutConstraint.activate([
-            // Create top padding for the top padding space imageView
-            logoImageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 80),
             // Positioning imageView to center X in it, and Standarded the self view's X position.
             logoImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             // Set the height and width of ImageView.
