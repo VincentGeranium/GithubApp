@@ -120,4 +120,31 @@ extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegat
         destVC.title = favorite.login
         navigationController?.pushViewController(destVC, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        // c.f: This code means if not editing style delete return, I don't need anything only need '.delete' style.
+        guard editingStyle == .delete else { return }
+        
+        /*
+         Discussion: Why did I implement favorite constant?
+         Because for the added delete style in the favorite arrray.
+         In other word the cell.
+         And need to update to array which data is delete.
+         For the userDefault and populate tableView, reload new data at the array.
+         */
+        let favorite = favorites[indexPath.row]
+        // remove from the array
+        favorites.remove(at: indexPath.row)
+        
+        // delete row from the tableView, and animation
+        // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
+        tableView.deleteRows(at: [indexPath], with: .left)
+        
+        // handle the persistence
+        PersistenceManager.update(with: favorite, actionType: .remove) { [weak self] error in
+            guard let self = self else { return }
+            guard let error = error else { return }
+            self.presentGithubFollowerAlertOnMainThread(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+        }
+    }
 }
