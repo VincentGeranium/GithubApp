@@ -402,12 +402,12 @@ class FollowerListViewController: UIViewController {
                         return
                     }
                     
-                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Error: Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
                     return
                 }
                 
             case .failure(let error):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Error: Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
             }
         }
     }
