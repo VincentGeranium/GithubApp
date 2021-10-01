@@ -9,7 +9,7 @@ import UIKit
 
 class GithubFollowerTitleLabel: UILabel {
 
-    // MARK:- Typical initializer
+    // MARK:- regular(typical) initializer
     /*
      c.f: About 'override init(frame: CGRect)'
      This initializer is 'typical init'
@@ -17,6 +17,7 @@ class GithubFollowerTitleLabel: UILabel {
     override init(frame: CGRect) {
         // c.f : passing the 'frame' which override init parameter to super init parameter that 'frame'
         super.init(frame: frame)
+        // added 'configure' at regular init.
         configure()
     }
     
@@ -49,12 +50,20 @@ class GithubFollowerTitleLabel: UILabel {
      */
     
     
-    init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
-        super.init(frame: .zero)
+    /*
+     Discussion: Convenience init
+     - Convenience init has to call one of designated init.
+     
+     Discussion: Designated init
+     - Designated init is one of the require once for the object.
+        - in this case is 'UILable' so, init with the frame is as know as designated init.
+     - Each object has different designated init
+     */
+    convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
+        self.init(frame:.zero)
         self.textAlignment = textAlignment
         // c.f: I wanna the font weight always bold so, fontSize is gonna passing from parameter but weight is hard coding.
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
-        configure()
     }
     
     // MARK:- configure function

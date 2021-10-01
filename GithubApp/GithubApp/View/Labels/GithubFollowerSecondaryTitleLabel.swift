@@ -23,10 +23,10 @@ class GithubFollowerSecondaryTitleLabel: UILabel {
      Discussion: Why did not passnated textAliment from initializer?
      Because text aliment always be the left.
      */
-    init(fontSize: CGFloat) {
-        super.init(frame: .zero)
+    convenience init(fontSize: CGFloat) {
+        self.init(frame: .zero)
         font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        configure()
+        
     }
     
     // MARK:- UILable configure method

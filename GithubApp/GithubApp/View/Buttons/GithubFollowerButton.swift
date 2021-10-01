@@ -55,14 +55,14 @@ class GithubFollowerButton: UIButton {
      -> The button color and title will be chaging and create when every time that initialized this class
      */
     
-    init(backgroundColor: UIColor, title: String, titleColor: UIColor) {
+    convenience init(backgroundColor: UIColor, title: String, titleColor: UIColor) {
         /*
          Discussion:
          -> Why did I gave 'zero' to 'init frame parameter?'
             -> First of all I got a frame already, And just pass through the 'frame'. (can find in the 'override init(frame: CGRect)')
             -> Second I will gonna be create button by custom autolayout, So I initialzed frame by 'zero'
          */
-        super.init(frame: .zero)
+        self.init(frame: .zero)
         
         /*
          Discussion:
@@ -74,7 +74,6 @@ class GithubFollowerButton: UIButton {
         
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
-        configure(titleColor: titleColor)
     }
     
     // MARK:- private function which is 'configure' that for using 'generic'

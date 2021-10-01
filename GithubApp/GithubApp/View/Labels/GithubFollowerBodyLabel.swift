@@ -18,8 +18,8 @@ class GithubFollowerBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(textAlignment: NSTextAlignment) {
-        super.init(frame: .zero)
+    convenience init(textAlignment: NSTextAlignment) {
+        self.init(frame: .zero)
         /*
          c.f: About difference custom init parameter between 'GithubFollowerTitleLabel' and 'GithubFollowerBodyLabel'
          The Body Label is gonna be dynaic type So, not gonna pass font size.
@@ -28,10 +28,7 @@ class GithubFollowerBodyLabel: UILabel {
          c.f: Purpose of passing 'textAlignment'
          Passing textAlignment for the configure text label.
          */
-
-        
         self.textAlignment = textAlignment
-        configure()
     }
     
     private func configure() {
