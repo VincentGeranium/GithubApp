@@ -195,7 +195,7 @@ class SearchViewController: UIViewController {
         // It will be refactoring
         // Stringly type -> (named: "some image name")
         // Stringly type is very dangerous
-        logoImageView.image = UIImage(named: "gh-logo")
+        logoImageView.image = ImageResource.logoImage
         
         // MARK:- topConstraintsConstant for the down version UI react
         // Create top padding for the top padding space imageView

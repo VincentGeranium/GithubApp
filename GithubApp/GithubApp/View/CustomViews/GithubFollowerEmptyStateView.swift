@@ -94,26 +94,17 @@ class GithubFollowerEmptyStateView: UIView {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(logoImageView)
         
-        #warning("Have to refactoring use by Error throw")
-        let backGroundImage = UIImage(named: ImageResource.assetEmptyImage.rawValue)
-        
-//        let backGroundImage = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
-//        print("\(backGroundImage == nil)")
-        logoImageView.image = backGroundImage
-       /*
-        logoImageView.image = backGroundImage
-        print("\(logoImageView.image == nil)")
-        
-        if logoImageView.image == nil {
-            logoImageView.image = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
-            return
+        if let backgroundImage = ImageResource.emptyStateLogo {
+            logoImageView.image = backgroundImage
+            print("🎯ImageResource.emptyStateLogo is not nil")
+        } else if let backgroundImage = ImageResource.errorSystemImage {
+            logoImageView.image = backgroundImage
+            print("🎯ImageResource.emptyStateLogo is nil")
+            print("🎯ImageResource.errorSystemImage is not nil")
+        } else {
+            print(ErrorMessage.unwrapError)
+            print("🎯both image resources is nil")
         }
-        
-        guard logoImageView.image != nil else {
-            logoImageView.image = UIImage(systemName: ImageResource.errorSystemImage.rawValue)
-            return
-        }
-        */
         
         NSLayoutConstraint.activate([
             // c.f: this code means 30% larager then the actual width of the screen
