@@ -11,18 +11,29 @@ import UIKit
  */
 class GithubFollowerAlertContainerView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
     }
-    */
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    /*
-     Have to refactoring the 'container view' which is in 'GithubFollowerAlertViewController'
-     
-     */
-
+    private func configure() {
+        backgroundColor = .systemBackground
+        // Breaking down cornerRadius and border
+        layer.cornerRadius = 16
+        /*
+         Discussion: Why did I give border width and color that white to container view
+         The reason is the iOS is two kind of display which is 'dark-mode' and 'light-mode'
+         When user set divice to light mode the border can't see because border color is 'white'
+         Otherwise user set the divice to the dark mode, user can see alert's border line.
+         Because it have two point of width and color is white.
+         */
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
+        translatesAutoresizingMaskIntoConstraints = false
+        
+    }
 }
