@@ -38,6 +38,7 @@ enum ErrorMessage: String, Error {
     case unableToFavorite = "There was an error favoriting this user. Please try again."
     case noFollower = "This user has no followers."
     case alreadInFavorites = "You've already add this user in the favorite."
+    case unableToGetImage = "Please check the code and Image resources."
 }
 /*
  Discussion: About Result Type

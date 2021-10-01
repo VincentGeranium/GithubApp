@@ -17,6 +17,8 @@ class SearchViewController: UIViewController {
         return imageView
     }()
     
+    
+    
     // MARK:- logoImageViewTopConstraint for downversion UI react.
     var logoImageViewTopConstraint: NSLayoutConstraint?
     
@@ -108,6 +110,13 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         /*
+         Discussion: Why did I implement 'usernameTextField.text = "" '?
+         Every time new view will appear I want to show blank textfield.
+         So, do this.
+         */
+        usernameTextField.text = ""
+        
+        /*
          c.f: About navigationBar hidden
          It can be hidden or non-hidden to specific viewcontroller.
          Another means is can be select to ViewControlller and pick it to hidden or non-hidden.
@@ -155,6 +164,10 @@ class SearchViewController: UIViewController {
             presentGithubFollowerAlertOnMainThread(alertTitle: "Empty Username", bodyMessage: "Please enter a username. We need to know who to look for 🤔", buttonTitle: "Ok")
             return
         }
+        
+        // resign keybord
+        usernameTextField.resignFirstResponder()
+        
         print("guard statement is pass : success to get username")
         /*
          Discussion: Passing data workflow for example to below code
@@ -167,14 +180,17 @@ class SearchViewController: UIViewController {
         // this code for passing data.
         
         // Create followerListVC object which is instance of FolllowerListViewController
-        let followerListVC = FollowerListViewController()
+        guard let username  = usernameTextField.text else {
+            return
+        }
+        
+        let followerListVC = FollowerListViewController(username: username)
         /*
          c.f: About access username variable which in the FollowerListViewController
          I created username variable in the FollowerListViewController.
          So, I can access to the username and can pass the data that user entered username who want to find
          */
-        followerListVC.username = usernameTextField.text
-        followerListVC.title = usernameTextField.text
+        
         /*
          Discussion: Push or pop into the stack.
          I already created UINavigationController.
@@ -186,15 +202,27 @@ class SearchViewController: UIViewController {
         
     }
     
+    func getLogoImage() throws -> UIImage {
+        guard let logoImage = ImageResource.logoImage else {
+            throw ErrorMessage.unableToGetImage
+        }
+        return logoImage
+    }
+    
+    func getErrorSystemImage() throws -> UIImage {
+        guard let errorSystemImage = ImageResource.errorSystemImage else {
+            throw ErrorMessage.init(rawValue: "시스템 이미지를 가져올 수 없습니다.") ?? ErrorMessage.unableToGetImage
+        }
+        return errorSystemImage
+    }
+    
     // MARK:- function 'configureLogoImageView'
     /// configure for logo image view
     private func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // It will be refactoring
-        // Stringly type -> (named: "some image name")
-        // Stringly type is very dangerous
+
+        #warning("do-catch 로 만들어 보기 - 로고 이미지가 nil일 경우와 아닐 경우")
         logoImageView.image = ImageResource.logoImage
         
         // MARK:- topConstraintsConstant for the down version UI react

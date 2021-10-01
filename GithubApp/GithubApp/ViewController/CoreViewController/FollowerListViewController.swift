@@ -83,6 +83,16 @@ class FollowerListViewController: UIViewController {
      */
     var snapShot: SnapShot?
     
+    init(username: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.username = username
+        self.title = username
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK:- viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

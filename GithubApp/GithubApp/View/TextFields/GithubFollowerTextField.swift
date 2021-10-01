@@ -112,5 +112,8 @@ class GithubFollowerTextField: UITextField {
         
         // Create placeholder and give text.
         placeholder = "Enter a username"
+        
+        // when user typed something showing 'x' button and if touch that button all literal is clear.
+        clearButtonMode = .whileEditing
     }
 }
