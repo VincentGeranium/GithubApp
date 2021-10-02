@@ -28,13 +28,10 @@ class FavoriteCell: UITableViewCell {
     // MARK:- Set method
     public func set(favorite: Follower) {
         usernameLabel.text = favorite.login
-        
-        avatarImageView.dowloadImage(from: favorite.avatarUrl) { result in
-            switch result {
-            case .success(let success):
-                print("get image: \(success)")
-            case .failure(let errorMessage):
-                print("failed to get image: \(errorMessage)")
+        NetworkManager.shared.downloadImage(from: favorite.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.avatarImageView.image = image
             }
         }
     }

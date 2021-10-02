@@ -57,6 +57,10 @@ class GithubFollowerAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    
+    //MARK:- dowloadImage가 이곳에 위치한 이유와 이동한 이유.
+    /*
+    // c.f: 이 method는 GithubFollowerAvatarImageView -> NetworkManager로 이동하면서 refactoring 했다.
     //MARK:- dowloadImage가 이곳에 위치한 이유
     /*
      Discussion: 'dowloadImage' 이 NetworkManager가 아닌 GithubFollowerAvatarImageView에 위치한 이유
@@ -191,4 +195,5 @@ class GithubFollowerAvatarImageView: UIImageView {
         // kicks off network call
         task.resume()
     }
+    */
 }

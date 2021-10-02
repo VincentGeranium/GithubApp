@@ -10,8 +10,8 @@ import UIKit
 protocol FollowerListViewControllerDelegate: AnyObject {
     func didRequestFollowers(for username: String)
 }
-
-class FollowerListViewController: UIViewController {
+// cf: GFDataLoadingViewController를 상속 받음으로서 모든 GFDataLoadingViewControllerd 내에 정의 된 모든 함수를 FollowerListViewController 사용할 수 있다.
+class FollowerListViewController: GFDataLoadingViewController {
     
     /*
      Discussion: property and data

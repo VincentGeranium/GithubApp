@@ -41,6 +41,7 @@
 		6AE95ED426D11FFA00885233 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE95ED326D11FFA00885233 /* ErrorMessage.swift */; };
 		6AEEBE2926E4A2D800065837 /* GithubFollowerEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEBE2826E4A2D800065837 /* GithubFollowerEmptyStateView.swift */; };
 		6AEF15CA26C660F700B49916 /* GithubFollowerAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */; };
+		6AEFFF4A270819C6004E4E12 /* GFDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFFF49270819C6004E4E12 /* GFDataLoadingViewController.swift */; };
 		6AF3016126E9DD2900AF4A97 /* GithubFollowerSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF3016026E9DD2900AF4A97 /* GithubFollowerSecondaryTitleLabel.swift */; };
 		6AF3016326E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF3016226E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift */; };
 		6AF82A912706B5CB003745F3 /* ImageResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF82A902706B5CB003745F3 /* ImageResources.swift */; };
@@ -88,6 +89,7 @@
 		6AE95ED326D11FFA00885233 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		6AEEBE2826E4A2D800065837 /* GithubFollowerEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerEmptyStateView.swift; sourceTree = "<group>"; };
 		6AEF15C926C660F700B49916 /* GithubFollowerAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerAlertContainerView.swift; sourceTree = "<group>"; };
+		6AEFFF49270819C6004E4E12 /* GFDataLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFDataLoadingViewController.swift; sourceTree = "<group>"; };
 		6AF3016026E9DD2900AF4A97 /* GithubFollowerSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 		6AF3016226E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubUserInfoHeaderViewController.swift; sourceTree = "<group>"; };
 		6AF82A902706B5CB003745F3 /* ImageResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResources.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			children = (
 				6A112B0126C639FD00F153E9 /* GithubFollowerAlertViewController.swift */,
 				6AF3016226E9DD6300AF4A97 /* GithubUserInfoHeaderViewController.swift */,
+				6AEFFF49270819C6004E4E12 /* GFDataLoadingViewController.swift */,
 			);
 			path = SubViewController;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				6A736D4726AA8A6800549B90 /* SearchViewController.swift in Sources */,
 				6AA80AE526B1377A0002FCD4 /* GithubFollowerButton.swift in Sources */,
 				6AE83F7A26D62B9500A91755 /* Section.swift in Sources */,
+				6AEFFF4A270819C6004E4E12 /* GFDataLoadingViewController.swift in Sources */,
 				6A59A6AF26D49F7D0038C8D6 /* GithubFollowerAvatarImageView.swift in Sources */,
 				6A9F680A26E703CE00FD8A05 /* UserInfoViewController.swift in Sources */,
 				6ABCFD9B2705845400A8498C /* GFTabBarController.swift in Sources */,

@@ -257,5 +257,87 @@ class NetworkManager {
         }
         task.resume()
     }
+    
+    // MARK:- download Image function
+    /*
+     1. Discussion: why escaping result which 'UIImage' is optional?
+     Because users are couldn't set their own image, so it can be nil.
+     This is the reason of the implement that UIImage is optional.
+     
+     2. Discussion: why @escaping is not using 'Result' type?
+     Because If user dosen't have image which mean return nil, I will showing the place holder image.
+     So, it's not necessary behavior which is occur Error.
+     When using 'Result' type must to return two kind of type 1. success 2. failure
+     But in this case I don't need to occur 'Error' or 'failure' case
+     Just showing placeholder image is more directly to user.
+     */
+    func downloadImage(from url: String, completed: @escaping (UIImage?) -> Void) {
+        // create cacheKey
+        /*
+         c.f: explain below code that 'cacheKey'
+         
+         Which means initialize NSString from the Swift String. It's kind of convert it. and String is passing urlString
+         */
+        let cacheKey = NSString(string: url)
+        
+        /*
+         Discussion: About this code means.
+         
+         Checking the image in the cache? if not in the cache, it's going to call the network call.
+         If image is in the cache is going to return the image and not make the network call.
+         */
+        // Purpose of check the cache is image in the cache? or not
+        // c.f: Every URL that is tasked image that I download is gonna unique key there
+        // c.f: passing 'urlString' is how identify each object in the cache.
+        if let image = cache.object(forKey: cacheKey) {
+            // complete and pass back the image
+            completed(image)
+            return
+        }
+        
+        // make sure the url is good
+        /*
+         Discussion: why implement 'completed(nil)'
+         
+         Because when I created this function I impleted @escaping paramter which type is '(UIImage?) -> Void'
+         So, It can't just return. have to return UIImage or nil
+         That's the reason why did I implement 'completed(nil)'.
+         */
+        guard let url = URL(string: url) else {
+            completed(nil)
+            return
+        }
+        
+        // network call
+        /*
+         1. Discussion: Why dose need capture list([weak self]) in the this function?
+         
+         Because access own cache. when set the objcet into the cache.
+         */
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, urlResponse, error in
+            guard let self = self,
+                  error == nil,
+                  let urlResponse = urlResponse as? HTTPURLResponse, urlResponse.statusCode == 200,
+                  let data = data,
+                  let image = UIImage(data: data) else {
+                completed(nil)
+                return
+            }
+            //MARK:- set the image into the cache
+            // In other word capture the image.
+            /*
+             Discussion: Why did I create cache?
+             The Idea is a download image just once, So I creat cache and set the image into the cache.
+             If the image in the cache, It's not to download image, Just get cache object.
+             But If the image is not in cache, It must download image.
+             The donwload image is have cost to OS.
+             The performance is lower, If evertime download image.
+             */
+            // set the object into the cache
+            self.cache.setObject(image, forKey: cacheKey)
+            completed(image)
+        }
+        task.resume()
+    }
 }
 

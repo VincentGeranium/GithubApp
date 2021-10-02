@@ -39,17 +39,14 @@ class FollowerCell: UICollectionViewCell {
     
     func set(follower: Follower) {
         usernameLabel.text = follower.login
-        
-        // c.f: avatarImageView.dowloadImage is gonna be kicking the imageView and run all the 'task' computed property from GithubFollowerAvatarImageView's 
-        avatarImageView.dowloadImage(from: follower.avatarUrl) { result in
-            switch result {
-            case .success(let success):
-                print(success)
-            case .failure(let errorMessage):
-                print(errorMessage)
+        NetworkManager.shared.downloadImage(from: follower.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                // if image is nil it will showing placeholder image so not gonna unwrapping
+                // also avatarImageView.image is optional so not need necessary behavior which unwrapping.
+                self.avatarImageView.image = image
             }
         }
-        
     }
     
     private func configure() {

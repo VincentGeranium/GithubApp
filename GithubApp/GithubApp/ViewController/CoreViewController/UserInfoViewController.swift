@@ -22,7 +22,14 @@ import UIKit
  So, in here need just transition working that point is have to do minimum setup here.
  */
 
-class UserInfoViewController: UIViewController {
+/*
+ UserInfoViewController가 GFDataLoadingViewController를 상속 받는 이유는
+ GFDataLoadingViewController를 상속 받는 FavoritesListViewController과 FollowerListViewController을
+ 스택뷰로 묶어 사용하기 때문에 UserInfoViewController에서도 GFDataLoadingViewController를 상속받아야 한다.
+ 심지어 UserInfoViewController에서는 GFDataLoadingViewController의 함수를 사용하지 않을지라도 말이다.
+ */
+
+class UserInfoViewController: GFDataLoadingViewController {
     
     // Container view which is contain by child that GithubUserInfoHeaderViewController
     let headerView = UIView()

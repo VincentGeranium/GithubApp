@@ -38,19 +38,9 @@ class GithubUserInfoHeaderViewController: UIViewController {
     
     // MARK:- cofigure objects
     func configureUIElements() {
-        guard let user = user else {
-            return
-        }
+        guard let user = user else { return }
         
-        avatarImageView.dowloadImage(from: user.avatarUrl) { result in
-            switch result {
-            case .success(_):
-                print("success")
-            case .failure(let error):
-                print(error)
-            }
-        }
-        
+        downloadAvatarImage(user: user)
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? "N/A"
         locationLabel.text = user.location ?? "No Location"
@@ -59,6 +49,13 @@ class GithubUserInfoHeaderViewController: UIViewController {
         
         locationImageView.image = UIImage(systemName: SFSymbols.locationPinImage)
         locationImageView.tintColor = .secondaryLabel
+    }
+    
+    func downloadAvatarImage(user: User) {
+        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async { self.avatarImageView.image = image }
+        }
     }
     
     // MARK:- to do addSubview all the objects
