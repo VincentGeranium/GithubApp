@@ -114,14 +114,8 @@
 		6A1D9FC826D92FDA00D36CDE /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				6AB2FC8A27095F1900F22DCA /* SubUtilities */,
 				6A9F680826E7037B00FD8A05 /* Extensions */,
-				6A1D9FCB26D9328B00D36CDE /* Typealias.swift */,
-				6AF82A902706B5CB003745F3 /* ImageResources.swift */,
-				6AE95ED326D11FFA00885233 /* ErrorMessage.swift */,
-				6A1D9FC926D930F200D36CDE /* UIHelper.swift */,
-				6AC135F126EC50F300C53308 /* SFSymbols.swift */,
-				6AC8CC472705A6D30007614B /* ScreenSize.swift */,
-				6AC8CC492705A8E30007614B /* DeviceTypes.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -193,6 +187,20 @@
 				6A4D996F26F2F2B6001ECF80 /* String+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6AB2FC8A27095F1900F22DCA /* SubUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				6A1D9FCB26D9328B00D36CDE /* Typealias.swift */,
+				6AF82A902706B5CB003745F3 /* ImageResources.swift */,
+				6AE95ED326D11FFA00885233 /* ErrorMessage.swift */,
+				6A1D9FC926D930F200D36CDE /* UIHelper.swift */,
+				6AC135F126EC50F300C53308 /* SFSymbols.swift */,
+				6AC8CC472705A6D30007614B /* ScreenSize.swift */,
+				6AC8CC492705A8E30007614B /* DeviceTypes.swift */,
+			);
+			path = SubUtilities;
 			sourceTree = "<group>";
 		};
 		6ABCFD992705831C00A8498C /* TabBarController */ = {

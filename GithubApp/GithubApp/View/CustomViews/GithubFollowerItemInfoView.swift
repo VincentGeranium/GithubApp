@@ -94,16 +94,16 @@ class GithubFollowerItemInfoView: UIView {
     func set(itemInfoType: ItemInfoType, withCount count: Int) {
         switch itemInfoType {
         case .repos:
-            symbolImageView.image = UIImage(systemName: SFSymbols.reposImage)
+            symbolImageView.image = SFSymbols.reposImage
             titleLabel.text = "Public Repos"
         case .gists:
-            symbolImageView.image = UIImage(systemName: SFSymbols.gistsImage)
+            symbolImageView.image = SFSymbols.gistsImage
             titleLabel.text = "Public Gists"
         case .followers:
-            symbolImageView.image = UIImage(systemName: SFSymbols.followersImage)
+            symbolImageView.image = SFSymbols.followersImage
             titleLabel.text = "Followers"
         case .following:
-            symbolImageView.image = UIImage(systemName: SFSymbols.followingImage)
+            symbolImageView.image = SFSymbols.followingImage
             titleLabel.text = "Following"
         }
         countLabel.text = String(count)

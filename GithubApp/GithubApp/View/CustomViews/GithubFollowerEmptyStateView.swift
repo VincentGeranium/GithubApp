@@ -97,8 +97,8 @@ class GithubFollowerEmptyStateView: UIView {
         if let backgroundImage = ImageResource.emptyStateLogo {
             logoImageView.image = backgroundImage
             print("🎯ImageResource.emptyStateLogo is not nil")
-        } else if let backgroundImage = ImageResource.errorSystemImage {
-            logoImageView.image = backgroundImage
+        } else if let errorSystemImage = ImageResource.errorSystemImage {
+            logoImageView.image = errorSystemImage
             print("🎯ImageResource.emptyStateLogo is nil")
             print("🎯ImageResource.errorSystemImage is not nil")
         } else {

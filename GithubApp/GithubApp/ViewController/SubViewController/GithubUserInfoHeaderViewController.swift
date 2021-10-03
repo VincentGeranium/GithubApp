@@ -47,7 +47,7 @@ class GithubUserInfoHeaderViewController: UIViewController {
         bioLable.text = user.bio ?? "No bio available"
         bioLable.numberOfLines = 3
         
-        locationImageView.image = UIImage(systemName: SFSymbols.locationPinImage)
+        locationImageView.image = SFSymbols.locationPinImage
         locationImageView.tintColor = .secondaryLabel
     }
     

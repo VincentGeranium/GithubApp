@@ -13,7 +13,7 @@ class GithubFollowerAvatarImageView: UIImageView {
     let cache = NetworkManager.shared.cache
     
     // Placeholder Image
-    let placehoderImage = UIImage(named: "avatar-placeholder")
+    let placehoderImage = ImageResource.placeholderImage
     
     // c.f: In this custom image view, I don't create custom init but create override init with the frame
     override init(frame: CGRect) {
