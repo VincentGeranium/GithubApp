@@ -17,10 +17,7 @@ class GFDataLoadingViewController: UIViewController {
         // initilize uiview
         // c.f: 'view.bounds' means fill up the whole screen.
         containerView = UIView(frame: view.bounds)
-        
-        guard let containerView = containerView else {
-            return
-        }
+     
         
         // add containerView in the viewController's view
         view.addSubview(containerView)
@@ -39,7 +36,7 @@ class GFDataLoadingViewController: UIViewController {
          */
         // MARK:- Create containerView's alpha and animation
         containerView.alpha = 0
-        UIView.animate(withDuration: 5) { containerView.alpha = 0.8 }
+        UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
         
         // MARK:- Configure the indicator
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
