@@ -227,7 +227,7 @@ class SearchViewController: UIViewController {
         
         // MARK:- topConstraintsConstant for the down version UI react
         // Create top padding for the top padding space imageView
-        let topConstraintsConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        let topConstraintsConstant: CGFloat = DeviceTypes.isiPhoneSE2 || DeviceTypes.isiPhone8Zoomed ? 20 : 80
         
         logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant)
         

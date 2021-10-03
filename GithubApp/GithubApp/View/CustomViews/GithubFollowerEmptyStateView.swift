@@ -70,13 +70,18 @@ class GithubFollowerEmptyStateView: UIView {
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
         
+        // MARK:- UI Code devide with DevideTypes.
+        // c.f: This code means if DeviceTypes.isiPhoneSE or isiPhone8Zoomed is true, centerYConstant is -50 otherwise false -150.
+        let centerYConstant: CGFloat = DeviceTypes.isiPhoneSE2 || DeviceTypes.isiPhone8Zoomed ? -80 : -150
+        let messageLabelCenterYConstraint = messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: centerYConstant)
+        messageLabelCenterYConstraint.isActive = true
+        
         
         NSLayoutConstraint.activate([
             /* Discussion: About constant point which Center Y anchor.
              Give -150 point to constant which center Y anchor that means moving it up 150 point from the center.
              In other words center vertically and then shift up a little bit
              */
-            messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -150),
             messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
             /*
@@ -105,13 +110,17 @@ class GithubFollowerEmptyStateView: UIView {
             print(ErrorMessage.unwrapError)
             print("🎯both image resources is nil")
         }
+        // MARK:- UI Code devide with DevideTypes.
+        // c.f: This code means if DeviceTypes.isiPhoneSE or isiPhone8Zoomed is true, centerYConstant is -50 otherwise false -150.
+        let bottomConstant: CGFloat = DeviceTypes.isiPhoneSE2 || DeviceTypes.isiPhone8Zoomed ? 80 : 50
+        let logoImageViewBottomConstraint = logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: bottomConstant)
+        logoImageViewBottomConstraint.isActive = true
         
         NSLayoutConstraint.activate([
             // c.f: this code means 30% larager then the actual width of the screen
             logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
             logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 240),
-            logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 50),
         ])
         
     }

@@ -15,6 +15,7 @@ enum DeviceTypes {
     
     // MARK:- The category which is separated by device type
     static let isiPhoneSE = idiom == .phone && ScreenSize.maxLength == 568.0
+    static let isiPhoneSE2 = idiom == .phone && ScreenSize.maxLength == 667.0
     static let isiPhone8Standard = idiom == .phone && ScreenSize.maxLength == 667.0 && nativeScale == scale
     static let isiPhone8Zoomed = idiom == .phone && ScreenSize.maxLength == 667.0 && nativeScale > scale
     static let isiPhone8PlusStandard = idiom == .phone && ScreenSize.maxLength == 736.0
