@@ -52,13 +52,13 @@ class GithubFollowerEmptyStateView: UIView {
          1. label that show message for user.
          2. imageView that decorate the view.
          */
-        setupMessageLabel()
-        setupLogoImageView()
+        configureMessageLabel()
+        configureLogoImageView()
         
     }
     
-    // MARK:- setupMessageLabel function
-    private func setupMessageLabel() {
+    // MARK:- Configure MessageLabel function
+    private func configureMessageLabel() {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(messageLabel)
         /*
@@ -94,8 +94,8 @@ class GithubFollowerEmptyStateView: UIView {
 
         ])
     }
-    // MARK:- setupLogoImageView function
-    private func setupLogoImageView() -> Void {
+    // MARK:- Configure LogoImageView function
+    private func configureLogoImageView() -> Void {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(logoImageView)
         

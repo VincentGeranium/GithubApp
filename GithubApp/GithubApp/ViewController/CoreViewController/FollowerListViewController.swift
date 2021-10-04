@@ -37,6 +37,9 @@ class FollowerListViewController: GFDataLoadingViewController {
     var hasMoreFollower: Bool = true
     var searchBarHidden: Bool = true
     
+    // c.f: 로딩중인지 아닌지를 확인하기 위한 flag
+    var isLoadingMoreFollowers: Bool = false
+    
     /*
      Discussion: What's the purpose of this property?
      For the sorted select item, between before and after searching follower
@@ -142,6 +145,7 @@ class FollowerListViewController: GFDataLoadingViewController {
          And then Network Manager will doing and once network call done the completion block will happen
          */
         showLoadingView()
+        isLoadingMoreFollowers = true
         
         NetworkManager.shared.getFollowers(for: username, perpage: 100, page: page) {[weak self] result in
             /*
@@ -204,6 +208,8 @@ class FollowerListViewController: GFDataLoadingViewController {
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
+            // done ->  network call is done.
+            self.isLoadingMoreFollowers = false
         }
     }
     
@@ -479,21 +485,13 @@ extension FollowerListViewController: UICollectionViewDelegate {
          */
         
         if offSet > contentHeight - height {
-            // check user has more follower?
-            if hasMoreFollower == false {
-                print("🙌 No the user has not more follower")
-                return
-            } else if hasMoreFollower == true {
-                // If user scroll the view, page have to increase
-                guard let username = username else {
-                    return
-                }
-                page += 1
-                getFollowers(username: username, page: page)
-            }
+            guard hasMoreFollower, !isLoadingMoreFollowers else { return }
+            guard let username = username else { return }
+            page += 1
+            getFollowers(username: username, page: page)
         }
     }
-    
+
     // MARK:- didSelectItemAt method of UICollectionView.
     /*
      Discussion: when user did selecte itme what happen?
@@ -571,20 +569,26 @@ extension FollowerListViewController: UISearchResultsUpdating {
         // check the filter is not empty
         guard !filter.isEmpty else {
             print("filter is empty check this statement")
+            filteredFollowers.removeAll()
+            updateData(on: followers)
+            isSearching = false
             return
         }
         
-        filteredFollowers = followers.filter({ followers in
-            followers.login.lowercased().contains(filter.lowercased())
-        })
+
         /*
-         Discussion: essentially this is doing?
+         Discussion: essentially why is doing this?
          When every time change the search result from search bar
          It's notice that somthing chage.
+         like flag.
          */
         print("this method is success to occur")
         
         isSearching = true
+        
+        filteredFollowers = followers.filter({ followers in
+            followers.login.lowercased().contains(filter.lowercased())
+        })
         
         // c.f: updateData get pass the flexible parameter data which is filtered folllower or normal follower.
         updateData(on: filteredFollowers)
@@ -625,7 +629,12 @@ extension FollowerListViewController: FollowerListViewControllerDelegate {
         page = 1
         followers.removeAll()
         filteredFollowers.removeAll()
-        collectionView?.setContentOffset(.zero, animated: true)
+        /*
+         Discussion: About scrollToItem.
+         특정한 색션과 아이템을 지정한 스크롤 포지션으로 옮겨 보여주는 것
+         이 경우에는 0번째 섹션의 0번째 아이템을 top 부분으로 옮겨 보여준다.
+         */
+        collectionView?.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         getFollowers(username: username, page: page)
     }
 }
