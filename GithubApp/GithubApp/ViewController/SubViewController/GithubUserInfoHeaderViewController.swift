@@ -133,7 +133,7 @@ class GithubUserInfoHeaderViewController: UIViewController {
             bioLable.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
             bioLable.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             bioLable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bioLable.heightAnchor.constraint(equalToConstant: 60),
+            bioLable.heightAnchor.constraint(equalToConstant: 90),
         ])
         
     }

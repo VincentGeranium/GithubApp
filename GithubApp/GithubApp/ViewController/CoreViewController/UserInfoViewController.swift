@@ -5,14 +5,8 @@
 //  Created by 김광준 on 2021/09/07.
 //
 
-/*
- c.f: Difined Protocol which is UserInfoViewControllerDelegate
- protocol is one of kind communication pattern.
- */
-
 protocol UserInfoViewControllerDelegate: AnyObject {
-    func didTapGithubProfile(for user: User)
-    func didTapGetFollowers(for user: User)
+    func didRequestFollowers(for username: String)
 }
 
 import UIKit
@@ -43,7 +37,7 @@ class UserInfoViewController: GFDataLoadingViewController {
     
     // MARK:- set the delegate which is FollowerListViewContollerDelegate
     // initilialized user info view controller which set the delegate
-    weak var delegate: FollowerListViewControllerDelegate?
+    weak var delegate: UserInfoViewControllerDelegate?
     
     lazy var doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                      target: self,
@@ -100,22 +94,33 @@ class UserInfoViewController: GFDataLoadingViewController {
     }
     
     func configureUIElements(with user: User) {
+        
+        /*
+         두 가지 방법이 있다
+         1. followerItemVC 처럼 따로 인스턴스를 만들어 델리게이트를 주어 코드를 짜는 방법
+         2. self.add(childVC: GithubFollowerRepoItemViewController(user: user, delegate: self), to: self.itemViewOne) 처럼
+         한줄에 모든 것을 다 짜는 방법
+         
+         나는 1을 선호한다 리팩토링이 필요할 경우 한 줄로 코드를 만들엇을 경우 너무 강한 응집력을 가지고 있어 분해하여 고치기 힘들 것 같기 때문이다.
+         아래와 같이 코드를 나누어 짠 이유는 두 가지 방법이 있다는 것을 알고싶어서 두 가지 방법이지만 똑같은 동작을 하는 코드를 짜본것이다.
+         */
+        
         let followerItemVC = GithubFollowerItemViewController(user: user)
         // c.f: communication pattern is hook up
         // MARK:- GithubFollowerItemViewController Delegate setup
         followerItemVC.delegate = self
         
-        let repoItemVC = GithubFollowerRepoItemViewController(user: user)
         // c.f: communication pattern is hook up
         // MARK:- GithubFollowerRepoItemViewController Delegate setup
-        repoItemVC.delegate = self
 
         /*
          Discussion: What to do in this block?
          Pluged In view controller in the container view
          */
         self.add(childVC: GithubUserInfoHeaderViewController(user: user), to: self.headerView)
-        self.add(childVC: repoItemVC, to: self.itemViewOne)
+        // c.f: communication pattern is hook up
+        // MARK:- GithubFollowerRepoItemViewController Delegate setup and addChildVC, make one line code.
+        self.add(childVC: GithubFollowerRepoItemViewController(user: user, delegate: self), to: self.itemViewOne)
         self.add(childVC: followerItemVC, to: self.itemViewTwo)
         self.dateLabel.text = "Github since \(user.createdAt.convertDisplayFormat())"
     }
@@ -150,7 +155,7 @@ class UserInfoViewController: GFDataLoadingViewController {
         // c.f: give to vertically UI layout contraints
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
@@ -159,7 +164,7 @@ class UserInfoViewController: GFDataLoadingViewController {
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18),
+            dateLabel.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     /*
@@ -181,16 +186,14 @@ class UserInfoViewController: GFDataLoadingViewController {
         }
     }
 }
-
 /*
  Discussion: About Delegate
  The delegate is wait to act want it to something happen.
  In this case did tap github profile button or did tap github followers button.
  So, need to set up communication path way, and that way is defined delegate.
  */
-
 // c.f: Conform to the delegate here
-extension UserInfoViewController: UserInfoViewControllerDelegate {
+extension UserInfoViewController: GFRepoItemViewControllerDelegate {
     // MARK:- Did tap Github Profile Button
     // discussion: when did tap github profile button show safari view controller
     func didTapGithubProfile(for user: User) {
@@ -201,6 +204,10 @@ extension UserInfoViewController: UserInfoViewControllerDelegate {
         presentSafariViewController(url: url)
     }
     
+}
+
+// c.f: Conform to the delegate here
+extension UserInfoViewController: GFItemViewControllerDelegate {
     // discussion: when did tap github follower button dismiss view controller and create other delegate tell follower list screen the new user
     func didTapGetFollowers(for user: User) {
         print("did Tap github followers button")
@@ -212,5 +219,3 @@ extension UserInfoViewController: UserInfoViewControllerDelegate {
         dismissViewController()
     }
 }
-
-

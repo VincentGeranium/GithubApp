@@ -7,9 +7,7 @@
 
 import UIKit
 
-protocol FollowerListViewControllerDelegate: AnyObject {
-    func didRequestFollowers(for username: String)
-}
+
 // cf: GFDataLoadingViewController를 상속 받음으로서 모든 GFDataLoadingViewControllerd 내에 정의 된 모든 함수를 FollowerListViewController 사용할 수 있다.
 class FollowerListViewController: GFDataLoadingViewController {
     
@@ -618,7 +616,7 @@ extension FollowerListViewController: UISearchBarDelegate {
  c.f: FollowerListViewController is Listener
  FollowerListViweController dosen't know whos gonna tell and what to do
  */
-extension FollowerListViewController: FollowerListViewControllerDelegate {
+extension FollowerListViewController: UserInfoViewControllerDelegate {
 
     // c.f: This method happen when did select item.
     func didRequestFollowers(for username: String) {

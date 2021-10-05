@@ -8,6 +8,15 @@
 import UIKit
 
 /*
+ c.f: Difined Protocol.
+ protocol is one of kind communication pattern.
+ */
+protocol ItemInfoVCDelegate: AnyObject {
+    func didTapGithubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
+}
+
+/*
  Discussion: About this class
  GithubFollowerItemInfoViewController is super class
  GithubFollowerItemInfoViewController is very generic because whole share code amongs all the difference types of viewControllers
@@ -37,7 +46,6 @@ class GithubFollowerItemInfoViewController: UIViewController {
      2. Discussion: Why did I implement weak?
      For prevent retain cycle
      */
-    weak var delegate: UserInfoViewControllerDelegate?
     
     
     init(user: User) {
@@ -112,9 +120,12 @@ class GithubFollowerItemInfoViewController: UIViewController {
     // MARK:- Setup Layout UI
     private func layoutUI() {
         let padding: CGFloat = 20
-        
+        /*
+        This code will chage by below code
         view.addSubview(stackView)
         view.addSubview(actionButton)
+        */
+        view.addSubviews(stackView, actionButton)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         

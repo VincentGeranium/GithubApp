@@ -35,6 +35,13 @@ class GithubFollowerBodyLabel: UILabel {
         textColor = UIColor.secondaryLabel
         
         /*
+         Dicsussion: About adjustsFontForContentSizeCategory
+         If adjustsFontForContentSizeCategory is true, text size will dynamic.
+         So, It can be change by user text setting.
+         */
+        adjustsFontForContentSizeCategory = true
+        
+        /*
          Discussion: Why did I create 'preferredFont'?
          Because I want this body label is gonna be dynamic.
          When I assign the 'preferredFont(forTextStyle: .body)' to the body label font, It's going to be the size and will see Apple semantic UI.

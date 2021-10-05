@@ -8,10 +8,19 @@
 import Foundation
 import UIKit
 
+/*
+ 슈퍼 클래스의 프로토콜을 받을 경우에는 굳이 알 필요 없는 알아서는 안되는 delegate?.didTapGithubProfile(for:)
+ 도 알게 된다 그러므로 각각의 클래스애 각각의 프로토콜을 만들고 델리게이트 패턴을 만들어야 한다.
+ */
+
+protocol GFItemViewControllerDelegate: AnyObject {
+    func didTapGetFollowers(for user: User)
+}
+
 class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
+    weak var delegate: GFItemViewControllerDelegate?
+    
     var users: User?
-    
-    
     
     override init(user: User) {
         super.init(user: user)
@@ -61,11 +70,9 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
     override func actionButtonTapped() {
         if let userData = users {
             delegate?.didTapGetFollowers(for: userData)
+            
         }
         print("👺Action Button Tapped👺")
-//        delegate?.didTapGetFollowers(for: userData)
-        // MARK:- delegate setup
-//        delegate?.didTapGetFollowers(for: users)
     }
 }
 
