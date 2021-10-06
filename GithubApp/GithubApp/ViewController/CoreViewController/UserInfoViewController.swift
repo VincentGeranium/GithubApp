@@ -26,6 +26,14 @@ import UIKit
 class UserInfoViewController: GFDataLoadingViewController {
     
     // Container view which is contain by child that GithubUserInfoHeaderViewController
+    let scrollView: UIScrollView = UIScrollView()
+    /*
+     Discussion: About ContentView
+     아래의 모든 콘텐츠들 headerView, itemViewOne, itemViewTwo, dateLabel 등 모든것들을
+     곧 바로 스크롤 뷰 안에 넣지 않고 콘텐츠 뷰 안에 넣은 뒤 스크롤 뷰 위에 올린다.
+     */
+    let contentView = UIView()
+    
     let headerView = UIView()
     let itemViewOne = UIView()
     let itemViewTwo = UIView()
@@ -57,6 +65,7 @@ class UserInfoViewController: GFDataLoadingViewController {
         super.viewDidLoad()
         // MARK:- Methods
         configureViewController()
+        configureScrollView()
         setupNavigationRightBarButtonItem()
         layoutUI()
         getUserInfo()
@@ -75,6 +84,34 @@ class UserInfoViewController: GFDataLoadingViewController {
     
     func configureViewController() {
         self.view.backgroundColor = .systemBackground
+    }
+    
+    func configureScrollView() {
+        view.addSubview(scrollView)
+        /*
+         Discussion: scrollView와 contentView와의 관계
+         contentView는 scrollView 안에 들어간다.
+         다시말해 scrollView 위에 contentView가 올라간다.
+         */
+        scrollView.addSubview(contentView)
+        
+        /*
+         Discussion: contentView의 width와 height
+         Constraints를 구성시 4가지의 constraint 이상이 될 경우 문제가 있다고 판단할 수 있다.
+         다시말해 Constraints는 4가지 이상이 되어서는 안된다는 말이다.
+         하지만 이 경우는 예외이다.
+         ScrollView는 명백하게 contentView가 scrollView 의 edge에 붙어 있다고 해도
+         width와 height가 명시되어야 한다.
+         이것이 ScrollView의 Core 중 하나이다.
+         */
+        scrollView.pinToEdge(of: view)
+        contentView.pinToEdge(of: scrollView)
+        
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 600),
+        ])
+        
     }
     
     func getUserInfo() {
@@ -132,13 +169,13 @@ class UserInfoViewController: GFDataLoadingViewController {
         itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
         
         for itemView in itemViews {
-            view.addSubview(itemView)
+            contentView.addSubview(itemView)
             
             itemView.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-                itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+                itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+                itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             ])
         }
         
@@ -154,7 +191,7 @@ class UserInfoViewController: GFDataLoadingViewController {
          */
         // c.f: give to vertically UI layout contraints
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),

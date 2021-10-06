@@ -94,7 +94,7 @@ class GithubFollowerButton: UIButton {
         // c.f: default button title color is white.
         setTitleColor(titleColor, for: .normal)
         
-        // dynamic typr of font
+        // dynamic type of font
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         
         // for autolayout perposes.
