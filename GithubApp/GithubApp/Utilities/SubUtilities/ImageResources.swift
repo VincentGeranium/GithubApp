@@ -5,7 +5,6 @@
 //  Created by Morgan Kang on 2021/10/01.
 //
 
-import Foundation
 import UIKit
 
 enum ImageResource {

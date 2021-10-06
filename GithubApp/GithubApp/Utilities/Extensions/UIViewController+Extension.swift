@@ -5,7 +5,6 @@
 //  Created by 김광준 on 2021/08/16.
 //
 
-import Foundation
 import UIKit
 import SafariServices
 

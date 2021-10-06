@@ -46,6 +46,7 @@ class FavoritesListViewController: GFDataLoadingViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.removeExcessCells()
         
         // register the cell
         tableView.register(FavoriteCell.self, forCellReuseIdentifier: FavoriteCell.reuseID)
@@ -119,9 +120,39 @@ extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegat
         navigationController?.pushViewController(destVC, animated: true)
     }
     
+    // MARK:- TableView Method for the swipe delete.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         // c.f: This code means if not editing style delete return, I don't need anything only need '.delete' style.
         guard editingStyle == .delete else { return }
+        
+        // MARK:- Discussion: PersistenceManager.update Logic
+        /*
+         Discussion: About Logic
+         favorite Array에(실제적으로는 ViewController에 UI를 업데이트 하는 것) 데이터를 업데이트 하는 것은
+         PersistenceManager 업데이트 전에 행해진다.
+         이것 행위가 무엇을 의미하여 추후에 어떤 동작을 가져오는지 알아보자.
+         PersistenceManager 코드를 보면 error에 관련된 코드들이 있다. 실제적으로 에러가 발생할 경우
+         'self.presentGithubFollowerAlertOnMainThread(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")' 코드를 실행하게 만들어두었다.
+         그러나 favorite Array에 데이터를 업데이트 하는 코드가 먼저 행해지게 만들었으므로 이 error에 대응하는 코드는 무용지물이나 마찬가지가 된다.
+         조금 더 상세하게 말하자면 이미 favorite array에 데이터가 업데이트 된 후에 PersistenceManager 코드가 실행되므로 서로 코드 실행에 대한 싱크가 맞지 않는 것이다.
+         서로 싱크가 맞지 않으니 각각의 조각이 어긋나게 되어 무용지물이 되는 것이다.
+         그렇다면 서로의 코드가 싱크가 맞게 하려먼 어떻게 해야할까?
+         PersistenceManager 코드 안에 error가 발생하지 않을 경우 favorites Array가 업데이트 되게하고
+         tableView(UI)또한 업데이트 되게 하는 코드를 넣어주면 싱크가 맞게 된다.
+         
+         ->
+         
+         guard let error = error else {
+             // remove from the array
+             self.favorites.remove(at: indexPath.row)
+             
+             // delete row from the tableView, and animation
+             // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
+             tableView.deleteRows(at: [indexPath], with: .left)
+             return
+         }
+         
+         */
         
         /*
          Discussion: Why did I implement favorite constant?
@@ -130,18 +161,20 @@ extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegat
          And need to update to array which data is delete.
          For the userDefault and populate tableView, reload new data at the array.
          */
-        let favorite = favorites[indexPath.row]
-        // remove from the array
-        favorites.remove(at: indexPath.row)
-        
-        // delete row from the tableView, and animation
-        // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
-        tableView.deleteRows(at: [indexPath], with: .left)
         
         // handle the persistence
-        PersistenceManager.update(with: favorite, actionType: .remove) { [weak self] error in
+        PersistenceManager.update(with: favorites[indexPath.row], actionType: .remove) { [weak self] error in
             guard let self = self else { return }
-            guard let error = error else { return }
+            guard let error = error else {
+                // remove from the array
+                self.favorites.remove(at: indexPath.row)
+                
+                // delete row from the tableView, and animation
+                // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
+                tableView.deleteRows(at: [indexPath], with: .left)
+                return
+            }
+            
             self.presentGithubFollowerAlertOnMainThread(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")
         }
     }

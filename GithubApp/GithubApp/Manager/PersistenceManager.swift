@@ -36,7 +36,7 @@ enum PersistenceManager {
     static func update(with favorite: Follower, actionType: PersistenceActionType, completed: @escaping (ErrorMessage?) -> Void) {
         retrieveFavorites { result in
             switch result {
-            case .success(let favorites):
+            case .success(var favorites):
                 /*
                  Discussion: Why did I implement this variable name of 'retrievedFavorites' code?
                  'let favorites' is immutable array but I need to add and delete favorite user function.
@@ -45,19 +45,19 @@ enum PersistenceManager {
                  c.f : Abuot 'var retrievedFavorites'
                  var retrievedFavorites is new array.
                  */
-                var retrievedFavorites = favorites
+                
                 
                 //MARK:- switch based on action type
                 switch actionType {
                 case .add:
                     /// handle the retrievedFavorites
                         /// 1. check the array -> the user is alread in the array or not
-                    guard !retrievedFavorites.contains(favorite) else {
+                    guard !favorites.contains(favorite) else {
                         completed(.alreadInFavorites)
                         return
                     }
                         /// 2. add user in the favorite.
-                    retrievedFavorites.append(favorite)
+                    favorites.append(favorite)
                 case .remove:
                     /// handle the retrievedFavorites
                         /// 1. Bascially need to go through the array in remove all instances where the these followers match
@@ -70,12 +70,12 @@ enum PersistenceManager {
                      Discussion: About 'removeAll(where:)'
                      Removes all the elements that satisfy the given predicate.
                      */
-                    retrievedFavorites.removeAll { $0.login == favorite.login }
+                    favorites.removeAll { $0.login == favorite.login }
                 }
                 
                 // update either add or remove and then save again
                 
-                completed(save(favorites: retrievedFavorites))
+                completed(save(favorites: favorites))
             case .failure(let error):
                 completed(error)
             }

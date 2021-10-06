@@ -5,7 +5,6 @@
 //  Created by Morgan Kang on 2021/09/30.
 //
 
-import Foundation
 import UIKit
 
 enum ScreenSize {
