@@ -90,12 +90,12 @@ class GithubFollowerButton: UIButton {
     private func configure(titleColor: UIColor) {
         layer.cornerRadius = 10
         
+        // dynamic type of font
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        
         // set button title color
         // c.f: default button title color is white.
         setTitleColor(titleColor, for: .normal)
-        
-        // dynamic type of font
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         
         // for autolayout perposes.
         /*

@@ -114,10 +114,10 @@ class FollowerListViewController: GFDataLoadingViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        searchBarToggle(searchBarHidden: self.searchBarHidden)
+//        searchBarToggle(searchBarHidden: self.searchBarHidden)
     }
     
-    
+    // MARK:- method for search Bar hidden when user scroll down
     func searchBarToggle(searchBarHidden: Bool) {
         if searchBarHidden == true {
             navigationItem.hidesSearchBarWhenScrolling = true
@@ -172,43 +172,49 @@ class FollowerListViewController: GFDataLoadingViewController {
             
             switch result {
             case .success(let followers):
-                // flip the flag which mean turn to false that 'hasMoreFollower' value
-                /*
-                 Discussion:
-                 1 페이지 당 100개의 유저 정보를 담아오는데 만약 250명의 팔로우가 있다면
-                 200까지는 2페이지를 넘겨 유저 정보를 가져올수있지만 나머지 50은 3페이지가 되므로 error이 발생한다.
-                 그러므로 page 를 증가시키는 로직을 멈춰야하므로 그에 대한 표시인 flag로 'hasMoreFollower'를 만들었고
-                 flag가 true인지 false인지에 따라 로직이 동작하고 안하고가 바뀌게 된다.
-                 */
-                // MARK:- check followers count is under 100
-                if followers.count < 100 {
-                    print("The hasMoreFollower will filp to false")
-                    self.hasMoreFollower = false
-                }
-                // append followers
-                self.followers.append(contentsOf: followers)
+                self.updateUI(with: followers)
                 
-                // MARK:- check followers array is empty
-                // Check followers array isEmpty that after network call and append followers in the array
-                if self.followers.isEmpty {
-                    let message = "This user doesn't have any followers. Go followe them 😝."
-                    DispatchQueue.main.async {
-                        self.showEmptyStateView(with: message, in: self.view)
-                    }
-                    return
-                }
-                /*
-                 Discussion: Why 'updateData' method is not get pass the flexible parameter in this block?
-                 
-                 Because in this block main purpose is get the whole follower of the user which is entered this app.
-                 */
-                self.updateData(on: self.followers)
             case .failure(let errorMessage):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
             }
             // done ->  network call is done.
             self.isLoadingMoreFollowers = false
         }
+    }
+    
+    // MARK:- method for update UI when the success to get followers
+    private func updateUI(with followers: [Follower]) {
+        // flip the flag which mean turn to false that 'hasMoreFollower' value
+        /*
+         Discussion:
+         1 페이지 당 100개의 유저 정보를 담아오는데 만약 250명의 팔로우가 있다면
+         200까지는 2페이지를 넘겨 유저 정보를 가져올수있지만 나머지 50은 3페이지가 되므로 error이 발생한다.
+         그러므로 page 를 증가시키는 로직을 멈춰야하므로 그에 대한 표시인 flag로 'hasMoreFollower'를 만들었고
+         flag가 true인지 false인지에 따라 로직이 동작하고 안하고가 바뀌게 된다.
+         */
+        // MARK:- check followers count is under 100
+        if followers.count < 100 {
+            print("The hasMoreFollower will filp to false")
+            self.hasMoreFollower = false
+        }
+        // append followers
+        self.followers.append(contentsOf: followers)
+        
+        // MARK:- check followers array is empty
+        // Check followers array isEmpty that after network call and append followers in the array
+        if self.followers.isEmpty {
+            let message = "This user doesn't have any followers. Go followe them 😝."
+            DispatchQueue.main.async {
+                self.showEmptyStateView(with: message, in: self.view)
+            }
+            return
+        }
+        /*
+         Discussion: Why 'updateData' method is not get pass the flexible parameter in this block?
+         
+         Because in this block main purpose is get the whole follower of the user which is entered this app.
+         */
+        self.updateData(on: self.followers)
     }
     
     // MARK:- configure ViewController
@@ -406,23 +412,28 @@ class FollowerListViewController: GFDataLoadingViewController {
             
             switch result {
             case .success(let user):
-                let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
-                
-                PersistenceManager.update(with: favorite, actionType: .add) { [weak self] error in
-                    guard let self = self else { return }
-                    
-                    guard let error = error else {
-                        self.presentGithubFollowerAlertOnMainThread(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
-                        return
-                    }
-                    
-                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
-                    return
-                }
+                self.addUserToFavorites(with: user)
                 
             case .failure(let error):
                 self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
             }
+        }
+    }
+    
+    // MARK:- add user to favorites function when success to got user data from server
+    private func addUserToFavorites(with user: User) {
+        let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+        
+        PersistenceManager.update(with: favorite, actionType: .add) { [weak self] error in
+            guard let self = self else { return }
+            
+            guard let error = error else {
+                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
+                return
+            }
+            
+            self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+            return
         }
     }
 }
