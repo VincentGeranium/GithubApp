@@ -8,10 +8,9 @@
 import UIKit
 
 class GithubFollowerAlertViewController: UIViewController {
-    
+    // MARK:- UI elements
     // Create white view for create container view.
     let containerView = GithubFollowerAlertContainerView()
-    
     let titleLabel = GithubFollowerTitleLabel(textAlignment: .center, fontSize: 20)
     let bodyMessageLabel = GithubFollowerBodyLabel(textAlignment: .center)
     let actionButton = GithubFollowerButton(backgroundColor: .systemPink, title: "Ok", titleColor: .white)
@@ -24,7 +23,7 @@ class GithubFollowerAlertViewController: UIViewController {
      That's gonna happen at the call site.
      Because of that
      */
-    
+    // MARK:- title variables
     var alertTitle: String?
     var bodyMessage: String?
     var buttonTitle: String?

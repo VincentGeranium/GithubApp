@@ -53,7 +53,7 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         }
         return userData
     }
-    
+    #warning("rethrows로 만들기 -> getUserData 가 error을 던지므로 이 함수를 받으면 가능.")
     private func tryingGetUserData(user: User?, vc: GithubFollowerRepoItemViewController) throws -> User {
         var userData: User?
         
@@ -78,6 +78,7 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         if let userPublicRepos = try? tryingGetUserData(user: user, vc: vc).publicRepos {
             itemInfoViewOne.set(itemInfoType: .repos, withCount: userPublicRepos)
         }
+        
         if let userPublicGists = try? tryingGetUserData(user: user, vc: vc).publicGists {
             itemInfoViewTwo.set(itemInfoType: .gists, withCount: userPublicGists)
         }

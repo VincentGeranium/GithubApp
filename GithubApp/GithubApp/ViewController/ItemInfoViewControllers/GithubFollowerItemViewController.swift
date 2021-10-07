@@ -50,7 +50,7 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
         }
         return userData
     }
-
+    #warning("rethrows로 만들기 -> callback으로 getUserData을 받자. getUserData 가 error을 던지므로 이 함수를 받으면 가능.")
     private func configureItems(with user: User?) {
         if let userFollowing = try? getUserData(user: user).following {
             itemInfoViewTwo.set(itemInfoType: .following, withCount: userFollowing)

@@ -8,6 +8,11 @@
 import UIKit
 
 extension UITableView {
+    // c.f: UITableView extension with function for the reload data.
+    func reloadDataOnMainThread() {
+        DispatchQueue.main.async { self.reloadData() }
+    }
+    
     /*
      Dicsussion: About 'removeExcessCells' function
      This function dose remove remain tableview cell.

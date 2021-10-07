@@ -57,6 +57,16 @@ class GithubFollowerAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    func downloadImage(fromURL url: String) {
+        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
+            guard let self = self else { return }
+            // if image is nil it will showing placeholder image so not gonna unwrapping
+            // also avatarImageView.image is optional so not need necessary behavior which unwrapping.
+            DispatchQueue.main.async { self.image = image }
+        }
+    }
+
+    
     
     //MARK:- dowloadImage가 이곳에 위치한 이유와 이동한 이유.
     /*

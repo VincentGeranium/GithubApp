@@ -40,7 +40,7 @@ class GithubUserInfoHeaderViewController: UIViewController {
     func configureUIElements() {
         guard let user = user else { return }
         
-        downloadAvatarImage(user: user)
+        avatarImageView.downloadImage(fromURL: user.avatarUrl)
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? "N/A"
         locationLabel.text = user.location ?? "No Location"
@@ -50,22 +50,23 @@ class GithubUserInfoHeaderViewController: UIViewController {
         locationImageView.image = SFSymbols.locationPinImage
         locationImageView.tintColor = .secondaryLabel
     }
-    
-    func downloadAvatarImage(user: User) {
-        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async { self.avatarImageView.image = image }
-        }
-    }
-    
+        
     // MARK:- to do addSubview all the objects
     private func addSubViews() {
+        /*
         view.addSubview(avatarImageView)
         view.addSubview(usernameLabel)
         view.addSubview(nameLabel)
         view.addSubview(locationImageView)
         view.addSubview(locationLabel)
         view.addSubview(bioLable)
+         */
+        view.addSubviews(avatarImageView,
+                         usernameLabel,
+                         nameLabel,
+                         locationImageView,
+                         locationLabel,
+                         bioLable)
     }
     
     private func layoutUI() {
@@ -135,11 +136,5 @@ class GithubUserInfoHeaderViewController: UIViewController {
             bioLable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bioLable.heightAnchor.constraint(equalToConstant: 90),
         ])
-        
     }
-
-    
-    
-    
-
 }
