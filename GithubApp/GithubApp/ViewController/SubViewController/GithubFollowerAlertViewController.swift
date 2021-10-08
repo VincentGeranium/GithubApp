@@ -13,7 +13,7 @@ class GithubFollowerAlertViewController: UIViewController {
     let containerView = GithubFollowerAlertContainerView()
     let titleLabel = GithubFollowerTitleLabel(textAlignment: .center, fontSize: 20)
     let bodyMessageLabel = GithubFollowerBodyLabel(textAlignment: .center)
-    let actionButton = GithubFollowerButton(backgroundColor: .systemPink, title: "Ok", titleColor: .white)
+    let actionButton = GithubFollowerButton(backgroundColor: .systemPink, title: "Ok")
     
     /*
      Discussion: Why create those variable properties for custom init which 'alertTitle', 'bodyMessage' and 'buttonTitle'.

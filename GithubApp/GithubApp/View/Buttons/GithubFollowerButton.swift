@@ -55,7 +55,7 @@ class GithubFollowerButton: UIButton {
      -> The button color and title will be chaging and create when every time that initialized this class
      */
     
-    convenience init(backgroundColor: UIColor, title: String, titleColor: UIColor) {
+    convenience init(backgroundColor: UIColor, title: String) {
         /*
          Discussion:
          -> Why did I gave 'zero' to 'init frame parameter?'
