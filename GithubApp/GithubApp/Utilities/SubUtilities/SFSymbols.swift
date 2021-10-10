@@ -13,4 +13,7 @@ enum SFSymbols {
     static let gistsImage = UIImage(systemName: "text.alignleft")
     static let followersImage = UIImage(systemName: "heart")
     static let followingImage = UIImage(systemName: "person.2")
+    static let checkmark = UIImage(systemName: "checkmark.circle")
+    static let threePersonImage = UIImage(systemName: "person.3")
+    static let onePersonImage = UIImage(systemName: "person")
 }

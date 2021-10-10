@@ -84,7 +84,7 @@ class GithubFollowerRepoItemViewController: GithubFollowerItemInfoViewController
         }
         
         //c.f: Setting up the UI very simply because done heavy lifting before
-        actionButton.set(backgroundColor: .systemPurple, title: "Github Profile")
+        actionButton.set(color: .systemPurple, title: "Github Profile", systemImage: SFSymbols.onePersonImage)
     }
     override func actionButtonTapped() {
         guard let user = user else {

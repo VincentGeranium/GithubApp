@@ -50,8 +50,9 @@ class SearchViewController: UIViewController {
          c.f : About before I created init backGroundColor and title in the custom button class which 'GithubFollowerButton'
          So, I just passing parameter values that will be excute the inside of 'GithubFollowerButton'
          */
-        let button: GithubFollowerButton = GithubFollowerButton(backgroundColor: .systemGreen,
-                                                                title: "Get Followers")
+        let button: GithubFollowerButton = GithubFollowerButton(color: .systemGreen,
+                                                                title: "Get Followers",
+                                                                systemImage: SFSymbols.threePersonImage)
         return button
     }()
     

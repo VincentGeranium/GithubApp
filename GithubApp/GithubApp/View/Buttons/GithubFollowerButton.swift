@@ -55,7 +55,7 @@ class GithubFollowerButton: UIButton {
      -> The button color and title will be chaging and create when every time that initialized this class
      */
     
-    convenience init(backgroundColor: UIColor, title: String) {
+    convenience init(color: UIColor, title: String, systemImage: UIImage?) {
         /*
          Discussion:
          -> Why did I gave 'zero' to 'init frame parameter?'
@@ -71,9 +71,7 @@ class GithubFollowerButton: UIButton {
          c.f:
          -> 'self' mean the 'GithubFollowerButton'.
          */
-        
-        self.backgroundColor = backgroundColor
-        self.setTitle(title, for: .normal)
+        set(color: color, title: title, systemImage: systemImage)
     }
     
     // MARK:- private function which is 'configure' that for using 'generic'
@@ -88,21 +86,29 @@ class GithubFollowerButton: UIButton {
     
     // for common stuff.
     private func configure(titleColor: UIColor) {
-        layer.cornerRadius = 10
+        if #available(iOS 15.0, *) {
+            configuration = .tinted()
+            configuration?.cornerStyle = .medium
+            translatesAutoresizingMaskIntoConstraints = false
+        } else {
+            layer.cornerRadius = 10
+            
+            // dynamic type of font
+            titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+            
+            // set button title color
+            // c.f: default button title color is white.
+            setTitleColor(titleColor, for: .normal)
+            
+            // for autolayout perposes.
+            /*
+             c.f:
+             -> Basically this code means using autolayout.
+             */
+            translatesAutoresizingMaskIntoConstraints = false
+        }
         
-        // dynamic type of font
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
-        
-        // set button title color
-        // c.f: default button title color is white.
-        setTitleColor(titleColor, for: .normal)
-        
-        // for autolayout perposes.
-        /*
-         c.f:
-         -> Basically this code means using autolayout.
-         */
-        translatesAutoresizingMaskIntoConstraints = false
+     
     }
     
     /*
@@ -112,9 +118,27 @@ class GithubFollowerButton: UIButton {
      If want to change backgroundColor, title of button, I can do use this function
      That's mean is have many choice and is flexible.
      */
-    func set(backgroundColor: UIColor, title: String) {
-        self.backgroundColor = backgroundColor
-        self.setTitle(title, for: .normal)
+    func set(color: UIColor, title: String, systemImage: UIImage?) {
         
+        guard let systemImage = systemImage else {
+            print(ErrorMessage.unwrapError)
+            return
+        }
+
+        
+        if #available(iOS 15.0, *) {
+            configuration?.baseBackgroundColor = color
+            configuration?.baseForegroundColor = color
+            configuration?.title = title
+            
+            configuration?.image = systemImage
+            configuration?.imagePadding = 6
+            configuration?.imagePlacement = .leading
+        } else {
+            // c.f: baseBackgroundColor as backgroundColor in this button
+            // c.f: baseForegroundColor as textColor in this button
+            self.backgroundColor = color
+            self.setTitle(title, for: .normal)
+        }
     }
 }

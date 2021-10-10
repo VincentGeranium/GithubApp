@@ -58,7 +58,7 @@ class GithubFollowerItemViewController: GithubFollowerItemInfoViewController {
         if let userFollower = try? getUserData(user: user).followers {
             itemInfoViewOne.set(itemInfoType: .followers, withCount: userFollower)
         }
-        actionButton.set(backgroundColor: .systemGreen, title: "Get Followers")
+        actionButton.set(color: .systemGreen, title: "Get Followers", systemImage: SFSymbols.threePersonImage)
     }
     
     /*
