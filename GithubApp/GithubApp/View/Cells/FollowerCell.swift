@@ -58,9 +58,9 @@ class FollowerCell: UICollectionViewCell {
             // MARK:- Setup constraints which is avatarImageView.
             // c.f: All the cell have 'contentView'
             // Top anchor pined 8 point from the contentView top and Leading and Trailing same setup as well
-            avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: followerCellPadding),
-            avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: followerCellPadding),
-            avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -followerCellPadding),
+            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: followerCellPadding),
+            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: followerCellPadding),
+            avatarImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -followerCellPadding),
             
             /*
              Discussion: explain the height constraints
@@ -77,8 +77,8 @@ class FollowerCell: UICollectionViewCell {
      
             // usernameLabel design pined this to the bottom of the GithubFollowerAvatarImageView.
             usernameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 12),
-            usernameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: followerCellPadding),
-            usernameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -followerCellPadding),
+            usernameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: followerCellPadding),
+            usernameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -followerCellPadding),
             /*
              Discussion: Why did I give 20 points of the height anchor constant?
              I passing the usernameLabel fontSize is 16.
