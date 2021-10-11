@@ -21,6 +21,23 @@ import SafariServices
  */
 
 extension UIViewController {
+    
+    func presentGFAlertUpToiOS15(alertTitle: String, bodyMessage: String, buttonTitle: String) {
+        let alertVC = GithubFollowerAlertViewController(alertTitle: alertTitle, bodyMessage: bodyMessage, buttonTitle: buttonTitle)
+        alertVC.modalTransitionStyle = .crossDissolve
+        alertVC.modalPresentationStyle = .overFullScreen
+        present(alertVC, animated: true, completion: nil)
+    }
+    
+    /// For  catch all generic error
+    func presentDefaultError() {
+        let alertVC = GithubFollowerAlertViewController(alertTitle: "Something went wrong.",
+                                                        bodyMessage: "We were unable to complete your task at this time. Pleas try again.",
+                                                        buttonTitle: "Ok.")
+        alertVC.modalTransitionStyle = .crossDissolve
+        alertVC.modalPresentationStyle = .overFullScreen
+        present(alertVC, animated: true, completion: nil)
+    }
 
     /*
      Discussion: In the 'extension UIViewController'

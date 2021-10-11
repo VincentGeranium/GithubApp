@@ -44,7 +44,7 @@ class FollowerListViewController: GFDataLoadingViewController {
      If user searching value will filp, In other words if followers are filterd it will be the true.
      */
     var isSearching = false
-
+    
     
     // MARK:- Discussion about UICollectionViewDiffableDataSource
     /*
@@ -52,25 +52,25 @@ class FollowerListViewController: GFDataLoadingViewController {
      New from iOS 13
      - New way to handle data source of UICollectionView
      - It's very shine(good), when data has change alot.
-        For example in this app, when user search and typed each alphabet latter of user id
-        the collectionView data is change alot.
+     For example in this app, when user search and typed each alphabet latter of user id
+     the collectionView data is change alot.
      - This is dynamic
      
      - UICollectionViewDiffableDataSource is taken two parameters that are generic.
-        But the two parameter have to confirm hashable protocol, when compair the snapShots, it can be compair, when these are hashable.
+     But the two parameter have to confirm hashable protocol, when compair the snapShots, it can be compair, when these are hashable.
      
      Discussion: About hashable
      - A type that can be hashed into a Hasher to produce an integer hash value.
      
      Discussion: What is the means Hashing a value
      - The Hashing a value means feeding its essential components into a hash function, represented by the Hasher type.
-        Essential components are those that contribute to the type’s implementation of Equatable.
-        Two instances that are equal must feed the same values to Hasher in hash(into:), in the same order.
+     Essential components are those that contribute to the type’s implementation of Equatable.
+     Two instances that are equal must feed the same values to Hasher in hash(into:), in the same order.
      
      Discussion: About two parameters of the UICollectionViewDiffableDataSource
      - Passing Section is the section which is my collectionView
-        Passing Follower is the item
-        It hashing the section and hasing the item which is Follower
+     Passing Follower is the item
+     It hashing the section and hasing the item which is Follower
      */
     var dataSource: DataSource?
     
@@ -114,7 +114,7 @@ class FollowerListViewController: GFDataLoadingViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        searchBarToggle(searchBarHidden: self.searchBarHidden)
+        //        searchBarToggle(searchBarHidden: self.searchBarHidden)
     }
     
     // MARK:- method for search Bar hidden when user scroll down
@@ -126,7 +126,7 @@ class FollowerListViewController: GFDataLoadingViewController {
         }
     }
     
-    // MARK:- get Followers
+    // MARK: - get Followers
     func getFollowersWithUsernameAndPage() {
         guard let username = username else {
             return
@@ -145,40 +145,80 @@ class FollowerListViewController: GFDataLoadingViewController {
         showLoadingView()
         isLoadingMoreFollowers = true
         
-        NetworkManager.shared.getFollowers(for: username, perpage: 100, page: page) {[weak self] result in
-            /*
-             Discussion: explain ARC and weak self of the network call
-             First my network call has two strong reference which self.followers and self.updateData().
-             What is the 'self' is in this case my 'FollowerListViewController'
-             In other words my networkManager have strong reference between my 'FollowerListViewController', This get cause memory leak.
-             So, solution is self.followers and self.updateData()'s 'self' change the weak variable
-             How to create weak variable to self?
-             Crate [weak self] in front of result, this is essentially make self weak
-             When make self weak, it will has to be optional becuase self can be nil
-             */
+        // MARK: - 버전 별로 나눈 network call methods
+        if #available(iOS 15.0, *) {
             
-            // unwrapping self optinal
-            guard let self = self else { return }
-            
-            self.dismissLoadingView()
-            #warning("Dissmiss loading View")
-            
-            /*
-             Discussion: If user have not follower what happen?
-             If user have any follwer but still success.
-             Because only haven't follower, user is exist.
-             So, still get back array of followers from network call, however it will be zero.
-             */
-            
-            switch result {
-            case .success(let followers):
-                self.updateUI(with: followers)
+            // MARK: - network call with get followers(specific한 모든 에러 핸들링)
+            /// 'Task' dose put the code in the concurrency context
+            Task {
+                do {
+                    /// follower property for success case
+                    /// 'try await' means try Network call and await until return, also 'getFollowersUpToiOS15' is  use 'throws' so have to 'try'
+                    let followers = try await NetworkManager.shared.getFollowersUpToiOS15(for: username, page: page)
+                    
+                    /// 더이상 클로저가 아니므로 self.을 쓸 필요가 없다 또한 성공시 followers 값을 updateUI에 넣어준다.
+                    updateUI(with: followers)
+                    dismissLoadingView()
+                } catch {
+                    // Error Handling
+                    /// catch specific error as ErrorMessage
+                    if let errorMessage = error as? ErrorMessage {
+                        presentGFAlertUpToiOS15(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+                    } else {
+                        /// catch generic error
+                        presentDefaultError()
+                    }
+                    dismissLoadingView()
+                }
                 
-            case .failure(let errorMessage):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+                // MARK: - Another version of network call with get followers(generic 에러만 핸들링)
+                /*
+                /// If don't care about specific error, use this code
+                guard let followers = try? await NetworkManager.shared.getFollowersUpToiOS15(for: username, page: page) else {
+                    /// just care about  generic error
+                    presentDefaultError()
+                    return
+                }
+                updateUI(with: followers)
+                dismissLoadingView()
+                */
             }
-            // done ->  network call is done.
-            self.isLoadingMoreFollowers = false
+            
+        } else {
+            NetworkManager.shared.getFollowersDownToiOS15(for: username, perpage: 100, page: page) {[weak self] result in
+                /*
+                 Discussion: explain ARC and weak self of the network call
+                 First my network call has two strong reference which self.followers and self.updateData().
+                 What is the 'self' is in this case my 'FollowerListViewController'
+                 In other words my networkManager have strong reference between my 'FollowerListViewController', This get cause memory leak.
+                 So, solution is self.followers and self.updateData()'s 'self' change the weak variable
+                 How to create weak variable to self?
+                 Crate [weak self] in front of result, this is essentially make self weak
+                 When make self weak, it will has to be optional becuase self can be nil
+                 */
+                
+                // unwrapping self optinal
+                guard let self = self else { return }
+                
+                self.dismissLoadingView()
+                
+                /*
+                 Discussion: If user have not follower what happen?
+                 If user have any follwer but still success.
+                 Because only haven't follower, user is exist.
+                 So, still get back array of followers from network call, however it will be zero.
+                 */
+                
+                switch result {
+                case .success(let followers):
+                    self.updateUI(with: followers)
+                    
+                case .failure(let errorMessage):
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Bad Stuff Happend", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok")
+                }
+                // done ->  network call is done.
+                self.isLoadingMoreFollowers = false
+            }
         }
     }
     

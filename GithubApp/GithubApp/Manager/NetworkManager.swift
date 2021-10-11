@@ -28,6 +28,7 @@ class NetworkManager {
      'static' means every NetworkManager will have this variable on it that 'static let shared = NetworkManager()'.
      */
     static let shared = NetworkManager()
+    let decoder = JSONDecoder()
     
     //MARK:- private baseURL
     /*
@@ -70,7 +71,10 @@ class NetworkManager {
      c.f: Singleton have private init
      Because Singleton is only one that can call from anywhere.
      */
-    private init() {}
+    private init() {
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .iso8601
+    }
     
     /*
      Discussion: About this function completion handler (@escaping)
@@ -86,9 +90,8 @@ class NetworkManager {
      
      */
     
-    // MARK: - getFollowers (the old version)
-    /*
-    func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
+    // MARK: - getFollowersDownToiOS15 (the old version)
+    func getFollowersDownToiOS15(for username: String, perpage: Int, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
         // c.f: url that end point of API
         let endPoint = baseURL + "\(username)/followers?per_page=\(perpage)&page=\(page)"
         
@@ -214,17 +217,13 @@ class NetworkManager {
                  Example Code:
                  completion(nil, error.localizedDescription)
                  */
-
             }
-            
         }
-        
         // Actuall start network call
         task.resume()
     }
-    */
     
-    // MARK: - getFollowers (the new version)
+    // MARK: - getFollowersUpToiOS15 (the new version)
     
     /*
      Discussion: About code meaning
@@ -235,8 +234,7 @@ class NetworkManager {
      
      and also '-> [Follower]' means success case will return array of Follower
      */
-    
-    func getFollowers(for username: String, page: Int) async throws -> [Follower] {
+    func getFollowersUpToiOS15(for username: String, page: Int) async throws -> [Follower] {
         #warning("endpoint를 URLComponent를 이용하여 다시 만들어서 사용하자.")
         let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
         
@@ -245,8 +243,23 @@ class NetworkManager {
             /// when faliure case
             throw ErrorMessage.invalidUsername
         }
+        
+        /// URLSession new awaitable method
+        /// c.f : (data, respones) is tuple, because the '.data' method  is return (Data, URLResponse) tuple.
+        let (data, response) = try await URLSession.shared.data(from: url, delegate: nil)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw ErrorMessage.invalidResponse
+        }
+        
+        do {
+            return try decoder.decode([Follower].self, from: data)
+        } catch {
+            throw ErrorMessage.invalidData
+        }
     }
-
+    
+    
     
     // MARK: - Get User Info
     func getUserInfo(for username: String, completion: @escaping (Result<User, ErrorMessage>) -> Void) {
