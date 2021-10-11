@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 14.5, *)
 enum ScreenSize {
     // width and height of actuall screen
     static let width = UIScreen.main.bounds.width
@@ -14,3 +15,4 @@ enum ScreenSize {
     static let maxLength = max(ScreenSize.width, ScreenSize.height)
     static let minLength = min(ScreenSize.width, ScreenSize.height)
 }
+

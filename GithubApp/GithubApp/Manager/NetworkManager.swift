@@ -234,7 +234,7 @@ class NetworkManager {
      
      and also '-> [Follower]' means success case will return array of Follower
      */
-    func getFollowersUpToiOS15(for username: String, page: Int) async throws -> [Follower] {
+    @available(iOS 15.0, *) func getFollowersUpToiOS15(for username: String, page: Int) async throws -> [Follower] {
         #warning("endpoint를 URLComponent를 이용하여 다시 만들어서 사용하자.")
         let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
         
