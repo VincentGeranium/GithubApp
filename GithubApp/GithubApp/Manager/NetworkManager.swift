@@ -8,6 +8,16 @@
 import Foundation
 import UIKit
 
+/*
+ Discussion: About Network Manager
+ 
+ 이곳에는 대표적인 3가지의 network call이 있다.
+ 
+ 1. getFollowers
+ 2. getUserInfo
+ 3. downloadImage
+ */
+
 class NetworkManager {
     //MARK:- Create Singleton instance
     /*
@@ -76,7 +86,8 @@ class NetworkManager {
      
      */
     
-    // MARK:- Get Followers
+    // MARK: - getFollowers (the old version)
+    /*
     func getFollowers(for username: String, perpage: Int, page: Int, completion: @escaping(Result<[Follower], ErrorMessage>) -> Void) {
         // c.f: url that end point of API
         let endPoint = baseURL + "\(username)/followers?per_page=\(perpage)&page=\(page)"
@@ -211,8 +222,33 @@ class NetworkManager {
         // Actuall start network call
         task.resume()
     }
+    */
     
-    // MARK:- Get User Info
+    // MARK: - getFollowers (the new version)
+    
+    /*
+     Discussion: About code meaning
+     async = async way, throws = throw error
+     So, 'async throws' means = Throws an error in an asynchronous way.
+     
+     If I use 'async throws', don't need to use completion handler
+     
+     and also '-> [Follower]' means success case will return array of Follower
+     */
+    
+    func getFollowers(for username: String, page: Int) async throws -> [Follower] {
+        #warning("endpoint를 URLComponent를 이용하여 다시 만들어서 사용하자.")
+        let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
+        
+        /// valid url
+        guard let url = URL(string: endpoint) else {
+            /// when faliure case
+            throw ErrorMessage.invalidUsername
+        }
+    }
+
+    
+    // MARK: - Get User Info
     func getUserInfo(for username: String, completion: @escaping (Result<User, ErrorMessage>) -> Void) {
         let endPoint = baseURL + "\(username)"
         
