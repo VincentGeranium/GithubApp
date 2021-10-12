@@ -58,11 +58,22 @@ class GithubFollowerAvatarImageView: UIImageView {
     }
     
     func downloadImage(fromURL url: String) {
-        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
-            guard let self = self else { return }
-            // if image is nil it will showing placeholder image so not gonna unwrapping
-            // also avatarImageView.image is optional so not need necessary behavior which unwrapping.
-            DispatchQueue.main.async { self.image = image }
+        
+        if #available(iOS 15.0, *) {
+            Task {
+                if let image = await NetworkManager.shared.downloadImageUpToiOS15(from: url) {
+                    self.image = image
+                } else {
+                    self.image = placehoderImage
+                }
+            }
+        } else {
+            NetworkManager.shared.downloadImageDownToiOS15(from: url) { [weak self] image in
+                guard let self = self else { return }
+                // if image is nil it will showing placeholder image so not gonna unwrapping
+                // also avatarImageView.image is optional so not need necessary behavior which unwrapping.
+                DispatchQueue.main.async { self.image = image }
+            }
         }
     }
 

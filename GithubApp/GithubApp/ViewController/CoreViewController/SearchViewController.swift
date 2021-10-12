@@ -156,7 +156,11 @@ class SearchViewController: UIViewController {
          So, If I want more safty validation, I have to use another validation.
          */
         guard isUsernameEmpty == false else {
-            presentGithubFollowerAlertOnMainThread(alertTitle: "Empty Username", bodyMessage: "Please enter a username. We need to know who to look for 🤔", buttonTitle: "Ok")
+            if #available(iOS 15.0, *) {
+                presentGFAlertUpToiOS15(alertTitle: "Empty Username", bodyMessage: "Please enter a username. We need to know who to look for 🤔", buttonTitle: "Ok.")
+            } else {
+                presentGithubFollowerAlertOnMainThread(alertTitle: "Empty Username", bodyMessage: "Please enter a username. We need to know who to look for 🤔", buttonTitle: "Ok")
+            }
             return
         }
         

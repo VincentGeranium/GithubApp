@@ -253,7 +253,8 @@ class NetworkManager {
         }
         
         do {
-            return try decoder.decode([Follower].self, from: data)
+            let followers = try decoder.decode([Follower].self, from: data)
+            return followers
         } catch {
             throw ErrorMessage.invalidData
         }
@@ -261,8 +262,8 @@ class NetworkManager {
     
     
     
-    // MARK: - Get User Info
-    func getUserInfo(for username: String, completion: @escaping (Result<User, ErrorMessage>) -> Void) {
+    // MARK: - Get User Info function (Down to iOS 15)
+    func getUserInfoDownToiOS15(for username: String, completion: @escaping (Result<User, ErrorMessage>) -> Void) {
         let endPoint = baseURL + "\(username)"
         
         // Convert endPoint which the type of String to URL and unwrapping
@@ -271,7 +272,7 @@ class NetworkManager {
             return
         }
         
-        // MARK:- Data Task
+        // MARK: - Data Task
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let _ = error  {
                 completion(.failure(.unableToComplete))
@@ -307,7 +308,31 @@ class NetworkManager {
         task.resume()
     }
     
-    // MARK:- download Image function
+    // MARK: - Get User Info function (Up to iOS 15)
+    @available(iOS 15.0, *) func getUserInfoUptoiOS15(for username: String) async throws -> User {
+        let endPoint = baseURL + "\(username)"
+        
+        /// validataion of url
+        guard let url = URL(string: endPoint) else {
+            throw ErrorMessage.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url, delegate: nil)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw ErrorMessage.invalidResponse
+        }
+        
+        do {
+            let user = try decoder.decode(User.self, from: data)
+            return user
+        } catch {
+            throw ErrorMessage.invalidData
+        }
+    }
+    
+    
+    // MARK: - download Image function for down to iOS 15
     /*
      1. Discussion: why escaping result which 'UIImage' is optional?
      Because users are couldn't set their own image, so it can be nil.
@@ -320,7 +345,7 @@ class NetworkManager {
      But in this case I don't need to occur 'Error' or 'failure' case
      Just showing placeholder image is more directly to user.
      */
-    func downloadImage(from url: String, completed: @escaping (UIImage?) -> Void) {
+    func downloadImageDownToiOS15(from url: String, completed: @escaping (UIImage?) -> Void) {
         // create cacheKey
         /*
          c.f: explain below code that 'cacheKey'
@@ -372,7 +397,7 @@ class NetworkManager {
                 completed(nil)
                 return
             }
-            //MARK:- set the image into the cache
+            //MARK: - set the image into the cache
             // In other word capture the image.
             /*
              Discussion: Why did I create cache?
@@ -387,6 +412,33 @@ class NetworkManager {
             completed(image)
         }
         task.resume()
+    }
+    
+    
+    // MARK: - download Image function for up to iOS 15
+    /*
+     Discussion: Why did I not gonna implement 'throws' in this function?
+     Because this function dosen't case about specific error.
+     So, just implemnet' async'.
+     And this function only care about if data or value has exist return data or value, if not return nil.
+     That's the perpose of this function and reason of why did not implement 'throws' keyword.
+     Additional, If want to care about specific error implement 'throws' keyword.
+     */
+    @available(iOS 15.0, *) func downloadImageUpToiOS15(from url: String) async -> UIImage? {
+        let cacheKey = NSString(string: url)
+    
+        if let image = cache.object(forKey: cacheKey) { return image }
+        
+        guard let url = URL(string: url) else { return nil }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url, delegate: nil)
+            guard let image = UIImage(data: data) else { return nil }
+            cache.setObject(image, forKey: cacheKey)
+            return image
+        } catch {
+            return nil
+        }
     }
 }
 

@@ -11,7 +11,7 @@ class FavoritesListViewController: GFDataLoadingViewController {
     
     let tableView = UITableView()
     var favorites: [Follower] = []
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
@@ -80,7 +80,13 @@ class FavoritesListViewController: GFDataLoadingViewController {
                     }
                 }
             case .failure(let error):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Somethin went wrong!", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                DispatchQueue.main.async {
+                    if #available(iOS 15.0, *) {
+                        self.presentGFAlertUpToiOS15(alertTitle: "Somethin went wrong!", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                    } else {
+                        self.presentGithubFollowerAlertOnMainThread(alertTitle: "Somethin went wrong!", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                    }
+                }
             }
         }
     }
@@ -143,13 +149,13 @@ extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegat
          ->
          
          guard let error = error else {
-             // remove from the array
-             self.favorites.remove(at: indexPath.row)
-             
-             // delete row from the tableView, and animation
-             // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
-             tableView.deleteRows(at: [indexPath], with: .left)
-             return
+         // remove from the array
+         self.favorites.remove(at: indexPath.row)
+         
+         // delete row from the tableView, and animation
+         // c.f '[IndexPath]' means just one array that whatever indexPath user swiping
+         tableView.deleteRows(at: [indexPath], with: .left)
+         return
          }
          
          */
@@ -174,8 +180,13 @@ extension FavoritesListViewController: UITableViewDataSource, UITableViewDelegat
                 tableView.deleteRows(at: [indexPath], with: .left)
                 return
             }
-            
-            self.presentGithubFollowerAlertOnMainThread(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+            DispatchQueue.main.async {
+                if #available(iOS 15.0, *) {
+                    self.presentGFAlertUpToiOS15(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                } else {
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Unable to remove", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                }
+            }
         }
     }
 }

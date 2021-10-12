@@ -117,15 +117,30 @@ class UserInfoViewController: GFDataLoadingViewController {
     func getUserInfo() {
         guard let username = username else { return }
         
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async { self.configureUIElements(with: user) }
-                print(user)
-            case .failure(let error):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong", bodyMessage: error.rawValue, buttonTitle: "Ok")
+        if #available(iOS 15.0, *) {
+            Task {
+                do {
+                    let username = try await NetworkManager.shared.getUserInfoUptoiOS15(for: username)
+                    configureUIElements(with: username)
+                } catch {
+                    if let errorMessage = error as? ErrorMessage {
+                        presentGFAlertUpToiOS15(alertTitle: "Bad Stuff Happend.", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok.")
+                    } else {
+                        presentDefaultError()
+                    }
+                }
+            }
+        } else {
+            NetworkManager.shared.getUserInfoDownToiOS15(for: username) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let user):
+                    DispatchQueue.main.async { self.configureUIElements(with: user) }
+                    print(user)
+                case .failure(let error):
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong", bodyMessage: error.rawValue, buttonTitle: "Ok")
+                }
             }
         }
     }
@@ -235,7 +250,13 @@ extension UserInfoViewController: GFRepoItemViewControllerDelegate {
     // discussion: when did tap github profile button show safari view controller
     func didTapGithubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
-            presentGithubFollowerAlertOnMainThread(alertTitle: "Invaild URL", bodyMessage: ErrorMessage.invalidURL.rawValue, buttonTitle: "OK")
+            if #available(iOS 15.0, *) {
+                presentGFAlertUpToiOS15(alertTitle: "Invaild URL", bodyMessage: ErrorMessage.invalidURL.rawValue, buttonTitle: "Ok.")
+            } else {
+                presentGithubFollowerAlertOnMainThread(alertTitle: "Invaild URL", bodyMessage: ErrorMessage.invalidURL.rawValue, buttonTitle: "OK")
+            }
+            
+            
             return
         }
         presentSafariViewController(url: url)
@@ -249,7 +270,12 @@ extension UserInfoViewController: GFItemViewControllerDelegate {
     func didTapGetFollowers(for user: User) {
         print("did Tap github followers button")
         guard user.followers != 0 else {
-            presentGithubFollowerAlertOnMainThread(alertTitle: "No Followers", bodyMessage: ErrorMessage.noFollower.rawValue, buttonTitle: "Try again.")
+            
+            if #available(iOS 15.0, *) {
+                presentGFAlertUpToiOS15(alertTitle: "No Followers", bodyMessage: ErrorMessage.noFollower.rawValue, buttonTitle: "Try again.")
+            } else {
+                presentGithubFollowerAlertOnMainThread(alertTitle: "No Followers", bodyMessage: ErrorMessage.noFollower.rawValue, buttonTitle: "Try again.")
+            }
             return
         }
         delegate?.didRequestFollowers(for: user.login)

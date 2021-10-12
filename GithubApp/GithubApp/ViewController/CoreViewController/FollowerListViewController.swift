@@ -173,15 +173,15 @@ class FollowerListViewController: GFDataLoadingViewController {
                 
                 // MARK: - Another version of network call with get followers(generic 에러만 핸들링)
                 /*
-                /// If don't care about specific error, use this code
-                guard let followers = try? await NetworkManager.shared.getFollowersUpToiOS15(for: username, page: page) else {
-                    /// just care about  generic error
-                    presentDefaultError()
-                    return
-                }
-                updateUI(with: followers)
-                dismissLoadingView()
-                */
+                 /// If don't care about specific error, use this code
+                 guard let followers = try? await NetworkManager.shared.getFollowersUpToiOS15(for: username, page: page) else {
+                 /// just care about  generic error
+                 presentDefaultError()
+                 return
+                 }
+                 updateUI(with: followers)
+                 dismissLoadingView()
+                 */
             }
             
         } else {
@@ -345,25 +345,25 @@ class FollowerListViewController: GFDataLoadingViewController {
          So, I want to showing this search bar always.
          That's the reason of the implement 'hidesSearchBarWhenScrolling' and assign 'false'
          */
-//        navigationItem.hidesSearchBarWhenScrolling = false
+        //        navigationItem.hidesSearchBarWhenScrolling = false
     }
-
+    
     
     // MARK:- configure Data Source
     private func configureDataSource() {
         /*
          have to test this code for unwrap dataSouce
          
-        guard self.dataSource == DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as? FollowerCell else {
-                return UICollectionViewCell()
-            }
-            cell.set(follower: follower)
-            return cell
-        }) else {
-            return
-        }
-        */
+         guard self.dataSource == DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
+         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.cellIdentifier, for: indexPath) as? FollowerCell else {
+         return UICollectionViewCell()
+         }
+         cell.set(follower: follower)
+         return cell
+         }) else {
+         return
+         }
+         */
         guard let collectionView = collectionView else {
             return
         }
@@ -433,7 +433,7 @@ class FollowerListViewController: GFDataLoadingViewController {
         }
     }
     
-    // MARK:- Implement Add Button action method.
+    // MARK: - Button action method.
     @objc func didTapAddButton() {
         showLoadingView()
         
@@ -442,20 +442,37 @@ class FollowerListViewController: GFDataLoadingViewController {
             return
         }
         
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else {
-                print(ErrorMessage.unwrapError)
-                return
+        if #available(iOS 15.0, *) {
+            Task {
+                do {
+                    let username = try await NetworkManager.shared.getUserInfoUptoiOS15(for: username)
+                    addUserToFavorites(with: username)
+                    dismissLoadingView()
+                } catch {
+                    if let errorMessage = error as? ErrorMessage {
+                        presentGFAlertUpToiOS15(alertTitle: "Bad Stuff Happend.", bodyMessage: errorMessage.rawValue, buttonTitle: "Ok.")
+                    } else {
+                        presentDefaultError()
+                    }
+                    dismissLoadingView()
+                }
             }
-            
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let user):
-                self.addUserToFavorites(with: user)
+        } else {
+            NetworkManager.shared.getUserInfoDownToiOS15(for: username) { [weak self] result in
+                guard let self = self else {
+                    print(ErrorMessage.unwrapError)
+                    return
+                }
                 
-            case .failure(let error):
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                self.dismissLoadingView()
+                
+                switch result {
+                case .success(let user):
+                    self.addUserToFavorites(with: user)
+                    
+                case .failure(let error):
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                }
             }
         }
     }
@@ -468,11 +485,26 @@ class FollowerListViewController: GFDataLoadingViewController {
             guard let self = self else { return }
             
             guard let error = error else {
-                self.presentGithubFollowerAlertOnMainThread(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
+                
+                DispatchQueue.main.async {
+                    if #available(iOS 15, *) {
+                        self.presentGFAlertUpToiOS15(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
+                    } else {
+                        self.presentGithubFollowerAlertOnMainThread(alertTitle: "Success!", bodyMessage: "You have successfully favorited this user 🎉", buttonTitle: "Yeah!!")
+                    }
+                }
+                
                 return
             }
             
-            self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+            DispatchQueue.main.async {
+                if #available(iOS 15, *) {
+                    self.presentGFAlertUpToiOS15(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                } else {
+                    self.presentGithubFollowerAlertOnMainThread(alertTitle: "Something went wrong.", bodyMessage: error.rawValue, buttonTitle: "Ok.")
+                }
+            }
+            
             return
         }
     }
@@ -482,12 +514,12 @@ class FollowerListViewController: GFDataLoadingViewController {
 extension FollowerListViewController: UICollectionViewDelegate {
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
         searchBarHidden = false
-//        print("scrollViewDidScrollToTop is occur")
+        //        print("scrollViewDidScrollToTop is occur")
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchBarHidden = true
-//        print("scrollViewDidScroll is occur")
+        //        print("scrollViewDidScroll is occur")
     }
     
     /*
@@ -540,7 +572,7 @@ extension FollowerListViewController: UICollectionViewDelegate {
             getFollowers(username: username, page: page)
         }
     }
-
+    
     // MARK:- didSelectItemAt method of UICollectionView.
     /*
      Discussion: when user did selecte itme what happen?
@@ -572,12 +604,12 @@ extension FollowerListViewController: UICollectionViewDelegate {
          */
         let follower = activeArray[indexPath.item]
         
-
+        
         let userInfoVC = UserInfoViewController(username: follower.login)
         //MARK: FollowerListViewControllerDelegate set - (to the communication pathway is set)
         // c.f : This code means 'FollowerListViewController' is listening to the 'UserInfoViewController'
         userInfoVC.delegate = self
-
+        
         /*
          Discussion: Why did I implement navigationController and present navigationController in this block ?
          Because if view present by modal style, the view have to dismisses button like cancel, confirm, ect...
@@ -624,7 +656,7 @@ extension FollowerListViewController: UISearchResultsUpdating {
             return
         }
         
-
+        
         /*
          Discussion: essentially why is doing this?
          When every time change the search result from search bar
@@ -668,7 +700,7 @@ extension FollowerListViewController: UISearchBarDelegate {
  FollowerListViweController dosen't know whos gonna tell and what to do
  */
 extension FollowerListViewController: UserInfoViewControllerDelegate {
-
+    
     // c.f: This method happen when did select item.
     func didRequestFollowers(for username: String) {
         print("👺When did Select Item this did Request Followers delegate method is occur👺")
