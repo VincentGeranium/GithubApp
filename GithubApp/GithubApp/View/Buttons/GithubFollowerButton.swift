@@ -127,6 +127,8 @@ class GithubFollowerButton: UIButton {
 
         
         if #available(iOS 15.0, *) {
+            // c.f: baseBackgroundColor as backgroundColor in this button
+            // c.f: baseForegroundColor as textColor in this button
             configuration?.baseBackgroundColor = color
             configuration?.baseForegroundColor = color
             configuration?.title = title
@@ -135,8 +137,6 @@ class GithubFollowerButton: UIButton {
             configuration?.imagePadding = 6
             configuration?.imagePlacement = .leading
         } else {
-            // c.f: baseBackgroundColor as backgroundColor in this button
-            // c.f: baseForegroundColor as textColor in this button
             self.backgroundColor = color
             self.setTitle(title, for: .normal)
         }
