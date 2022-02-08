@@ -31,6 +31,10 @@ extension Date {
          "Jul 2015", however, 'formatted(.dateTime.month(.wide).year(.twoDigits))' this code is showing "May 11" It mean's 'May 2011'
          In additional implement just 'formatted()', it will return like '5/14/2011, 10:14 PM'
          */
-        return formatted(.dateTime.month().year())
+        if #available(iOS 15.0, *) {
+            return formatted(.dateTime.month().year())
+        } else {
+            return convertToMonthYearFormatTheOldVersion()
+        }
     }
 }
